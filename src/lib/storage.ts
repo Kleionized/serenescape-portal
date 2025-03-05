@@ -59,11 +59,33 @@ export const addStressor = (name: string): void => {
   
   if (existingStressor) {
     existingStressor.count += 1;
+    // If it was resolved before, mark it as unresolved now that it's been added again
+    if (existingStressor.resolved) {
+      existingStressor.resolved = false;
+    }
   } else {
     stressors.push({ id: generateId(), name, count: 1 });
   }
   
   saveStressors(stressors);
+};
+
+// Mark a stressor as resolved
+export const resolveStressor = (id: string): void => {
+  const stressors = getStressors();
+  const stressor = stressors.find(s => s.id === id);
+  
+  if (stressor) {
+    stressor.resolved = true;
+    saveStressors(stressors);
+  }
+};
+
+// Delete a stressor
+export const deleteStressor = (id: string): void => {
+  const stressors = getStressors();
+  const updatedStressors = stressors.filter(s => s.id !== id);
+  saveStressors(updatedStressors);
 };
 
 // Get todos from localStorage

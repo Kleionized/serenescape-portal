@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { MoodLevel } from '../../lib/types';
-import { addMoodCheckIn } from '../../lib/storage';
+import { addMoodCheckIn, getStressors } from '../../lib/storage';
 import { X } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -13,6 +14,19 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   const [selectedMood, setSelectedMood] = useState<MoodLevel | null>(null);
   const [stressors, setStressors] = useState<string[]>([]);
   const [currentStressor, setCurrentStressor] = useState<string>('');
+  const [recentStressors, setRecentStressors] = useState<string[]>([]);
+  
+  useEffect(() => {
+    // Load recent stressors for quick selection
+    const allStressors = getStressors();
+    const activeStressorNames = allStressors
+      .filter(s => !s.resolved)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5)
+      .map(s => s.name);
+    
+    setRecentStressors(activeStressorNames);
+  }, []);
   
   const handleMoodSelect = (mood: MoodLevel) => {
     setSelectedMood(mood);
@@ -29,6 +43,12 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
     if (currentStressor.trim()) {
       setStressors([...stressors, currentStressor.trim()]);
       setCurrentStressor('');
+    }
+  };
+  
+  const handleAddRecentStressor = (stressorName: string) => {
+    if (!stressors.includes(stressorName)) {
+      setStressors([...stressors, stressorName]);
     }
   };
   
@@ -116,6 +136,27 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
             <p className="text-gray-600 dark:text-gray-300">
               What's causing your stress right now? (Add one or more stressors)
             </p>
+            
+            {recentStressors.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-500">Recent stressors:</p>
+                <div className="flex flex-wrap gap-2">
+                  {recentStressors.map((stressorName, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleAddRecentStressor(stressorName)}
+                      className={`px-3 py-1 rounded-full text-sm ${
+                        stressors.includes(stressorName) 
+                          ? 'bg-safespace-primary text-white' 
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      }`}
+                    >
+                      {stressorName}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             
             <div className="space-y-3">
               <div className="flex gap-2">

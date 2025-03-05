@@ -15,9 +15,15 @@ const RootCause = () => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   
   useEffect(() => {
-    const loadedStressors = getStressors();
-    setStressors(loadedStressors);
+    loadStressors();
   }, []);
+  
+  const loadStressors = () => {
+    const loadedStressors = getStressors();
+    // Only show unresolved stressors for selection
+    const unresolvedStressors = loadedStressors.filter(s => !s.resolved);
+    setStressors(unresolvedStressors);
+  };
   
   const handleAddStressor = () => {
     if (!newStressor.trim()) return;
@@ -25,8 +31,7 @@ const RootCause = () => {
     addStressor(newStressor);
     
     // Refresh stressors
-    const updatedStressors = getStressors();
-    setStressors(updatedStressors);
+    loadStressors();
     
     // Select the new stressor
     setSelectedStressor(newStressor);

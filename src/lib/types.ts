@@ -1,8 +1,8 @@
-
 export type MoodStressor = {
   id: string;
   name: string;
   count: number;
+  resolved?: boolean;
 };
 
 export type TodoItem = {
