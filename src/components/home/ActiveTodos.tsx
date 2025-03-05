@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { getActiveTodos, getTodos, saveActiveTodos, toggleTodoCompletion } from '../../lib/storage';
+import { getActiveTodos, getTodos, saveActiveTodos, toggleTodoCompletion, deleteCompletedTodos } from '../../lib/storage';
 import { TodoItem } from '../../lib/types';
-import { Check, ChevronRight } from 'lucide-react';
+import { Check, ChevronRight, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
 
 const ActiveTodos = () => {
   const [activeTodoIds, setActiveTodoIds] = useState<string[]>([]);
   const [activeTodos, setActiveTodos] = useState<TodoItem[]>([]);
   const [allCompleted, setAllCompleted] = useState(false);
+  const { toast } = useToast();
   
   useEffect(() => {
     loadActiveTodos();
@@ -61,6 +63,25 @@ const ActiveTodos = () => {
     }, 100);
   };
   
+  const handleDeleteCompleted = () => {
+    const completedCount = activeTodos.filter(todo => todo.completed).length;
+    if (completedCount === 0) {
+      toast({
+        title: "No completed tasks",
+        description: "There are no completed tasks to delete.",
+      });
+      return;
+    }
+    
+    deleteCompletedTodos();
+    loadActiveTodos();
+    
+    toast({
+      title: "Tasks deleted",
+      description: `${completedCount} completed ${completedCount === 1 ? 'task' : 'tasks'} deleted successfully.`,
+    });
+  };
+  
   const getImportanceClass = (importance: string): string => {
     switch (importance) {
       case 'high':
@@ -76,7 +97,19 @@ const ActiveTodos = () => {
 
   return (
     <div className="glass-card rounded-xl p-6 animate-scale-in">
-      <h2 className="heading-sm mb-4">Active To-Dos</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="heading-sm">Active To-Dos</h2>
+        
+        {activeTodos.some(todo => todo.completed) && (
+          <button
+            onClick={handleDeleteCompleted}
+            className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-red-500 text-white hover:bg-red-600 transition-colors"
+          >
+            <Trash2 className="w-3 h-3" />
+            <span>Delete Completed</span>
+          </button>
+        )}
+      </div>
       
       {activeTodos.length === 0 ? (
         <div className="text-center py-6">
@@ -125,13 +158,22 @@ const ActiveTodos = () => {
       {allCompleted && (
         <div className="mt-6 p-4 bg-safespace-primary/10 rounded-lg text-center animate-fade-in">
           <p className="text-safespace-primary font-medium">Great job! All your active tasks are completed.</p>
-          <Link
-            to="/todo"
-            className="mt-3 inline-flex items-center gap-1 text-sm text-safespace-primary hover:underline"
-          >
-            Select new tasks
-            <ChevronRight className="w-4 h-4" />
-          </Link>
+          <div className="mt-3 flex justify-center gap-3">
+            <button
+              onClick={handleDeleteCompleted}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-sm bg-red-500 text-white hover:bg-red-600 transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Delete Completed</span>
+            </button>
+            <Link
+              to="/todo"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-sm bg-safespace-primary text-white hover:bg-safespace-primary/90 transition-colors"
+            >
+              Select new tasks
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       )}
     </div>

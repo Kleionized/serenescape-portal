@@ -1,9 +1,18 @@
-
 import React, { useState, useEffect } from 'react';
 import PageContainer from '../components/layout/PageContainer';
-import { getTodos, saveTodos, getTodoSections, saveTodoSections, addTodo, addSubtask, saveActiveTodos } from '../lib/storage';
+import { 
+  getTodos, 
+  saveTodos, 
+  getTodoSections, 
+  saveTodoSections, 
+  addTodo, 
+  addSubtask, 
+  saveActiveTodos,
+  deleteCompletedTodos 
+} from '../lib/storage';
 import { TodoItem } from '../lib/types';
-import { Plus, MoreHorizontal, X, Check, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
+import { Plus, MoreHorizontal, X, Check, ChevronDown, ChevronUp, AlertTriangle, Trash2 } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -21,6 +30,8 @@ const Todo = () => {
   
   const [activeTodoId, setActiveTodoId] = useState<string | null>(null);
   const [newSubtaskText, setNewSubtaskText] = useState('');
+  
+  const { toast } = useToast();
   
   useEffect(() => {
     loadTodos();
@@ -41,16 +52,34 @@ const Todo = () => {
     setExpandedSections(loadedSections);
   };
   
+  const handleDeleteCompletedTodos = () => {
+    const completedCount = todos.filter(todo => todo.completed).length;
+    if (completedCount === 0) {
+      toast({
+        title: "No completed tasks",
+        description: "There are no completed tasks to delete.",
+        variant: "default",
+      });
+      return;
+    }
+    
+    deleteCompletedTodos();
+    loadTodos();
+    
+    toast({
+      title: "Tasks deleted",
+      description: `${completedCount} completed ${completedCount === 1 ? 'task' : 'tasks'} deleted successfully.`,
+      variant: "default",
+    });
+  };
+  
   const handleAddTodo = () => {
     if (!newTodoText.trim() || !activeSection) return;
     
-    // Add new todo
     addTodo(newTodoText, newTodoImportance, activeSection);
     
-    // Refresh todos
     loadTodos();
     
-    // Reset form
     setNewTodoText('');
     setActiveSection(null);
   };
@@ -58,27 +87,21 @@ const Todo = () => {
   const handleAddSubtask = () => {
     if (!newSubtaskText.trim() || !activeTodoId) return;
     
-    // Add subtask
     addSubtask(activeTodoId, newSubtaskText);
     
-    // Refresh todos
     loadTodos();
     
-    // Reset form
     setNewSubtaskText('');
     setActiveTodoId(null);
   };
   
   const handleToggleTodo = (todo: TodoItem) => {
-    // Update the todo in the local state
     const updatedTodos = todos.map(t => 
       t.id === todo.id ? { ...t, completed: !t.completed } : t
     );
     
-    // Save to localStorage
     saveTodos(updatedTodos);
     
-    // Update state
     setTodos(updatedTodos);
   };
   
@@ -93,10 +116,8 @@ const Todo = () => {
       return todo;
     });
     
-    // Save to localStorage
     saveTodos(updatedTodos);
     
-    // Update state
     setTodos(updatedTodos);
   };
   
@@ -105,10 +126,8 @@ const Todo = () => {
     
     const updatedSections = [...sections, newSectionName];
     
-    // Save to localStorage
     saveTodoSections(updatedSections);
     
-    // Update state
     setSections(updatedSections);
     setExpandedSections([...expandedSections, newSectionName]);
     setNewSectionName('');
@@ -116,22 +135,17 @@ const Todo = () => {
   };
   
   const handleDeleteSection = (section: string) => {
-    // Filter out the section
     const updatedSections = sections.filter(s => s !== section);
     
-    // Filter out the todos in that section
     const updatedTodos = todos.filter(todo => todo.section !== section);
     
-    // Save to localStorage
     saveTodoSections(updatedSections);
     saveTodos(updatedTodos);
     
-    // Update state
     setSections(updatedSections);
     setTodos(updatedTodos);
     setShowDeleteSection(null);
     
-    // Remove from expanded sections
     setExpandedSections(expandedSections.filter(s => s !== section));
   };
   
@@ -155,24 +169,19 @@ const Todo = () => {
     const newActiveTodos = [...activeTodoIds];
     
     if (newActiveTodos.includes(todoId)) {
-      // Remove from active if already there
       const index = newActiveTodos.indexOf(todoId);
       newActiveTodos.splice(index, 1);
     } else {
-      // Add to active if not there and there are less than 3 active todos
       if (newActiveTodos.length < 3) {
         newActiveTodos.push(todoId);
       } else {
-        // Replace the first active todo
         newActiveTodos.shift();
         newActiveTodos.push(todoId);
       }
     }
     
-    // Save to localStorage
     saveActiveTodos(newActiveTodos);
     
-    // Update state
     setActiveTodoIds(newActiveTodos);
   };
   
@@ -197,13 +206,22 @@ const Todo = () => {
       <div className="glass-card rounded-xl p-6 mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="heading-sm">Task Sections</h2>
-          <button
-            onClick={() => setShowAddSection(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-safespace-primary text-white hover:bg-safespace-primary/90 transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Section</span>
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleDeleteCompletedTodos}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-red-500 text-white hover:bg-red-600 transition-colors"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Delete Completed</span>
+            </button>
+            <button
+              onClick={() => setShowAddSection(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-safespace-primary text-white hover:bg-safespace-primary/90 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Section</span>
+            </button>
+          </div>
         </div>
         
         {showAddSection && (

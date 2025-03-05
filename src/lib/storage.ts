@@ -77,6 +77,20 @@ export const saveTodos = (todos: TodoItem[]): void => {
   localStorage.setItem(STORAGE_KEYS.todos, JSON.stringify(todos));
 };
 
+// Delete completed todos
+export const deleteCompletedTodos = (): void => {
+  const todos = getTodos();
+  const incompleteTodos = todos.filter(todo => !todo.completed);
+  saveTodos(incompleteTodos);
+  
+  // Also update active todos to remove any completed ones
+  const activeTodos = getActiveTodos();
+  const updatedActiveTodos = activeTodos.filter(id => 
+    incompleteTodos.some(todo => todo.id === id)
+  );
+  saveActiveTodos(updatedActiveTodos);
+};
+
 // Get active todos from localStorage
 export const getActiveTodos = (): string[] => {
   const activeTodos = localStorage.getItem(STORAGE_KEYS.activeTodos);
