@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Activity, MessageSquare, Search, Archive, ListTodo, Info, Menu, X } from 'lucide-react';
+import { Home, Activity, MessageSquare, Search, Archive, ListTodo, Info, Menu, X, Heart } from 'lucide-react';
 
 const NavBar = () => {
   const location = useLocation();
@@ -32,7 +32,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-safespace-primary flex items-center justify-center">
-                <span className="text-white font-semibold">YS</span>
+                <Heart className="h-5 w-5 text-white" />
               </div>
               <span className="text-lg font-medium text-safespace-foreground">Your Safe Space</span>
             </Link>
