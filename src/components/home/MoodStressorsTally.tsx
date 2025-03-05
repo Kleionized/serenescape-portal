@@ -2,7 +2,7 @@
 import React from 'react';
 import { MoodStressor } from '../../lib/types';
 import { getStressors, resolveStressor } from '../../lib/storage';
-import { Check, CircleX } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const MoodStressorsTally = () => {
@@ -11,6 +11,14 @@ const MoodStressorsTally = () => {
   
   React.useEffect(() => {
     loadStressors();
+    
+    // Add event listener for mood check-ins
+    window.addEventListener('mood-checkin-recorded', loadStressors);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('mood-checkin-recorded', loadStressors);
+    };
   }, []);
   
   const loadStressors = () => {

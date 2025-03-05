@@ -72,6 +72,10 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
         title: "Mood Check-In Recorded",
         description: "Your mood has been recorded successfully.",
       });
+      
+      // Dispatch an event so other components can react to this change
+      window.dispatchEvent(new Event('mood-checkin-recorded'));
+      
       onClose();
     }
   };
