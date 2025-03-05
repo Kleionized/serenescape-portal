@@ -18,6 +18,16 @@ const About = () => {
         </div>
         
         <div className="glass-card p-6 rounded-xl">
+          <h2 className="heading-sm mb-4 text-safespace-primary">Mood Check-Ins</h2>
+          <p className="text-gray-700">
+            Every two hours, an overlay will appear prompting you to record your current mood. If you indicate any level of stress
+            (Slightly, Moderately, or Very Stressed), you'll be invited to enter one or more stressors—detailing what's troubling you.
+            These responses are stored and used to generate your Mood Stressors Tally on the home page, helping you track patterns
+            in your stress triggers over time.
+          </p>
+        </div>
+        
+        <div className="glass-card p-6 rounded-xl">
           <h2 className="heading-sm mb-4 text-safespace-primary">Distraction Page</h2>
           <p className="text-gray-700">
             When feeling overwhelmed, visit the Distraction page for a wheel of activities designed to help break the cycle.

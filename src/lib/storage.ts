@@ -1,11 +1,12 @@
-
 import { 
   MoodStressor, 
   TodoItem, 
   ThoughtEntry, 
   ReflectionEntry, 
   SavedEntry,
-  DistractionActivity
+  DistractionActivity,
+  MoodCheckIn,
+  MoodLevel
 } from './types';
 
 // Default distractions
@@ -35,7 +36,9 @@ const STORAGE_KEYS = {
   activeTodos: 'safespace_active_todos',
   entries: 'safespace_entries',
   distractions: 'safespace_distractions',
-  todoSections: 'safespace_todo_sections'
+  todoSections: 'safespace_todo_sections',
+  moodCheckIns: 'safespace_mood_checkins',
+  lastMoodCheckIn: 'safespace_last_mood_checkin'
 };
 
 // Get stressors from localStorage
@@ -201,4 +204,64 @@ export const deleteEntry = (id: string): void => {
 // Delete all entries
 export const deleteAllEntries = (): void => {
   saveEntries([]);
+};
+
+// Get mood check-ins from localStorage
+export const getMoodCheckIns = (): MoodCheckIn[] => {
+  const checkIns = localStorage.getItem(STORAGE_KEYS.moodCheckIns);
+  return checkIns ? JSON.parse(checkIns) : [];
+};
+
+// Save mood check-ins to localStorage
+export const saveMoodCheckIns = (checkIns: MoodCheckIn[]): void => {
+  localStorage.setItem(STORAGE_KEYS.moodCheckIns, JSON.stringify(checkIns));
+};
+
+// Add a new mood check-in
+export const addMoodCheckIn = (mood: MoodLevel, stressors: string[]): void => {
+  const checkIns = getMoodCheckIns();
+  const newCheckIn: MoodCheckIn = {
+    id: generateId(),
+    mood,
+    stressors,
+    timestamp: new Date().toISOString()
+  };
+  
+  checkIns.push(newCheckIn);
+  saveMoodCheckIns(checkIns);
+  
+  // Add each stressor to the stressors tally
+  if (stressors.length > 0) {
+    stressors.forEach(stressor => {
+      addStressor(stressor);
+    });
+  }
+  
+  // Update the last check-in time
+  setLastMoodCheckInTime();
+};
+
+// Get the last mood check-in timestamp
+export const getLastMoodCheckInTime = (): string | null => {
+  return localStorage.getItem(STORAGE_KEYS.lastMoodCheckIn);
+};
+
+// Set the last mood check-in timestamp to now
+export const setLastMoodCheckInTime = (): void => {
+  localStorage.setItem(STORAGE_KEYS.lastMoodCheckIn, new Date().toISOString());
+};
+
+// Check if it's time for a mood check-in (2 hours since last check-in)
+export const isTimeForMoodCheckIn = (): boolean => {
+  const lastCheckIn = getLastMoodCheckInTime();
+  
+  if (!lastCheckIn) {
+    return true;
+  }
+  
+  const lastCheckInTime = new Date(lastCheckIn).getTime();
+  const currentTime = new Date().getTime();
+  const twoHoursInMs = 2 * 60 * 60 * 1000;
+  
+  return currentTime - lastCheckInTime >= twoHoursInMs;
 };

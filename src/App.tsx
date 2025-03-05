@@ -13,8 +13,31 @@ import SavedEntries from "./pages/SavedEntries";
 import Todo from "./pages/Todo";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import { useMoodCheckIn } from "./hooks/useMoodCheckIn";
+import MoodCheckInOverlay from "./components/mood/MoodCheckInOverlay";
 
 const queryClient = new QueryClient();
+
+const AppContent = () => {
+  const { showMoodCheckIn, closeMoodCheckIn } = useMoodCheckIn();
+
+  return (
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/distraction" element={<Distraction />} />
+        <Route path="/thought-dump" element={<ThoughtDump />} />
+        <Route path="/root-cause" element={<RootCause />} />
+        <Route path="/saved-entries" element={<SavedEntries />} />
+        <Route path="/todo" element={<Todo />} />
+        <Route path="/about" element={<About />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {showMoodCheckIn && <MoodCheckInOverlay onClose={closeMoodCheckIn} />}
+    </>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -22,17 +45,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/distraction" element={<Distraction />} />
-          <Route path="/thought-dump" element={<ThoughtDump />} />
-          <Route path="/root-cause" element={<RootCause />} />
-          <Route path="/saved-entries" element={<SavedEntries />} />
-          <Route path="/todo" element={<Todo />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppContent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

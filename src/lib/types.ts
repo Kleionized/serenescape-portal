@@ -40,3 +40,12 @@ export type DistractionActivity = {
   id: string;
   text: string;
 };
+
+export type MoodLevel = 'calm' | 'slightly-stressed' | 'moderately-stressed' | 'very-stressed';
+
+export type MoodCheckIn = {
+  id: string;
+  mood: MoodLevel;
+  stressors: string[];
+  timestamp: string;
+};
