@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Safe Space custom colors
+				safespace: {
+					background: 'hsl(var(--safespace-background))',
+					foreground: 'hsl(var(--safespace-foreground))',
+					card: 'hsl(var(--safespace-card))',
+					'card-hover': 'hsl(var(--safespace-card-hover))',
+					primary: 'hsl(var(--safespace-primary))',
+					secondary: 'hsl(var(--safespace-secondary))',
+					accent: 'hsl(var(--safespace-accent))',
+					muted: 'hsl(var(--safespace-muted))',
+					'stress-low': 'hsl(var(--safespace-stress-low))',
+					'stress-medium': 'hsl(var(--safespace-stress-medium))',
+					'stress-high': 'hsl(var(--safespace-stress-high))'
 				}
 			},
 			borderRadius: {
@@ -84,11 +99,52 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'fade-out': {
+					'0%': { opacity: '1' },
+					'100%': { opacity: '0' }
+				},
+				'slide-in': {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'slide-out': {
+					'0%': { transform: 'translateY(0)', opacity: '1' },
+					'100%': { transform: 'translateY(20px)', opacity: '0' }
+				},
+				'scale-in': {
+					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
+				},
+				'pulse-gentle': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' }
+				},
+				'spin-slow': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out',
+				'fade-out': 'fade-out 0.4s ease-out',
+				'slide-in': 'slide-in 0.5s ease-out',
+				'slide-out': 'slide-out 0.4s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out',
+				'pulse-gentle': 'pulse-gentle 3s infinite ease-in-out',
+				'spin-slow': 'spin-slow 6s linear infinite'
+			},
+			transitionTimingFunction: {
+				'out-gentle': 'cubic-bezier(0.33, 1, 0.68, 1)'
+			},
+			backdropBlur: {
+				xs: '2px'
 			}
 		}
 	},
