@@ -14,7 +14,7 @@ const DEFAULT_DISTRACTIONS: DistractionActivity[] = [
   { id: '2', text: 'Do a 5-minute breathing exercise' },
   { id: '3', text: 'Listen to your favorite song' },
   { id: '4', text: 'Drink a glass of water' },
-  { id: '5', text: 'Write down 3 things you're grateful for' },
+  { id: '5', text: "Write down 3 things you're grateful for" },
   { id: '6', text: 'Stretch for 5 minutes' },
   { id: '7', text: 'Call or text a friend' },
   { id: '8', text: 'Make a cup of tea or coffee' }
