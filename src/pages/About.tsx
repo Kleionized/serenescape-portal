@@ -76,6 +76,15 @@ const About = () => {
             persist across sessions but remain private to your device. No data is sent to any server.
           </p>
         </div>
+        
+        <div className="mt-12 text-center text-gray-500 text-sm">
+          <p>© 2025 Kleiochild. All rights reserved.</p>
+          <p className="mt-1">
+            <a href="mailto:kleiochild@gmail.com" className="text-safespace-primary hover:underline transition-colors">
+              kleiochild@gmail.com
+            </a>
+          </p>
+        </div>
       </div>
     </PageContainer>
   );
