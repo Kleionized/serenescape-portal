@@ -15,6 +15,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import { useMoodCheckIn } from "./hooks/useMoodCheckIn";
 import MoodCheckInOverlay from "./components/mood/MoodCheckInOverlay";
+import { ThemeProvider } from "./components/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
 
@@ -41,13 +42,15 @@ const AppContent = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider defaultTheme="light">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
