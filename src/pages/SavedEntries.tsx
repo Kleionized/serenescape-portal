@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import PageContainer from '../components/layout/PageContainer';
 import { getEntries, deleteEntry, deleteAllEntries } from '../lib/storage';
@@ -17,7 +16,6 @@ const SavedEntries = () => {
   
   const loadEntries = () => {
     const loadedEntries = getEntries();
-    // Sort by date (newest first)
     loadedEntries.sort((a, b) => 
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
@@ -146,8 +144,8 @@ const SavedEntries = () => {
       
       {entries.length === 0 ? (
         <div className="text-center py-12 glass-card rounded-xl">
-          <p className="text-gray-500 mb-2">No saved entries yet.</p>
-          <p className="text-sm text-gray-400">
+          <p className="text-safespace-foreground dark:text-white mb-2">No saved entries yet.</p>
+          <p className="text-sm text-safespace-foreground dark:text-white">
             Your thought dumps and reflections will appear here.
           </p>
         </div>
@@ -170,34 +168,34 @@ const SavedEntries = () => {
                   ) : (
                     <Search className="w-4 h-4 text-safespace-primary" />
                   )}
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-safespace-foreground dark:text-white">
                     {entry.type === 'thought' ? 'Thought' : 'Reflection'}
                   </span>
                 </div>
                 
-                <div className="flex items-center gap-2 text-gray-500 text-sm">
+                <div className="flex items-center gap-2 text-gray-500 dark:text-white/70 text-sm">
                   <Clock className="w-3 h-3" />
                   <span>{formatDate(entry.createdAt)}</span>
                 </div>
               </div>
               
               {entry.type === 'thought' ? (
-                <div className="prose prose-sm max-w-none">
-                  <p>{entry.text}</p>
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <p className="text-safespace-foreground dark:text-white">{entry.text}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Stressor:</h4>
-                    <p className="text-gray-800">{entry.stressor}</p>
+                    <h4 className="text-sm font-medium text-gray-600 dark:text-white/80 mb-1">Stressor:</h4>
+                    <p className="text-gray-800 dark:text-white">{entry.stressor}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Worst Case Scenario:</h4>
-                    <p className="text-gray-800">{entry.worstCase}</p>
+                    <h4 className="text-sm font-medium text-gray-600 dark:text-white/80 mb-1">Worst Case Scenario:</h4>
+                    <p className="text-gray-800 dark:text-white">{entry.worstCase}</p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Resolution:</h4>
-                    <p className="text-gray-800">{entry.resolution}</p>
+                    <h4 className="text-sm font-medium text-gray-600 dark:text-white/80 mb-1">Resolution:</h4>
+                    <p className="text-gray-800 dark:text-white">{entry.resolution}</p>
                   </div>
                 </div>
               )}
