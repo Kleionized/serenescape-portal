@@ -6,23 +6,20 @@ import { useTheme } from "./ThemeProvider";
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
   return (
     <Button 
       variant="ghost" 
       size="icon" 
-      onClick={toggleTheme}
-      className="focus-outline rounded-full"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="focus-outline rounded-full w-9 h-9"
       aria-label="Toggle theme"
     >
-      {theme === "light" ? (
-        <Moon className="h-5 w-5" />
+      {theme === "dark" ? (
+        <Sun className="h-5 w-5 text-yellow-400" />
       ) : (
-        <Sun className="h-5 w-5" />
+        <Moon className="h-5 w-5 text-slate-700" />
       )}
+      <span className="sr-only">Toggle theme</span>
     </Button>
   );
 }
