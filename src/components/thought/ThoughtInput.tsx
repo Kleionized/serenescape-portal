@@ -37,7 +37,7 @@ const ThoughtInput = () => {
             value={thought}
             onChange={(e) => setThought(e.target.value)}
             placeholder="What's on your mind? Type freely..."
-            className="w-full min-h-[280px] p-6 rounded-2xl bg-white/60 backdrop-blur-sm border-0 shadow-md focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:bg-gray-800/30 dark:text-white dark:placeholder-gray-400 dark:focus:ring-safespace-primary/60"
+            className="w-full min-h-[280px] p-6 bg-transparent backdrop-blur-sm border-0 border-b border-gray-200 shadow-sm focus:outline-none focus:border-safespace-primary/40 resize-none dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-safespace-primary/60"
           />
         </div>
         
@@ -45,13 +45,9 @@ const ThoughtInput = () => {
           <Button
             type="submit"
             disabled={!thought.trim()}
-            className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
-              !thought.trim()
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
-                : 'bg-safespace-primary text-white shadow-md hover:shadow-lg hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'
-            }`}
+            variant={!thought.trim() ? "outline" : "default"}
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 mr-2" />
             <span>Save Thought</span>
           </Button>
         </div>

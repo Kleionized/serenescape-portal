@@ -15,7 +15,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children, title, subtitle
           <h1 className="heading-lg text-safespace-foreground mb-3">{title}</h1>
           {subtitle && <p className="text-gray-500 text-lg">{subtitle}</p>}
         </header>
-        <div>{children}</div>
+        <div className="animate-slide-in">{children}</div>
       </div>
     </div>
   );
