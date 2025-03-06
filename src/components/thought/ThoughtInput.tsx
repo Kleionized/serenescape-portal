@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { addThoughtEntry } from '../../lib/storage';
-import { MessageSquare, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
 
@@ -24,20 +24,14 @@ const ThoughtInput = () => {
   };
   
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="text-center mb-8">
-        <MessageSquare className="w-10 h-10 text-safespace-primary mx-auto mb-4 opacity-80" />
-        <h2 className="heading-md mb-2">Express Your Thoughts</h2>
-        <p className="text-gray-500">Type freely without judgment or analysis</p>
-      </div>
-      
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="max-w-3xl mx-auto">      
+      <form onSubmit={handleSubmit} className="space-y-8">
         <div>
           <textarea
             value={thought}
             onChange={(e) => setThought(e.target.value)}
             placeholder="What's on your mind? Type freely..."
-            className="w-full min-h-[280px] p-6 bg-transparent backdrop-blur-sm border-0 border-b border-gray-200 shadow-sm focus:outline-none focus:border-safespace-primary/40 resize-none dark:border-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-safespace-primary/60"
+            className="w-full min-h-[350px] p-6 bg-transparent text-lg focus:outline-none resize-none dark:text-white dark:placeholder-gray-400"
           />
         </div>
         
@@ -46,6 +40,7 @@ const ThoughtInput = () => {
             type="submit"
             disabled={!thought.trim()}
             variant={!thought.trim() ? "outline" : "default"}
+            size="lg"
           >
             <Send className="w-4 h-4 mr-2" />
             <span>Save Thought</span>
