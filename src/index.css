@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -107,11 +108,11 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md;
+    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md dark:bg-safespace-card dark:border-gray-800/50 dark:shadow-lg;
   }
   
   .glass-card-hover {
-    @apply transition-all duration-300 ease-out-gentle hover:shadow-lg hover:bg-white/95;
+    @apply transition-all duration-300 ease-out-gentle hover:shadow-lg hover:bg-white/95 dark:hover:bg-safespace-card-hover;
   }
   
   .page-container {
