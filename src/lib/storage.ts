@@ -287,7 +287,7 @@ export const setLastMoodCheckInTime = (): void => {
   localStorage.setItem(STORAGE_KEYS.lastMoodCheckIn, new Date().toISOString());
 };
 
-// Check if it's time for a mood check-in (2 hours since last check-in)
+// Check if it's time for a mood check-in (1 hour since last check-in)
 export const isTimeForMoodCheckIn = (): boolean => {
   const lastCheckIn = getLastMoodCheckInTime();
   
@@ -297,7 +297,7 @@ export const isTimeForMoodCheckIn = (): boolean => {
   
   const lastCheckInTime = new Date(lastCheckIn).getTime();
   const currentTime = new Date().getTime();
-  const twoHoursInMs = 2 * 60 * 60 * 1000;
+  const oneHourInMs = 60 * 60 * 1000;
   
-  return currentTime - lastCheckInTime >= twoHoursInMs;
+  return currentTime - lastCheckInTime >= oneHourInMs;
 };
