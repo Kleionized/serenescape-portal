@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import PageContainer from '../components/layout/PageContainer';
 import { getStressors, addStressor, addReflectionEntry } from '../lib/storage';
@@ -20,7 +19,6 @@ const RootCause = () => {
   
   const loadStressors = () => {
     const loadedStressors = getStressors();
-    // Only show unresolved stressors for selection
     const unresolvedStressors = loadedStressors.filter(s => !s.resolved);
     setStressors(unresolvedStressors);
   };
@@ -30,13 +28,10 @@ const RootCause = () => {
     
     addStressor(newStressor);
     
-    // Refresh stressors
     loadStressors();
     
-    // Select the new stressor
     setSelectedStressor(newStressor);
     
-    // Clear the input
     setNewStressor('');
   };
   
@@ -45,18 +40,14 @@ const RootCause = () => {
     
     if (!selectedStressor || !worstCase.trim() || !resolution.trim()) return;
     
-    // Add reflection entry
     addReflectionEntry(selectedStressor, worstCase, resolution);
     
-    // Show success message
     setIsSubmitted(true);
     
-    // Reset form
     setWorstCase('');
     setResolution('');
     setSelectedStressor('');
     
-    // Reset success message after 5 seconds
     setTimeout(() => {
       setIsSubmitted(false);
     }, 5000);
@@ -79,7 +70,7 @@ const RootCause = () => {
             <select
               value={selectedStressor}
               onChange={(e) => setSelectedStressor(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-black/80 dark:border-gray-700 dark:text-white"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-gray-800/80 dark:border-gray-700 dark:text-white"
             >
               <option value="">Select a stressor...</option>
               {stressors.map((stressor) => (
@@ -103,7 +94,7 @@ const RootCause = () => {
                 value={newStressor}
                 onChange={(e) => setNewStressor(e.target.value)}
                 placeholder="Enter a new stressor..."
-                className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-black/80 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+                className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-gray-800/80 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
               />
               <button
                 onClick={handleAddStressor}
@@ -111,7 +102,7 @@ const RootCause = () => {
                 className={`inline-flex items-center gap-1 px-4 py-2 rounded-md font-medium transition-colors ${
                   !newStressor.trim()
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
-                    : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-black/90 dark:hover:bg-black/70 dark:border dark:border-gray-700'
+                    : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'
                 }`}
               >
                 <PlusCircle className="w-4 h-4" />
@@ -152,14 +143,20 @@ const RootCause = () => {
                 />
               </div>
               
-              <div className="flex justify-end">
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={() => setSelectedStressor('')}
+                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-safespace-foreground dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                >
+                  Back
+                </button>
                 <button
                   type="submit"
                   disabled={!worstCase.trim() || !resolution.trim()}
                   className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-medium transition-colors ${
                     !worstCase.trim() || !resolution.trim()
                       ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
-                      : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-black/90 dark:hover:bg-black/70 dark:border dark:border-gray-700'
+                      : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'
                   }`}
                 >
                   <span>Save Reflection</span>
