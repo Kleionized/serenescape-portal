@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 
 const Account = () => {
   const { user } = useUser();
-  const { signOut } = useClerk();
+  const { signOut, openUserProfile } = useClerk();
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState('');
@@ -65,14 +65,14 @@ const Account = () => {
           <div className="space-y-4">
             <div>
               <Button
-                onClick={() => user.createPasswordResetFlow()}
+                onClick={() => openUserProfile()}
                 variant="outline"
                 className="w-full justify-start"
               >
                 Change your password
               </Button>
               <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                You'll receive an email with a link to reset your password
+                You'll be redirected to manage your account settings
               </p>
             </div>
           </div>
