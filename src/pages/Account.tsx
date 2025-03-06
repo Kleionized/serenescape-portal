@@ -1,36 +1,36 @@
 
 import React, { useState } from 'react';
-import { useUser, useClerk } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import PageContainer from '../components/layout/PageContainer';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, LogOut, User, Key, Trash2 } from 'lucide-react';
+import { AlertTriangle, LogOut, User, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Account = () => {
-  const { user } = useUser();
-  const { signOut, openUserProfile } = useClerk();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState('');
   
   if (!user) return null;
 
-  const handleSignOut = async () => {
-    await signOut();
+  const handleSignOut = () => {
+    logout();
     navigate('/');
-    toast.success('You have been signed out');
   };
 
   const handleDeleteAccount = async () => {
-    if (confirmDelete !== user.primaryEmailAddress?.emailAddress) {
+    if (confirmDelete !== user.email) {
       toast.error('Email addresses do not match');
       return;
     }
 
     try {
-      await user.delete();
-      toast.success('Your account has been deleted');
+      // For now we'll just log the user out since we don't have direct access
+      // to delete the account in Authentik through the client
+      toast.info('Account deletion should be managed through your Authentik instance.');
+      logout();
       navigate('/');
     } catch (error) {
       toast.error('Failed to delete account. Please try again later.');
@@ -51,29 +51,7 @@ const Account = () => {
             </div>
             <div>
               <h2 className="heading-sm">{user.fullName || 'User'}</h2>
-              <p className="text-gray-600 dark:text-gray-300">{user.primaryEmailAddress?.emailAddress}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="glass-card rounded-xl p-6">
-          <h2 className="heading-sm mb-4 flex items-center gap-2">
-            <Key className="h-5 w-5" />
-            <span>Password & Authentication</span>
-          </h2>
-          
-          <div className="space-y-4">
-            <div>
-              <Button
-                onClick={() => openUserProfile()}
-                variant="outline"
-                className="w-full justify-start"
-              >
-                Change your password
-              </Button>
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                You'll be redirected to manage your account settings
-              </p>
+              <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
             </div>
           </div>
         </div>
@@ -105,7 +83,7 @@ const Account = () => {
             {isDeleting ? (
               <div className="space-y-4">
                 <p className="font-medium">
-                  To confirm, please enter your email address: <span className="text-destructive">{user.primaryEmailAddress?.emailAddress}</span>
+                  To confirm, please enter your email address: <span className="text-destructive">{user.email}</span>
                 </p>
                 <input
                   type="email"
@@ -118,7 +96,7 @@ const Account = () => {
                   <Button 
                     variant="destructive" 
                     onClick={handleDeleteAccount}
-                    disabled={confirmDelete !== user.primaryEmailAddress?.emailAddress}
+                    disabled={confirmDelete !== user.email}
                   >
                     Permanently Delete Account
                   </Button>

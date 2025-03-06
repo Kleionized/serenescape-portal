@@ -1,11 +1,31 @@
 
 import React from 'react';
-import { SignUp as ClerkSignUp } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import PageContainer from '../components/layout/PageContainer';
+import { Button } from '@/components/ui/button';
+import { UserPlus } from 'lucide-react';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { login, isAuthenticated, loading } = useAuth();
+
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (isAuthenticated && !loading) {
+      navigate('/saved-entries');
+    }
+  }, [isAuthenticated, navigate, loading]);
+
+  if (loading) {
+    return (
+      <PageContainer title="Create an Account" subtitle="Join Your Safe Space to save your progress">
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-safespace-primary"></div>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer 
@@ -14,26 +34,22 @@ const SignUp = () => {
     >
       <div className="flex justify-center">
         <div className="glass-card rounded-xl p-8 w-full max-w-md">
-          <ClerkSignUp 
-            routing="path" 
-            path="/sign-up" 
-            redirectUrl="/saved-entries"
-            appearance={{
-              elements: {
-                rootBox: "w-full",
-                card: "shadow-none p-0",
-                formButtonPrimary: "bg-safespace-primary hover:bg-safespace-primary/90 text-white",
-                formFieldInput: "bg-background border border-gray-300 dark:border-gray-700 rounded-md p-2 w-full dark:bg-gray-800 dark:text-white",
-                formFieldLabel: "text-safespace-foreground dark:text-white",
-                footerActionText: "text-safespace-foreground dark:text-gray-300",
-                footerActionLink: "text-safespace-primary",
-                socialButtonsBlockButton: "border border-gray-300 dark:border-gray-700 bg-background hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white",
-                socialButtonsProviderIcon: "dark:text-white",
-                headerTitle: "text-xl font-semibold text-safespace-foreground dark:text-white",
-                headerSubtitle: "text-gray-500 dark:text-gray-400",
-              }
-            }}
-          />
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-center">Sign up with Authentik</h2>
+            <p className="text-gray-500 dark:text-gray-400 text-center">
+              Use your Authentik account to sign up for Your Safe Space
+            </p>
+            <Button 
+              onClick={login}
+              className="w-full flex items-center justify-center gap-2"
+            >
+              <UserPlus className="h-5 w-5" />
+              Sign up with Authentik
+            </Button>
+            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+              You'll be redirected to Authentik to create an account if you don't have one
+            </p>
+          </div>
         </div>
       </div>
 

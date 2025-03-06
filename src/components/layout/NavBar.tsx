@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Activity, MessageSquare, Search, Archive, ListTodo, Info, Menu, X, Heart, UserCircle, LogIn } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { SignedIn, SignedOut, useUser } from '@clerk/clerk-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
 const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { user } = useUser();
+  const { isAuthenticated, user, loading } = useAuth();
   
   const navItems = [
     { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
@@ -29,6 +29,9 @@ const NavBar = () => {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
+  
+  // Don't show nav while authentication is loading
+  if (loading) return null;
   
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-safespace-background backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm">
@@ -49,7 +52,7 @@ const NavBar = () => {
               {navItems.map((item) => (
                 <React.Fragment key={item.path}>
                   {item.auth ? (
-                    <SignedIn>
+                    isAuthenticated ? (
                       <Link
                         to={item.path}
                         className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -63,7 +66,7 @@ const NavBar = () => {
                           <span>{item.label}</span>
                         </div>
                       </Link>
-                    </SignedIn>
+                    ) : null
                   ) : (
                     <Link
                       to={item.path}
@@ -86,7 +89,7 @@ const NavBar = () => {
             <div className="flex items-center gap-2">
               <ThemeToggle />
               
-              <SignedIn>
+              {isAuthenticated ? (
                 <Link
                   to="/account"
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -97,12 +100,10 @@ const NavBar = () => {
                 >
                   <div className="flex items-center gap-2">
                     <UserCircle className="w-5 h-5" />
-                    <span>Account</span>
+                    <span>{user?.fullName || 'Account'}</span>
                   </div>
                 </Link>
-              </SignedIn>
-              
-              <SignedOut>
+              ) : (
                 <Button 
                   variant="outline"
                   size="sm"
@@ -112,7 +113,7 @@ const NavBar = () => {
                   <LogIn className="w-4 h-4 mr-2" />
                   Sign In
                 </Button>
-              </SignedOut>
+              )}
             </div>
           </div>
           
@@ -120,23 +121,21 @@ const NavBar = () => {
           <div className="md:hidden flex items-center">
             <ThemeToggle />
             
-            <SignedIn>
+            {isAuthenticated ? (
               <Link
                 to="/account"
                 className="ml-2 p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <UserCircle className="w-5 h-5" />
               </Link>
-            </SignedIn>
-            
-            <SignedOut>
+            ) : (
               <Link
                 to="/sign-in"
                 className="ml-2 p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
                 <LogIn className="w-5 h-5" />
               </Link>
-            </SignedOut>
+            )}
             
             <button
               type="button"
@@ -156,7 +155,7 @@ const NavBar = () => {
             {navItems.map((item) => (
               <React.Fragment key={item.path}>
                 {item.auth ? (
-                  <SignedIn>
+                  isAuthenticated ? (
                     <Link
                       to={item.path}
                       className={`block px-3 py-2 rounded-md text-base font-medium ${
@@ -171,7 +170,7 @@ const NavBar = () => {
                         <span>{item.label}</span>
                       </div>
                     </Link>
-                  </SignedIn>
+                  ) : null
                 ) : (
                   <Link
                     to={item.path}
@@ -191,7 +190,7 @@ const NavBar = () => {
               </React.Fragment>
             ))}
             
-            <SignedOut>
+            {!isAuthenticated && (
               <Link
                 to="/sign-in"
                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -202,7 +201,7 @@ const NavBar = () => {
                   <span>Sign In</span>
                 </div>
               </Link>
-            </SignedOut>
+            )}
           </div>
         </div>
       )}
