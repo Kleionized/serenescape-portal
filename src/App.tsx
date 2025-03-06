@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,7 +10,6 @@ import ThoughtDump from "./pages/ThoughtDump";
 import RootCause from "./pages/RootCause";
 import SavedEntries from "./pages/SavedEntries";
 import Todo from "./pages/Todo";
-import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import { useMoodCheckIn } from "./hooks/useMoodCheckIn";
 import MoodCheckInOverlay from "./components/mood/MoodCheckInOverlay";
@@ -32,7 +30,6 @@ const AppContent = () => {
         <Route path="/root-cause" element={<RootCause />} />
         <Route path="/saved-entries" element={<SavedEntries />} />
         <Route path="/todo" element={<Todo />} />
-        <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {showMoodCheckIn && <MoodCheckInOverlay onClose={closeMoodCheckIn} />}

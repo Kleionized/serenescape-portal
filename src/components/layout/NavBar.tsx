@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Activity, MessageSquare, Search, Archive, ListTodo, Info, Menu, X, Heart } from 'lucide-react';
+import { Home, Activity, MessageSquare, Search, Archive, ListTodo, Menu, X, Heart } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const NavBar = () => {
@@ -14,8 +13,7 @@ const NavBar = () => {
     { path: '/thought-dump', label: 'Thought Dump', icon: <MessageSquare className="w-5 h-5" /> },
     { path: '/root-cause', label: 'Root Cause', icon: <Search className="w-5 h-5" /> },
     { path: '/saved-entries', label: 'Saved Entries', icon: <Archive className="w-5 h-5" /> },
-    { path: '/todo', label: 'Todo', icon: <ListTodo className="w-5 h-5" /> },
-    { path: '/about', label: 'About', icon: <Info className="w-5 h-5" /> }
+    { path: '/todo', label: 'Todo', icon: <ListTodo className="w-5 h-5" /> }
   ];
   
   const toggleMobileMenu = () => {
