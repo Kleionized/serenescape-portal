@@ -75,11 +75,11 @@ const RootCause = () => {
         
         <div className="space-y-6">
           <div>
-            <label className="block text-gray-700 mb-2">Select a stressor from your tally:</label>
+            <label className="block text-safespace-foreground mb-2">Select a stressor from your tally:</label>
             <select
               value={selectedStressor}
               onChange={(e) => setSelectedStressor(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-black/80 dark:border-gray-700 dark:text-white"
             >
               <option value="">Select a stressor...</option>
               {stressors.map((stressor) => (
@@ -91,27 +91,27 @@ const RootCause = () => {
           </div>
           
           <div className="flex items-center">
-            <span className="text-gray-500">or</span>
-            <div className="flex-1 border-t border-gray-300 mx-4"></div>
+            <span className="text-safespace-foreground">or</span>
+            <div className="flex-1 border-t border-gray-300 mx-4 dark:border-gray-700"></div>
           </div>
           
           <div>
-            <label className="block text-gray-700 mb-2">Add a new stressor:</label>
+            <label className="block text-safespace-foreground mb-2">Add a new stressor:</label>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={newStressor}
                 onChange={(e) => setNewStressor(e.target.value)}
                 placeholder="Enter a new stressor..."
-                className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary"
+                className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-black/80 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
               />
               <button
                 onClick={handleAddStressor}
                 disabled={!newStressor.trim()}
                 className={`inline-flex items-center gap-1 px-4 py-2 rounded-md font-medium transition-colors ${
                   !newStressor.trim()
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-safespace-primary text-white hover:bg-safespace-primary/90'
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
+                    : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-black/90 dark:hover:bg-black/70 dark:border dark:border-gray-700'
                 }`}
               >
                 <PlusCircle className="w-4 h-4" />
@@ -129,26 +129,26 @@ const RootCause = () => {
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div>
-                <label className="block text-gray-700 mb-2 font-medium">
+                <label className="block text-safespace-foreground mb-2 font-medium">
                   What will happen in the worst case scenario?
                 </label>
                 <textarea
                   value={worstCase}
                   onChange={(e) => setWorstCase(e.target.value)}
                   placeholder="Describe the worst possible outcome..."
-                  className="w-full min-h-[120px] p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-safespace-primary resize-y"
+                  className="w-full min-h-[120px] p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-safespace-primary resize-y dark:bg-black/80 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
                 />
               </div>
               
               <div>
-                <label className="block text-gray-700 mb-2 font-medium">
+                <label className="block text-safespace-foreground mb-2 font-medium">
                   How can you resolve this stressor?
                 </label>
                 <textarea
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
                   placeholder="What steps can you take to address this stressor?"
-                  className="w-full min-h-[120px] p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-safespace-primary resize-y"
+                  className="w-full min-h-[120px] p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-safespace-primary resize-y dark:bg-black/80 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
                 />
               </div>
               
@@ -158,8 +158,8 @@ const RootCause = () => {
                   disabled={!worstCase.trim() || !resolution.trim()}
                   className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-medium transition-colors ${
                     !worstCase.trim() || !resolution.trim()
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-safespace-primary text-white hover:bg-safespace-primary/90'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
+                      : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-black/90 dark:hover:bg-black/70 dark:border dark:border-gray-700'
                   }`}
                 >
                   <span>Save Reflection</span>
@@ -171,7 +171,7 @@ const RootCause = () => {
       )}
       
       {isSubmitted && (
-        <div className="mt-6 bg-green-50 text-green-700 px-6 py-4 rounded-xl flex items-center justify-between animate-fade-in">
+        <div className="mt-6 bg-green-50 text-green-700 px-6 py-4 rounded-xl flex items-center justify-between animate-fade-in dark:bg-green-900/30 dark:text-green-300">
           <div className="flex items-center gap-3">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -181,7 +181,7 @@ const RootCause = () => {
           
           <Link
             to="/saved-entries"
-            className="text-green-700 hover:underline inline-flex items-center gap-1"
+            className="text-green-700 hover:underline inline-flex items-center gap-1 dark:text-green-300"
           >
             <span>View saved reflections</span>
             <Archive className="w-4 h-4" />
