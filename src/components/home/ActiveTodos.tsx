@@ -113,8 +113,8 @@ const ActiveTodos = () => {
       
       {activeTodos.length === 0 ? (
         <div className="text-center py-6">
-          <p className="text-gray-500">No active to-dos yet.</p>
-          <p className="text-sm text-gray-400 mt-2">
+          <p className="text-safespace-foreground dark:text-white">No active to-dos yet.</p>
+          <p className="text-sm text-safespace-foreground dark:text-white/80 mt-2">
             <Link to="/todo" className="text-safespace-primary hover:underline">
               Add some tasks
             </Link>{" "}
@@ -128,8 +128,8 @@ const ActiveTodos = () => {
               key={todo.id}
               className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
                 todo.completed 
-                  ? 'bg-gray-50 text-gray-400'
-                  : 'bg-white text-gray-800'
+                  ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-400'
+                  : 'bg-white dark:bg-gray-800/30 text-gray-800 dark:text-white'
               }`}
             >
               <button
@@ -137,7 +137,7 @@ const ActiveTodos = () => {
                 className={`flex-shrink-0 w-6 h-6 rounded-full border ${
                   todo.completed
                     ? 'bg-safespace-primary border-safespace-primary text-white'
-                    : 'border-gray-300 hover:border-safespace-primary'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-safespace-primary'
                 } flex items-center justify-center transition-colors`}
               >
                 {todo.completed && <Check className="w-4 h-4" />}
@@ -156,7 +156,7 @@ const ActiveTodos = () => {
       )}
       
       {allCompleted && (
-        <div className="mt-6 p-4 bg-safespace-primary/10 rounded-lg text-center animate-fade-in">
+        <div className="mt-6 p-4 bg-safespace-primary/10 dark:bg-safespace-primary/20 rounded-lg text-center animate-fade-in">
           <p className="text-safespace-primary font-medium">Great job! All your active tasks are completed.</p>
           <div className="mt-3 flex justify-center gap-3">
             <button
