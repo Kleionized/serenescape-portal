@@ -1,3 +1,4 @@
+
 import { 
   MoodStressor, 
   TodoItem, 
@@ -29,7 +30,33 @@ export const generateId = (): string => {
   return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
 
-// Storage keys
+// Get current user ID from Clerk (returns null if not signed in)
+const getUserId = (): string | null => {
+  try {
+    // Check if window exists (for SSR compatibility)
+    if (typeof window !== 'undefined') {
+      const authData = localStorage.getItem('clerk-db');
+      if (authData) {
+        const parsedData = JSON.parse(authData);
+        if (parsedData?.lastActiveSessionId) {
+          return parsedData.lastActiveSessionId;
+        }
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Error getting user ID:', error);
+    return null;
+  }
+};
+
+// Get storage key with user ID prefix if available
+const getStorageKey = (key: string): string => {
+  const userId = getUserId();
+  return userId ? `${userId}_${key}` : key;
+};
+
+// Storage keys base names (will be prefixed with user ID if available)
 const STORAGE_KEYS = {
   stressors: 'safespace_stressors',
   todos: 'safespace_todos',
@@ -43,13 +70,13 @@ const STORAGE_KEYS = {
 
 // Get stressors from localStorage
 export const getStressors = (): MoodStressor[] => {
-  const stressors = localStorage.getItem(STORAGE_KEYS.stressors);
+  const stressors = localStorage.getItem(getStorageKey(STORAGE_KEYS.stressors));
   return stressors ? JSON.parse(stressors) : [];
 };
 
 // Save stressors to localStorage
 export const saveStressors = (stressors: MoodStressor[]): void => {
-  localStorage.setItem(STORAGE_KEYS.stressors, JSON.stringify(stressors));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.stressors), JSON.stringify(stressors));
 };
 
 // Add or increment a stressor
@@ -90,13 +117,13 @@ export const deleteStressor = (id: string): void => {
 
 // Get todos from localStorage
 export const getTodos = (): TodoItem[] => {
-  const todos = localStorage.getItem(STORAGE_KEYS.todos);
+  const todos = localStorage.getItem(getStorageKey(STORAGE_KEYS.todos));
   return todos ? JSON.parse(todos) : [];
 };
 
 // Save todos to localStorage
 export const saveTodos = (todos: TodoItem[]): void => {
-  localStorage.setItem(STORAGE_KEYS.todos, JSON.stringify(todos));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.todos), JSON.stringify(todos));
 };
 
 // Delete completed todos
@@ -115,24 +142,24 @@ export const deleteCompletedTodos = (): void => {
 
 // Get active todos from localStorage
 export const getActiveTodos = (): string[] => {
-  const activeTodos = localStorage.getItem(STORAGE_KEYS.activeTodos);
+  const activeTodos = localStorage.getItem(getStorageKey(STORAGE_KEYS.activeTodos));
   return activeTodos ? JSON.parse(activeTodos) : [];
 };
 
 // Save active todos to localStorage
 export const saveActiveTodos = (todoIds: string[]): void => {
-  localStorage.setItem(STORAGE_KEYS.activeTodos, JSON.stringify(todoIds));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.activeTodos), JSON.stringify(todoIds));
 };
 
 // Get entries from localStorage
 export const getEntries = (): SavedEntry[] => {
-  const entries = localStorage.getItem(STORAGE_KEYS.entries);
+  const entries = localStorage.getItem(getStorageKey(STORAGE_KEYS.entries));
   return entries ? JSON.parse(entries) : [];
 };
 
 // Save entries to localStorage
 export const saveEntries = (entries: SavedEntry[]): void => {
-  localStorage.setItem(STORAGE_KEYS.entries, JSON.stringify(entries));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.entries), JSON.stringify(entries));
 };
 
 // Add a thought entry
@@ -167,24 +194,24 @@ export const addReflectionEntry = (stressor: string, worstCase: string, resoluti
 
 // Get distractions from localStorage or use defaults
 export const getDistractions = (): DistractionActivity[] => {
-  const distractions = localStorage.getItem(STORAGE_KEYS.distractions);
+  const distractions = localStorage.getItem(getStorageKey(STORAGE_KEYS.distractions));
   return distractions ? JSON.parse(distractions) : DEFAULT_DISTRACTIONS;
 };
 
 // Save distractions to localStorage
 export const saveDistractions = (distractions: DistractionActivity[]): void => {
-  localStorage.setItem(STORAGE_KEYS.distractions, JSON.stringify(distractions));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.distractions), JSON.stringify(distractions));
 };
 
 // Get todo sections from localStorage or use defaults
 export const getTodoSections = (): string[] => {
-  const sections = localStorage.getItem(STORAGE_KEYS.todoSections);
+  const sections = localStorage.getItem(getStorageKey(STORAGE_KEYS.todoSections));
   return sections ? JSON.parse(sections) : DEFAULT_TODO_SECTIONS;
 };
 
 // Save todo sections to localStorage
 export const saveTodoSections = (sections: string[]): void => {
-  localStorage.setItem(STORAGE_KEYS.todoSections, JSON.stringify(sections));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.todoSections), JSON.stringify(sections));
 };
 
 // Add a new todo item
@@ -244,13 +271,13 @@ export const deleteAllEntries = (): void => {
 
 // Get mood check-ins from localStorage
 export const getMoodCheckIns = (): MoodCheckIn[] => {
-  const checkIns = localStorage.getItem(STORAGE_KEYS.moodCheckIns);
+  const checkIns = localStorage.getItem(getStorageKey(STORAGE_KEYS.moodCheckIns));
   return checkIns ? JSON.parse(checkIns) : [];
 };
 
 // Save mood check-ins to localStorage
 export const saveMoodCheckIns = (checkIns: MoodCheckIn[]): void => {
-  localStorage.setItem(STORAGE_KEYS.moodCheckIns, JSON.stringify(checkIns));
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.moodCheckIns), JSON.stringify(checkIns));
 };
 
 // Add a new mood check-in
@@ -279,12 +306,12 @@ export const addMoodCheckIn = (mood: MoodLevel, stressors: string[]): void => {
 
 // Get the last mood check-in timestamp
 export const getLastMoodCheckInTime = (): string | null => {
-  return localStorage.getItem(STORAGE_KEYS.lastMoodCheckIn);
+  return localStorage.getItem(getStorageKey(STORAGE_KEYS.lastMoodCheckIn));
 };
 
 // Set the last mood check-in timestamp to now
 export const setLastMoodCheckInTime = (): void => {
-  localStorage.setItem(STORAGE_KEYS.lastMoodCheckIn, new Date().toISOString());
+  localStorage.setItem(getStorageKey(STORAGE_KEYS.lastMoodCheckIn), new Date().toISOString());
 };
 
 // Check if it's time for a mood check-in (1 hour since last check-in)
@@ -300,4 +327,19 @@ export const isTimeForMoodCheckIn = (): boolean => {
   const oneHourInMs = 60 * 60 * 1000;
   
   return currentTime - lastCheckInTime >= oneHourInMs;
+};
+
+// Clear all user data (for sign out or account deletion)
+export const clearAllUserData = (): void => {
+  const userId = getUserId();
+  if (!userId) return;
+  
+  // Get all keys in localStorage
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    // Only remove keys that begin with the user ID
+    if (key && key.startsWith(`${userId}_`)) {
+      localStorage.removeItem(key);
+    }
+  }
 };
