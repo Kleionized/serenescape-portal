@@ -108,7 +108,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md dark:bg-safespace-card dark:border-gray-800/50 dark:shadow-lg;
+    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md dark:bg-black/80 dark:border-gray-800/50 dark:shadow-lg;
   }
   
   .glass-card-hover {

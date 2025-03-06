@@ -67,7 +67,7 @@ const ActivityWheel = () => {
 
   return (
     <div>
-      <div className="glass-card rounded-xl p-6 mb-8">
+      <div className="glass-card rounded-xl p-6 mb-8 dark:bg-black/80 dark:border-gray-800">
         <div className="flex justify-between mb-6">
           <h2 className="heading-sm">Activity Wheel</h2>
           <button
@@ -75,7 +75,7 @@ const ActivityWheel = () => {
             className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               isEditing 
                 ? 'bg-safespace-primary text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700'
             }`}
           >
             {isEditing ? (
@@ -96,14 +96,14 @@ const ActivityWheel = () => {
           <div 
             className={`w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full bg-gradient-to-br from-safespace-primary/20 to-safespace-secondary/20 flex items-center justify-center mb-6 ${
               isSpinning ? 'animate-spin-slow' : ''
-            }`}
+            } dark:from-safespace-primary/30 dark:to-safespace-secondary/30 dark:bg-gray-900/50`}
           >
             {currentActivity ? (
               <span className="text-center px-4 font-medium text-safespace-foreground animate-fade-in">
                 {currentActivity}
               </span>
             ) : (
-              <span className="text-center px-4 text-gray-500">
+              <span className="text-center px-4 text-gray-500 dark:text-gray-400">
                 {activities.length > 0 ? 'Spin for an activity' : 'Add activities first'}
               </span>
             )}
@@ -120,7 +120,7 @@ const ActivityWheel = () => {
             disabled={activities.length === 0 || isSpinning}
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${
               activities.length === 0 || isSpinning
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
                 : 'bg-safespace-primary text-white hover:bg-safespace-primary/90'
             }`}
           >
@@ -131,7 +131,7 @@ const ActivityWheel = () => {
       </div>
       
       {isEditing && (
-        <div className="glass-card rounded-xl p-6 animate-slide-in">
+        <div className="glass-card rounded-xl p-6 animate-slide-in dark:bg-black/80 dark:border-gray-800">
           <h3 className="heading-sm mb-4">Manage Activities</h3>
           
           <div className="flex gap-2 mb-6">
@@ -140,14 +140,14 @@ const ActivityWheel = () => {
               value={newActivity}
               onChange={(e) => setNewActivity(e.target.value)}
               placeholder="Add a new activity..."
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             />
             <button
               onClick={addActivity}
               disabled={!newActivity.trim()}
               className={`inline-flex items-center justify-center gap-1 px-4 py-2 rounded-md font-medium transition-colors ${
                 !newActivity.trim()
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
                   : 'bg-safespace-primary text-white hover:bg-safespace-primary/90'
               }`}
             >
@@ -158,17 +158,17 @@ const ActivityWheel = () => {
           
           <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
             {activities.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No activities yet.</p>
+              <p className="text-gray-500 text-center py-4 dark:text-gray-400">No activities yet.</p>
             ) : (
               activities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="flex items-center justify-between bg-white p-3 rounded-md border border-gray-200"
+                  className="flex items-center justify-between bg-white p-3 rounded-md border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
                 >
                   <span className="flex-1">{activity.text}</span>
                   <button
                     onClick={() => removeActivity(activity.id)}
-                    className="text-gray-400 hover:text-red-500 p-1 rounded-md"
+                    className="text-gray-400 hover:text-red-500 p-1 rounded-md dark:text-gray-500 dark:hover:text-red-400"
                   >
                     <X className="w-4 h-4" />
                   </button>
