@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MoodStressor } from '../../lib/types';
 import { getStressors, resolveStressor } from '../../lib/storage';
@@ -51,7 +50,7 @@ const MoodStressorsTally = () => {
   const filteredStressors = showResolved ? stressors : stressors.filter(stressor => !stressor.resolved);
 
   return (
-    <div className="animate-scale-in">
+    <div className="h-full flex flex-col animate-scale-in">
       <div className="flex justify-between items-center mb-4">
         <h2 className="heading-sm">Mood Stressors Tally</h2>
         <button onClick={() => setShowResolved(!showResolved)} className="text-xs px-3 py-1 rounded-full border border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800 transition-colors">
@@ -60,7 +59,7 @@ const MoodStressorsTally = () => {
       </div>
       
       {filteredStressors.length === 0 ? (
-        <div className="text-center py-6">
+        <div className="text-center py-6 flex-1 flex flex-col justify-center">
           <p className="text-safespace-foreground dark:text-white">
             {showResolved ? "No stressors recorded yet." : "No active stressors recorded yet."}
           </p>
@@ -69,9 +68,9 @@ const MoodStressorsTally = () => {
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 overflow-y-auto pr-2">
           {filteredStressors.map(stressor => (
-            <div key={stressor.id} className="flex items-center justify-between group">
+            <div key={stressor.id} className="flex items-center justify-between group py-2">
               <div className="flex items-center gap-2">
                 {stressor.resolved && <Check className="w-4 h-4 text-green-500" />}
                 <span className={`text-safespace-foreground dark:text-white ${stressor.resolved ? 'line-through text-gray-400 dark:text-gray-500' : ''}`}>
@@ -94,7 +93,7 @@ const MoodStressorsTally = () => {
         </div>
       )}
       
-      <div className="mt-6 text-xs text-safespace-foreground dark:text-white/70">
+      <div className="mt-auto pt-4 text-xs text-safespace-foreground dark:text-white/70">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
             <span className="inline-block w-3 h-3 rounded-full bg-safespace-stress-low"></span>

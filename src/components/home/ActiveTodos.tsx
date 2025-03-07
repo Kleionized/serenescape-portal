@@ -90,7 +90,7 @@ const ActiveTodos = () => {
   };
 
   return (
-    <div className="animate-scale-in">
+    <div className="h-full flex flex-col animate-scale-in">
       <div className="flex justify-between items-center mb-4">
         <h2 className="heading-sm">Active To-Dos</h2>
         
@@ -106,7 +106,7 @@ const ActiveTodos = () => {
       </div>
       
       {activeTodos.length === 0 ? (
-        <div className="text-center py-6">
+        <div className="text-center py-6 flex-1 flex flex-col justify-center">
           <p className="text-safespace-foreground dark:text-white">No active to-dos yet.</p>
           <p className="text-sm text-safespace-foreground dark:text-white/80 mt-2">
             <Link to="/todo" className="text-safespace-primary hover:underline">
@@ -116,14 +116,14 @@ const ActiveTodos = () => {
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 overflow-y-auto pr-2">
           {activeTodos.map((todo) => (
             <div
               key={todo.id}
-              className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+              className={`flex items-center gap-3 py-3 px-3 rounded-lg transition-all ${
                 todo.completed 
                   ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-400'
-                  : 'bg-white dark:bg-gray-800/30 text-gray-800 dark:text-white'
+                  : 'bg-white/50 dark:bg-gray-800/30 text-gray-800 dark:text-white'
               }`}
             >
               <button
@@ -150,7 +150,7 @@ const ActiveTodos = () => {
       )}
       
       {allCompleted && (
-        <div className="mt-6 p-4 bg-safespace-primary/10 dark:bg-safespace-primary/20 rounded-lg text-center animate-fade-in">
+        <div className="mt-auto pt-4 p-4 bg-safespace-primary/10 dark:bg-safespace-primary/20 rounded-lg text-center animate-fade-in">
           <p className="text-safespace-primary font-medium">Great job! All your active tasks are completed.</p>
           <div className="mt-3 flex justify-center gap-3">
             <button
