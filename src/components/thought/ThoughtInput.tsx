@@ -24,14 +24,14 @@ const ThoughtInput = () => {
   };
   
   return (
-    <div className="max-w-3xl mx-auto">      
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <div>
+    <div className="w-full h-full flex flex-col">      
+      <form onSubmit={handleSubmit} className="flex flex-col h-full space-y-4">
+        <div className="flex-1">
           <textarea
             value={thought}
             onChange={(e) => setThought(e.target.value)}
             placeholder="What's on your mind? Type freely..."
-            className="w-full min-h-[350px] p-6 bg-transparent text-lg focus:outline-none resize-none dark:text-white dark:placeholder-gray-400"
+            className="w-full h-full min-h-[450px] p-6 bg-transparent text-lg focus:outline-none resize-none dark:text-white dark:placeholder-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg"
           />
         </div>
         

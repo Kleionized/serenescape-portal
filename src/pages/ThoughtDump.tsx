@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ThoughtInput from '../components/thought/ThoughtInput';
+import { PageContainer } from '../components/layout/PageContainer';
 
 const ThoughtDump = () => {
   return (
@@ -10,7 +11,7 @@ const ThoughtDump = () => {
           <h1 className="heading-lg text-safespace-foreground">Thought Dump</h1>
         </header>
         
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1">
           <ThoughtInput />
         </div>
       </div>
