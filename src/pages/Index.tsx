@@ -8,8 +8,12 @@ const Index = () => {
     <div className="min-h-screen bg-safespace-background pt-28">
       <div className="flex flex-col h-[calc(100vh-7rem)] px-6">
         <div className="flex-1 flex flex-col gap-8 pb-6">
-          <MoodStressorsTally />
-          <ActiveTodos />
+          <div className="flex-1">
+            <MoodStressorsTally />
+          </div>
+          <div className="flex-1">
+            <ActiveTodos />
+          </div>
         </div>
       </div>
     </div>
