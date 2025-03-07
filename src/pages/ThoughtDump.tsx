@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ThoughtInput from '../components/thought/ThoughtInput';
-import { PageContainer } from '../components/layout/PageContainer';
+import PageContainer from '../components/layout/PageContainer';
 
 const ThoughtDump = () => {
   return (
