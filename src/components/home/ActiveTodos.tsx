@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { getActiveTodos, getTodos, saveActiveTodos, toggleTodoCompletion, deleteCompletedTodos } from '../../lib/storage';
 import { TodoItem } from '../../lib/types';
@@ -22,7 +21,6 @@ const ActiveTodos = () => {
     
     let todos: TodoItem[] = [];
     if (activeIds.length === 0) {
-      // If no active todos are set, get three incomplete todos
       todos = allTodos
         .filter(todo => !todo.completed)
         .sort((a, b) => {
@@ -31,12 +29,10 @@ const ActiveTodos = () => {
         })
         .slice(0, 3);
       
-      // Save these as active todos
       const newActiveIds = todos.map(todo => todo.id);
       saveActiveTodos(newActiveIds);
       setActiveTodoIds(newActiveIds);
     } else {
-      // Get the active todos by IDs
       todos = allTodos.filter(todo => activeIds.includes(todo.id));
       setActiveTodoIds(activeIds);
     }
@@ -48,14 +44,12 @@ const ActiveTodos = () => {
   const handleToggleTodo = (id: string) => {
     toggleTodoCompletion(id);
     
-    // Update the local state
     setActiveTodos(prev => 
       prev.map(todo => 
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
     
-    // Check if all todos are now completed
     setTimeout(() => {
       const updatedTodos = getTodos();
       const currentActiveTodos = updatedTodos.filter(todo => activeTodoIds.includes(todo.id));
@@ -96,7 +90,7 @@ const ActiveTodos = () => {
   };
 
   return (
-    <div className="glass-card rounded-xl p-6 animate-scale-in">
+    <div className="animate-scale-in">
       <div className="flex justify-between items-center mb-4">
         <h2 className="heading-sm">Active To-Dos</h2>
         

@@ -67,7 +67,7 @@ const ActivityWheel = () => {
 
   return (
     <div>
-      <div className="glass-card rounded-xl p-6 mb-8 dark:bg-black/80 dark:border-gray-800">
+      <div className="mb-8 dark:bg-transparent">
         <div className="flex justify-between mb-6">
           <h2 className="heading-sm">Activity Wheel</h2>
           <button
@@ -96,7 +96,7 @@ const ActivityWheel = () => {
           <div 
             className={`w-48 h-48 md:w-64 md:h-64 mx-auto rounded-full bg-gradient-to-br from-safespace-primary/20 to-safespace-secondary/20 flex items-center justify-center mb-6 ${
               isSpinning ? 'animate-spin-slow' : ''
-            } dark:from-safespace-primary/30 dark:to-safespace-secondary/30 dark:bg-gray-900/50`}
+            } dark:from-safespace-primary/30 dark:to-safespace-secondary/30 dark:bg-transparent`}
           >
             {currentActivity ? (
               <span className="text-center px-4 font-medium text-safespace-foreground animate-fade-in">
@@ -131,7 +131,7 @@ const ActivityWheel = () => {
       </div>
       
       {isEditing && (
-        <div className="glass-card rounded-xl p-6 animate-slide-in dark:bg-black/80 dark:border-gray-800">
+        <div className="animate-slide-in dark:bg-transparent">
           <h3 className="heading-sm mb-4">Manage Activities</h3>
           
           <div className="flex gap-2 mb-6">
