@@ -31,7 +31,7 @@ const ThoughtInput = () => {
             value={thought}
             onChange={(e) => setThought(e.target.value)}
             placeholder="What's on your mind? Type freely..."
-            className="w-full h-full min-h-[450px] p-6 bg-transparent text-lg focus:outline-none resize-none dark:text-white dark:placeholder-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg"
+            className="w-full h-full min-h-[450px] p-6 bg-transparent text-lg focus:outline-none resize-none dark:text-white dark:placeholder-gray-400 rounded-lg"
           />
         </div>
         

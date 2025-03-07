@@ -92,7 +92,7 @@ const RootCause = () => {
                         value={newStressor}
                         onChange={(e) => setNewStressor(e.target.value)}
                         placeholder="Enter what's stressing you out..."
-                        className="flex-1 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 dark:focus:ring-safespace-primary/60 dark:text-white dark:placeholder-gray-400"
+                        className="flex-1 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 dark:focus:ring-safespace-primary/60 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50"
                       />
                       <button
                         onClick={handleAddStressor}
@@ -127,7 +127,7 @@ const RootCause = () => {
                       value={worstCase}
                       onChange={(e) => setWorstCase(e.target.value)}
                       placeholder="Describe the worst possible outcome..."
-                      className="w-full h-[40%] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:focus:ring-safespace-primary/60"
+                      className="w-full h-[50%] min-h-[180px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60"
                     />
                   </div>
                   
@@ -139,7 +139,7 @@ const RootCause = () => {
                       value={resolution}
                       onChange={(e) => setResolution(e.target.value)}
                       placeholder="What steps can you take to address this stressor?"
-                      className="w-full h-[40%] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:focus:ring-safespace-primary/60"
+                      className="w-full h-[50%] min-h-[180px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60"
                     />
                   </div>
                   
