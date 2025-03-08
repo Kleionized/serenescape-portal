@@ -4,6 +4,7 @@ import { getTodos, saveTodos, getTodoSections, saveTodoSections, addTodo, addSub
 import { TodoItem } from '../lib/types';
 import { Plus, MoreHorizontal, X, Check, ChevronDown, ChevronUp, AlertTriangle, Trash2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [sections, setSections] = useState<string[]>([]);
@@ -21,21 +22,25 @@ const Todo = () => {
   const {
     toast
   } = useToast();
+
   useEffect(() => {
     loadTodos();
     loadSections();
   }, []);
+
   const loadTodos = () => {
     const loadedTodos = getTodos();
     setTodos(loadedTodos);
     const loadedActiveTodoIds = localStorage.getItem('safespace_active_todos');
     setActiveTodoIds(loadedActiveTodoIds ? JSON.parse(loadedActiveTodoIds) : []);
   };
+
   const loadSections = () => {
     const loadedSections = getTodoSections();
     setSections(loadedSections);
     setExpandedSections(loadedSections);
   };
+
   const handleDeleteCompletedTodos = () => {
     const completedCount = todos.filter(todo => todo.completed).length;
     if (completedCount === 0) {
@@ -54,6 +59,7 @@ const Todo = () => {
       variant: "default"
     });
   };
+
   const handleAddTodo = () => {
     if (!newTodoText.trim() || !activeSection) return;
     addTodo(newTodoText, newTodoImportance, activeSection);
@@ -61,6 +67,7 @@ const Todo = () => {
     setNewTodoText('');
     setActiveSection(null);
   };
+
   const handleAddSubtask = () => {
     if (!newSubtaskText.trim() || !activeTodoId) return;
     addSubtask(activeTodoId, newSubtaskText);
@@ -68,6 +75,7 @@ const Todo = () => {
     setNewSubtaskText('');
     setActiveTodoId(null);
   };
+
   const handleToggleTodo = (todo: TodoItem) => {
     const updatedTodos = todos.map(t => t.id === todo.id ? {
       ...t,
@@ -76,6 +84,7 @@ const Todo = () => {
     saveTodos(updatedTodos);
     setTodos(updatedTodos);
   };
+
   const handleToggleSubtask = (todoId: string, subtaskId: string) => {
     const updatedTodos = todos.map(todo => {
       if (todo.id === todoId) {
@@ -93,6 +102,7 @@ const Todo = () => {
     saveTodos(updatedTodos);
     setTodos(updatedTodos);
   };
+
   const handleAddSection = () => {
     if (!newSectionName.trim()) return;
     const updatedSections = [...sections, newSectionName];
@@ -102,6 +112,7 @@ const Todo = () => {
     setNewSectionName('');
     setShowAddSection(false);
   };
+
   const handleDeleteSection = (section: string) => {
     const updatedSections = sections.filter(s => s !== section);
     const updatedTodos = todos.filter(todo => todo.section !== section);
@@ -112,6 +123,7 @@ const Todo = () => {
     setShowDeleteSection(null);
     setExpandedSections(expandedSections.filter(s => s !== section));
   };
+
   const handleToggleSection = (section: string) => {
     if (expandedSections.includes(section)) {
       setExpandedSections(expandedSections.filter(s => s !== section));
@@ -119,6 +131,7 @@ const Todo = () => {
       setExpandedSections([...expandedSections, section]);
     }
   };
+
   const handleToggleTodoExpand = (todoId: string) => {
     if (expandedTodos.includes(todoId)) {
       setExpandedTodos(expandedTodos.filter(id => id !== todoId));
@@ -126,6 +139,7 @@ const Todo = () => {
       setExpandedTodos([...expandedTodos, todoId]);
     }
   };
+
   const handleSetActiveTodo = (todoId: string) => {
     const newActiveTodos = [...activeTodoIds];
     if (newActiveTodos.includes(todoId)) {
@@ -142,6 +156,7 @@ const Todo = () => {
     saveActiveTodos(newActiveTodos);
     setActiveTodoIds(newActiveTodos);
   };
+
   const getImportanceClass = (importance: string): string => {
     switch (importance) {
       case 'high':
@@ -154,8 +169,9 @@ const Todo = () => {
         return 'bg-gray-100 text-gray-600';
     }
   };
+
   return <PageContainer title="To-Do List" subtitle="Organize and manage your tasks by importance and category">
-      <div className="glass-card rounded-xl p-6 mb-8">
+      <div className="rounded-xl p-6 mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="heading-sm">Task Sections</h2>
           <div className="flex gap-2">
@@ -334,8 +350,7 @@ const Todo = () => {
                 </div>}
             </div>)}
       </div>
-      
-      
     </PageContainer>;
 };
+
 export default Todo;
