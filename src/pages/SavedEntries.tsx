@@ -155,8 +155,8 @@ const SavedEntries = () => {
             </Button>
           </div>
           
-          {/* Entries content */}
-          <div className={`transition-opacity duration-500 ${showContent ? 'opacity-100' : 'opacity-30'}`}>
+          {/* Entries content - completely hidden until revealed */}
+          <div className={`${showContent ? 'block' : 'hidden'}`}>
             {entries.length === 0 ? (
               <div className="text-center py-12 flex-1">
                 <p className="text-safespace-foreground dark:text-white mb-2">No saved entries yet.</p>
