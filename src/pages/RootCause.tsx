@@ -121,12 +121,12 @@ const RootCause = () => {
                 <div className="space-y-10 flex-1 flex flex-col">
                   <div className="flex-1">
                     <label className="block text-lg font-medium mb-4">
-                      What will happen in the worst case scenario?
+                      How is this stressor impacting you?
                     </label>
                     <textarea
                       value={worstCase}
                       onChange={(e) => setWorstCase(e.target.value)}
-                      placeholder="Describe the worst possible outcome..."
+                      placeholder="Describe how this stressor is affecting you..."
                       className="w-full h-[50%] min-h-[180px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60"
                     />
                   </div>
