@@ -126,8 +126,8 @@ const RootCause = () => {
                     <textarea
                       value={worstCase}
                       onChange={(e) => setWorstCase(e.target.value)}
-                      placeholder="Describe what specific aspects concern you the most..."
-                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60 bg-transparent"
+                      placeholder=""
+                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent"
                     />
                   </div>
                   
@@ -138,8 +138,8 @@ const RootCause = () => {
                     <textarea
                       value={resolution}
                       onChange={(e) => setResolution(e.target.value)}
-                      placeholder="List specific actions you can take to address this stressor..."
-                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60 bg-transparent"
+                      placeholder=""
+                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent"
                     />
                   </div>
                   
