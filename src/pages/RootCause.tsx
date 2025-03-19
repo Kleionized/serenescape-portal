@@ -121,25 +121,25 @@ const RootCause = () => {
                 <div className="space-y-10 flex-1 flex flex-col">
                   <div className="flex-1">
                     <label className="block text-lg font-medium mb-4">
-                      How is this stressor impacting you?
+                      What about the stressor worries you?
                     </label>
                     <textarea
                       value={worstCase}
                       onChange={(e) => setWorstCase(e.target.value)}
-                      placeholder="Describe how this stressor is affecting you..."
-                      className="w-full h-[50%] min-h-[180px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60"
+                      placeholder="Describe what specific aspects concern you the most..."
+                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60 shadow-inner bg-white/50 dark:bg-gray-800/30"
                     />
                   </div>
                   
                   <div className="flex-1">
                     <label className="block text-lg font-medium mb-4">
-                      How can you resolve this stressor?
+                      What actionable steps can you take?
                     </label>
                     <textarea
                       value={resolution}
                       onChange={(e) => setResolution(e.target.value)}
-                      placeholder="What steps can you take to address this stressor?"
-                      className="w-full h-[50%] min-h-[180px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60"
+                      placeholder="List specific actions you can take to address this stressor..."
+                      className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 resize-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50 dark:focus:ring-safespace-primary/60 shadow-inner bg-white/50 dark:bg-gray-800/30"
                     />
                   </div>
                   
