@@ -82,13 +82,13 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   };
   
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 shadow-xl animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm animate-fade-in">
+      <div className="bg-transparent rounded-xl p-6 max-w-md w-full mx-4 shadow-xl animate-scale-in">
         <div className="flex justify-between items-center mb-6">
           <h2 className="heading-md text-safespace-primary">Mood Check-In</h2>
           <button 
             onClick={onClose}
-            className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-1 rounded-full hover:bg-gray-100/20 dark:hover:bg-gray-700/20 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -103,7 +103,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
             <div className="grid grid-cols-2 gap-4">
               <button
                 onClick={() => handleMoodSelect('calm')}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-accent/10 hover:border-safespace-accent dark:hover:bg-safespace-accent/5 transition-colors flex flex-col items-center gap-2"
+                className="p-4 border border-gray-200/30 dark:border-gray-700/30 rounded-lg hover:bg-safespace-accent/10 hover:border-safespace-accent/40 dark:hover:bg-safespace-accent/5 transition-colors flex flex-col items-center gap-2 backdrop-blur-sm"
               >
                 <span className="text-3xl">😌</span>
                 <span className="dark:text-white">Calm</span>
@@ -111,7 +111,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
               
               <button
                 onClick={() => handleMoodSelect('slightly-stressed')}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-low/10 hover:border-safespace-stress-low dark:hover:bg-safespace-stress-low/5 transition-colors flex flex-col items-center gap-2"
+                className="p-4 border border-gray-200/30 dark:border-gray-700/30 rounded-lg hover:bg-safespace-stress-low/10 hover:border-safespace-stress-low/40 dark:hover:bg-safespace-stress-low/5 transition-colors flex flex-col items-center gap-2 backdrop-blur-sm"
               >
                 <span className="text-3xl">😕</span>
                 <span className="dark:text-white">Slightly Stressed</span>
@@ -119,7 +119,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
               
               <button
                 onClick={() => handleMoodSelect('moderately-stressed')}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-medium/10 hover:border-safespace-stress-medium dark:hover:bg-safespace-stress-medium/5 transition-colors flex flex-col items-center gap-2"
+                className="p-4 border border-gray-200/30 dark:border-gray-700/30 rounded-lg hover:bg-safespace-stress-medium/10 hover:border-safespace-stress-medium/40 dark:hover:bg-safespace-stress-medium/5 transition-colors flex flex-col items-center gap-2 backdrop-blur-sm"
               >
                 <span className="text-3xl">😟</span>
                 <span className="dark:text-white">Moderately Stressed</span>
@@ -127,7 +127,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
               
               <button
                 onClick={() => handleMoodSelect('very-stressed')}
-                className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-high/10 hover:border-safespace-stress-high dark:hover:bg-safespace-stress-high/5 transition-colors flex flex-col items-center gap-2"
+                className="p-4 border border-gray-200/30 dark:border-gray-700/30 rounded-lg hover:bg-safespace-stress-high/10 hover:border-safespace-stress-high/40 dark:hover:bg-safespace-stress-high/5 transition-colors flex flex-col items-center gap-2 backdrop-blur-sm"
               >
                 <span className="text-3xl">😫</span>
                 <span className="dark:text-white">Very Stressed</span>
@@ -141,7 +141,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
             <div className="flex items-center gap-2 mb-2">
               <button 
                 onClick={() => setStep('mood')}
-                className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="p-1.5 rounded-full bg-gray-100/30 dark:bg-gray-700/30 hover:bg-gray-200/30 dark:hover:bg-gray-600/30 transition-colors"
               >
                 <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
@@ -158,10 +158,10 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                     <button
                       key={idx}
                       onClick={() => handleAddRecentStressor(stressorName)}
-                      className={`px-3 py-1 rounded-full text-sm ${
+                      className={`px-3 py-1 rounded-full text-sm backdrop-blur-sm ${
                         stressors.includes(stressorName) 
-                          ? 'bg-safespace-primary text-white' 
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300'
+                          ? 'bg-safespace-primary/80 text-white' 
+                          : 'bg-gray-100/30 hover:bg-gray-200/30 text-gray-700 dark:bg-gray-700/30 dark:hover:bg-gray-600/30 dark:text-gray-300'
                       }`}
                     >
                       {stressorName}
@@ -179,15 +179,15 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                   onChange={(e) => setCurrentStressor(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Enter a stressor..."
-                  className="flex-1 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                  className="flex-1 p-3 border border-gray-300/30 rounded-md focus:outline-none focus:ring-1 focus:ring-safespace-primary/40 dark:bg-gray-700/30 dark:border-gray-600/30 dark:text-white dark:placeholder-gray-400 backdrop-blur-sm"
                 />
                 <button
                   onClick={handleAddStressor}
                   disabled={!currentStressor.trim()}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-md font-medium transition-colors backdrop-blur-sm ${
                     !currentStressor.trim()
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500'
-                      : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'
+                      ? 'bg-gray-200/50 text-gray-400 cursor-not-allowed dark:bg-gray-800/50 dark:text-gray-500'
+                      : 'bg-safespace-primary/80 text-white hover:bg-safespace-primary/70 dark:bg-safespace-primary/70 dark:hover:bg-safespace-primary/60'
                   }`}
                 >
                   Add
@@ -201,12 +201,12 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                     {stressors.map((stressor, index) => (
                       <div 
                         key={index}
-                        className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center gap-2"
+                        className="px-3 py-1 bg-gray-100/30 dark:bg-gray-700/30 rounded-full flex items-center gap-2 backdrop-blur-sm"
                       >
                         <span className="dark:text-white">{stressor}</span>
                         <button
                           onClick={() => handleRemoveStressor(index)}
-                          className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600"
+                          className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-200/30 dark:hover:bg-gray-600/30"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -221,14 +221,14 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
               <Button
                 variant="outline"
                 onClick={() => setStep('mood')}
-                className="border-gray-300 dark:border-gray-600 dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
+                className="border-gray-300/30 dark:border-gray-600/30 dark:text-white dark:bg-gray-700/30 dark:hover:bg-gray-600/30 backdrop-blur-sm"
               >
                 Back
               </Button>
               <Button
                 onClick={handleSubmit}
                 disabled={stressors.length === 0}
-                className={`dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70`}
+                className="bg-safespace-primary/80 hover:bg-safespace-primary/70 dark:bg-safespace-primary/70 dark:hover:bg-safespace-primary/60 backdrop-blur-sm"
               >
                 {stressors.length > 0 ? 'Submit' : 'Skip'}
               </Button>
