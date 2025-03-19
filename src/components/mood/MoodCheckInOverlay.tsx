@@ -4,9 +4,11 @@ import { addMoodCheckIn, getStressors } from '../../lib/storage';
 import { X, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+
 interface MoodCheckInOverlayProps {
   onClose: () => void;
 }
+
 const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
   onClose
 }) => {
@@ -15,44 +17,48 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
   const [stressors, setStressors] = useState<string[]>([]);
   const [currentStressor, setCurrentStressor] = useState<string>('');
   const [recentStressors, setRecentStressors] = useState<string[]>([]);
+
   useEffect(() => {
-    // Load recent stressors for quick selection
     const allStressors = getStressors();
     const activeStressorNames = allStressors.filter(s => !s.resolved).sort((a, b) => b.count - a.count).slice(0, 5).map(s => s.name);
     setRecentStressors(activeStressorNames);
   }, []);
+
   const handleMoodSelect = (mood: MoodLevel) => {
     setSelectedMood(mood);
     if (mood === 'calm') {
-      // If they select "Calm", just record it and close
       handleSubmit();
     } else {
-      // Otherwise, proceed to stressor input
       setStep('stressors');
     }
   };
+
   const handleAddStressor = () => {
     if (currentStressor.trim()) {
       setStressors([...stressors, currentStressor.trim()]);
       setCurrentStressor('');
     }
   };
+
   const handleAddRecentStressor = (stressorName: string) => {
     if (!stressors.includes(stressorName)) {
       setStressors([...stressors, stressorName]);
     }
   };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && currentStressor.trim()) {
       e.preventDefault();
       handleAddStressor();
     }
   };
+
   const handleRemoveStressor = (index: number) => {
     const newStressors = [...stressors];
     newStressors.splice(index, 1);
     setStressors(newStressors);
   };
+
   const handleSubmit = () => {
     if (selectedMood) {
       addMoodCheckIn(selectedMood, stressors);
@@ -61,13 +67,13 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
         description: "Your mood has been recorded successfully."
       });
 
-      // Dispatch an event so other components can react to this change
       window.dispatchEvent(new Event('mood-checkin-recorded'));
       onClose();
     }
   };
-  return <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm animate-fade-in bg-black">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 shadow-xl animate-scale-in">
+
+  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur-sm animate-fade-in">
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-xl w-full mx-4 shadow-xl animate-scale-in">
         <div className="flex justify-between items-center mb-6">
           <h2 className="heading-md text-safespace-primary">Mood Check-In</h2>
           <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
@@ -81,23 +87,23 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
             </p>
             
             <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => handleMoodSelect('calm')} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-accent/10 hover:border-safespace-accent dark:hover:bg-safespace-accent/5 transition-colors flex flex-col items-center gap-2">
-                <span className="text-3xl">😌</span>
+              <button onClick={() => handleMoodSelect('calm')} className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-accent/10 hover:border-safespace-accent dark:hover:bg-safespace-accent/5 transition-colors flex flex-col items-center gap-2">
+                <span className="text-4xl">😌</span>
                 <span className="dark:text-white">Calm</span>
               </button>
               
-              <button onClick={() => handleMoodSelect('slightly-stressed')} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-low/10 hover:border-safespace-stress-low dark:hover:bg-safespace-stress-low/5 transition-colors flex flex-col items-center gap-2">
-                <span className="text-3xl">😕</span>
+              <button onClick={() => handleMoodSelect('slightly-stressed')} className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-low/10 hover:border-safespace-stress-low dark:hover:bg-safespace-stress-low/5 transition-colors flex flex-col items-center gap-2">
+                <span className="text-4xl">😕</span>
                 <span className="dark:text-white">Slightly Stressed</span>
               </button>
               
-              <button onClick={() => handleMoodSelect('moderately-stressed')} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-medium/10 hover:border-safespace-stress-medium dark:hover:bg-safespace-stress-medium/5 transition-colors flex flex-col items-center gap-2">
-                <span className="text-3xl">😟</span>
+              <button onClick={() => handleMoodSelect('moderately-stressed')} className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-medium/10 hover:border-safespace-stress-medium dark:hover:bg-safespace-stress-medium/5 transition-colors flex flex-col items-center gap-2">
+                <span className="text-4xl">😟</span>
                 <span className="dark:text-white">Moderately Stressed</span>
               </button>
               
-              <button onClick={() => handleMoodSelect('very-stressed')} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-high/10 hover:border-safespace-stress-high dark:hover:bg-safespace-stress-high/5 transition-colors flex flex-col items-center gap-2">
-                <span className="text-3xl">😫</span>
+              <button onClick={() => handleMoodSelect('very-stressed')} className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-safespace-stress-high/10 hover:border-safespace-stress-high dark:hover:bg-safespace-stress-high/5 transition-colors flex flex-col items-center gap-2">
+                <span className="text-4xl">😫</span>
                 <span className="dark:text-white">Very Stressed</span>
               </button>
             </div>
@@ -155,4 +161,5 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
       </div>
     </div>;
 };
+
 export default MoodCheckInOverlay;
