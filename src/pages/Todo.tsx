@@ -75,8 +75,8 @@ const Todo = () => {
   };
   return <PageContainer title="To-Do List" subtitle="Organize and manage your tasks by importance and category">
       <div className="rounded-xl mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-sm">Sections</h2>
+        <div className="flex justify-between items-center mb-6 px-0 py-[10px]">
+          
           <div className="flex gap-2">
             <button onClick={handleDeleteCompletedTodos} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors">
               <Trash2 className="w-4 h-4" />
@@ -89,7 +89,7 @@ const Todo = () => {
           </div>
         </div>
         
-        <Separator className="mb-6 dark:bg-gray-700" />
+        
         
         {showAddSection && <AddSectionForm onAdd={sectionName => {
         setSections([...sections, sectionName]);
