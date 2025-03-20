@@ -39,23 +39,37 @@ const TodoSectionsList: React.FC<TodoSectionsListProps> = ({
     );
   }
 
+  // Create pairs of sections for the grid layout
+  const sectionPairs = [];
+  for (let i = 0; i < sections.length; i += 2) {
+    const pair = [sections[i]];
+    if (i + 1 < sections.length) {
+      pair.push(sections[i + 1]);
+    }
+    sectionPairs.push(pair);
+  }
+
   return (
-    <div>
-      {sections.map(section => (
-        <TodoSection
-          key={section}
-          section={section}
-          todos={todos.filter(todo => todo.section === section)}
-          expanded={expandedSections.includes(section)}
-          activeTodoIds={activeTodoIds}
-          showDeleteAlert={showDeleteSection === section}
-          onToggleSection={() => onToggleSection(section)}
-          onSetActiveTodo={onSetActiveTodo}
-          onShowDeleteAlert={() => onSetShowDeleteSection(section)}
-          onCancelDelete={() => onSetShowDeleteSection(null)}
-          onDelete={() => onDeleteSection(section)}
-          onTodosChanged={onTodosChanged}
-        />
+    <div className="space-y-6">
+      {sectionPairs.map((pair, index) => (
+        <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {pair.map(section => (
+            <TodoSection
+              key={section}
+              section={section}
+              todos={todos.filter(todo => todo.section === section)}
+              expanded={expandedSections.includes(section)}
+              activeTodoIds={activeTodoIds}
+              showDeleteAlert={showDeleteSection === section}
+              onToggleSection={() => onToggleSection(section)}
+              onSetActiveTodo={onSetActiveTodo}
+              onShowDeleteAlert={() => onSetShowDeleteSection(section)}
+              onCancelDelete={() => onSetShowDeleteSection(null)}
+              onDelete={() => onDeleteSection(section)}
+              onTodosChanged={onTodosChanged}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
