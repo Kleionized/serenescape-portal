@@ -7,6 +7,7 @@ import TodoSectionsList from '../components/todo/TodoSectionsList';
 import { TodoItem } from '../lib/types';
 import AddSectionForm from '../components/todo/AddSectionForm';
 import { Trash2, Plus } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -81,20 +82,28 @@ const Todo = () => {
 
   return (
     <PageContainer title="To-Do List" subtitle="Organize and manage your tasks by importance and category">
-      <div className="rounded-xl p-6 mb-8">
+      <div className="rounded-xl mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="heading-sm">Task Sections</h2>
           <div className="flex gap-2">
-            <button onClick={handleDeleteCompletedTodos} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-red-500 text-white hover:bg-red-600 transition-colors dark:bg-red-600/80 dark:hover:bg-red-700/80">
+            <button 
+              onClick={handleDeleteCompletedTodos} 
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+            >
               <Trash2 className="w-4 h-4" />
               <span>Delete Completed</span>
             </button>
-            <button onClick={() => setShowAddSection(true)} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-safespace-primary text-white hover:bg-safespace-primary/90 transition-colors dark:bg-black/90 dark:hover:bg-black/70 dark:border dark:border-gray-700">
+            <button 
+              onClick={() => setShowAddSection(true)} 
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-transparent border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
               <Plus className="w-4 h-4" />
               <span>Add Section</span>
             </button>
           </div>
         </div>
+        
+        <Separator className="mb-6 dark:bg-gray-700" />
         
         {showAddSection && (
           <AddSectionForm 
