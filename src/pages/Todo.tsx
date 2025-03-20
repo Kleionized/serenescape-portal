@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import PageContainer from '../components/layout/PageContainer';
 import { getTodos, getTodoSections, saveActiveTodos, deleteCompletedTodos } from '../lib/storage';
@@ -8,7 +7,6 @@ import { TodoItem } from '../lib/types';
 import AddSectionForm from '../components/todo/AddSectionForm';
 import { Trash2, Plus } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [sections, setSections] = useState<string[]>([]);
@@ -16,26 +14,24 @@ const Todo = () => {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [showAddSection, setShowAddSection] = useState(false);
   const [showDeleteSection, setShowDeleteSection] = useState<string | null>(null);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   useEffect(() => {
     loadTodos();
     loadSections();
   }, []);
-
   const loadTodos = () => {
     const loadedTodos = getTodos();
     setTodos(loadedTodos);
     const loadedActiveTodoIds = localStorage.getItem('safespace_active_todos');
     setActiveTodoIds(loadedActiveTodoIds ? JSON.parse(loadedActiveTodoIds) : []);
   };
-
   const loadSections = () => {
     const loadedSections = getTodoSections();
     setSections(loadedSections);
     setExpandedSections(loadedSections);
   };
-
   const handleToggleSection = (section: string) => {
     if (expandedSections.includes(section)) {
       setExpandedSections(expandedSections.filter(s => s !== section));
@@ -43,7 +39,6 @@ const Todo = () => {
       setExpandedSections([...expandedSections, section]);
     }
   };
-
   const handleSetActiveTodo = (todoId: string) => {
     const newActiveTodos = [...activeTodoIds];
     if (newActiveTodos.includes(todoId)) {
@@ -60,7 +55,6 @@ const Todo = () => {
     saveActiveTodos(newActiveTodos);
     setActiveTodoIds(newActiveTodos);
   };
-
   const handleDeleteCompletedTodos = () => {
     const completedCount = todos.filter(todo => todo.completed).length;
     if (completedCount === 0) {
@@ -79,24 +73,16 @@ const Todo = () => {
       variant: "default"
     });
   };
-
-  return (
-    <PageContainer title="To-Do List" subtitle="Organize and manage your tasks by importance and category">
+  return <PageContainer title="To-Do List" subtitle="Organize and manage your tasks by importance and category">
       <div className="rounded-xl mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-sm">Task Sections</h2>
+          <h2 className="heading-sm">Sections</h2>
           <div className="flex gap-2">
-            <button 
-              onClick={handleDeleteCompletedTodos} 
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
-            >
+            <button onClick={handleDeleteCompletedTodos} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors">
               <Trash2 className="w-4 h-4" />
               <span>Delete Completed</span>
             </button>
-            <button 
-              onClick={() => setShowAddSection(true)} 
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
+            <button onClick={() => setShowAddSection(true)} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
               <Plus className="w-4 h-4" />
               <span>Add Section</span>
             </button>
@@ -105,37 +91,19 @@ const Todo = () => {
         
         <Separator className="mb-6 dark:bg-gray-700" />
         
-        {showAddSection && (
-          <AddSectionForm 
-            onAdd={(sectionName) => {
-              setSections([...sections, sectionName]);
-              setExpandedSections([...expandedSections, sectionName]);
-              setShowAddSection(false);
-            }}
-            onCancel={() => setShowAddSection(false)}
-          />
-        )}
+        {showAddSection && <AddSectionForm onAdd={sectionName => {
+        setSections([...sections, sectionName]);
+        setExpandedSections([...expandedSections, sectionName]);
+        setShowAddSection(false);
+      }} onCancel={() => setShowAddSection(false)} />}
         
-        <TodoSectionsList 
-          sections={sections}
-          todos={todos}
-          expandedSections={expandedSections}
-          activeTodoIds={activeTodoIds}
-          showDeleteSection={showDeleteSection}
-          onToggleSection={handleToggleSection}
-          onSetActiveTodo={handleSetActiveTodo}
-          onSetShowDeleteSection={setShowDeleteSection}
-          onDeleteSection={(section) => {
-            setSections(sections.filter(s => s !== section));
-            setExpandedSections(expandedSections.filter(s => s !== section));
-            setShowDeleteSection(null);
-            loadTodos();
-          }}
-          onTodosChanged={loadTodos}
-        />
+        <TodoSectionsList sections={sections} todos={todos} expandedSections={expandedSections} activeTodoIds={activeTodoIds} showDeleteSection={showDeleteSection} onToggleSection={handleToggleSection} onSetActiveTodo={handleSetActiveTodo} onSetShowDeleteSection={setShowDeleteSection} onDeleteSection={section => {
+        setSections(sections.filter(s => s !== section));
+        setExpandedSections(expandedSections.filter(s => s !== section));
+        setShowDeleteSection(null);
+        loadTodos();
+      }} onTodosChanged={loadTodos} />
       </div>
-    </PageContainer>
-  );
+    </PageContainer>;
 };
-
 export default Todo;
