@@ -12,8 +12,8 @@ const NavBar = () => {
     { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
     { path: '/thought-dump', label: 'Thought Dump', icon: <MessageSquare className="w-5 h-5" /> },
     { path: '/root-cause', label: 'Root Cause', icon: <Search className="w-5 h-5" /> },
-    { path: '/saved-entries', label: 'Saved Entries', icon: <Archive className="w-5 h-5" /> },
-    { path: '/todo', label: 'Todo', icon: <ListTodo className="w-5 h-5" /> }
+    { path: '/todo', label: 'Todo', icon: <ListTodo className="w-5 h-5" /> },
+    { path: '/saved-entries', label: 'Saved Entries', icon: <Archive className="w-5 h-5" /> }
   ];
   
   const toggleMobileMenu = () => {
