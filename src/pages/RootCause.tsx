@@ -3,20 +3,25 @@ import { getStressors, addStressor, addReflectionEntry } from '../lib/storage';
 import { MoodStressor } from '../lib/types';
 import { Search, PlusCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
 const RootCause = () => {
   const [stressors, setStressors] = useState<MoodStressor[]>([]);
   const [selectedStressor, setSelectedStressor] = useState<string>('');
   const [newStressor, setNewStressor] = useState<string>('');
   const [worstCase, setWorstCase] = useState<string>('');
   const [resolution, setResolution] = useState<string>('');
+  
   useEffect(() => {
     loadStressors();
   }, []);
+
   const loadStressors = () => {
     const loadedStressors = getStressors();
     const unresolvedStressors = loadedStressors.filter(s => !s.resolved);
     setStressors(unresolvedStressors);
   };
+
   const handleAddStressor = () => {
     if (!newStressor.trim()) return;
     addStressor(newStressor);
@@ -24,6 +29,7 @@ const RootCause = () => {
     setSelectedStressor(newStressor);
     setNewStressor('');
   };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedStressor || !worstCase.trim() || !resolution.trim()) return;
@@ -33,6 +39,7 @@ const RootCause = () => {
     setResolution('');
     setSelectedStressor('');
   };
+
   return <div className="min-h-screen bg-safespace-background pt-28">
       <div className="max-w-6xl mx-auto px-6 pb-20 flex flex-col h-[calc(100vh-7rem)]">
         <header className="mb-10">
@@ -85,14 +92,28 @@ const RootCause = () => {
                     <label className="block text-lg font-medium mb-4">
                       What about the stressor worries you?
                     </label>
-                    <textarea value={worstCase} onChange={e => setWorstCase(e.target.value)} placeholder="" className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" />
+                    <ScrollArea className="w-full h-[60%] min-h-[200px] rounded-2xl border border-gray-200 dark:border-gray-800">
+                      <textarea 
+                        value={worstCase} 
+                        onChange={e => setWorstCase(e.target.value)} 
+                        placeholder="Type here..." 
+                        className="w-full h-full min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" 
+                      />
+                    </ScrollArea>
                   </div>
                   
                   <div className="flex-1">
                     <label className="block text-lg font-medium mb-4">
                       What actionable steps can you take?
                     </label>
-                    <textarea value={resolution} onChange={e => setResolution(e.target.value)} placeholder="" className="w-full h-[60%] min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" />
+                    <ScrollArea className="w-full h-[60%] min-h-[200px] rounded-2xl border border-gray-200 dark:border-gray-800">
+                      <textarea 
+                        value={resolution} 
+                        onChange={e => setResolution(e.target.value)} 
+                        placeholder="Type here..." 
+                        className="w-full h-full min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" 
+                      />
+                    </ScrollArea>
                   </div>
                   
                   <div className="flex justify-between items-center pt-4">
@@ -110,4 +131,5 @@ const RootCause = () => {
       </div>
     </div>;
 };
+
 export default RootCause;

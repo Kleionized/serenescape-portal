@@ -2,6 +2,7 @@
 import React from 'react';
 import MoodStressorsTally from '../components/home/MoodStressorsTally';
 import ActiveTodos from '../components/home/ActiveTodos';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const Index = () => {
   return (
@@ -12,7 +13,9 @@ const Index = () => {
             <MoodStressorsTally />
           </div>
           <div className="flex-1">
-            <ActiveTodos />
+            <ScrollArea className="h-full">
+              <ActiveTodos />
+            </ScrollArea>
           </div>
         </div>
       </div>
