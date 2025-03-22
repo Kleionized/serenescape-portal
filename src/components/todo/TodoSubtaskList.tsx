@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Check, Pencil, Save, X } from 'lucide-react';
+import { Check, Save, X } from 'lucide-react';
 import { getTodos, saveTodos } from '../../lib/storage';
 import { Input } from '@/components/ui/input';
 
@@ -99,6 +99,13 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
                 onChange={(e) => setEditingText(e.target.value)}
                 className="h-8 text-sm py-1 flex-1"
                 autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleEditSave(subtask.id);
+                  } else if (e.key === 'Escape') {
+                    handleEditCancel();
+                  }
+                }}
               />
               <button 
                 onClick={() => handleEditSave(subtask.id)}
@@ -114,17 +121,12 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
               </button>
             </div>
           ) : (
-            <>
-              <span className={`text-sm flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/60' : 'text-safespace-foreground'}`}>
-                {subtask.text}
-              </span>
-              <button
-                onClick={() => handleEditStart(subtask.id, subtask.text)}
-                className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-              >
-                <Pencil className="w-3 h-3" />
-              </button>
-            </>
+            <span 
+              className={`text-sm flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/60' : 'text-safespace-foreground'} cursor-pointer`}
+              onDoubleClick={() => handleEditStart(subtask.id, subtask.text)}
+            >
+              {subtask.text}
+            </span>
           )}
         </div>
       ))}

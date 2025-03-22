@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import { TodoItem } from '../../lib/types';
-import { Check, ChevronDown, ChevronUp, Plus } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Plus, Save, X } from 'lucide-react';
 import { addSubtask, saveTodos, getTodos } from '../../lib/storage';
 import TodoSubtaskList from './TodoSubtaskList';
+import { Input } from '@/components/ui/input';
 
 interface TodoItemComponentProps {
   todo: TodoItem;
@@ -24,6 +25,8 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
 }) => {
   const [activeTodoId, setActiveTodoId] = useState<string | null>(null);
   const [newSubtaskText, setNewSubtaskText] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingText, setEditingText] = useState(todo.text);
 
   const handleToggleTodo = () => {
     const todos = getTodos();
@@ -41,6 +44,33 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
     onTodosChanged();
     setNewSubtaskText('');
     setActiveTodoId(null);
+  };
+
+  const handleEditStart = () => {
+    setIsEditing(true);
+    setEditingText(todo.text);
+  };
+
+  const handleEditSave = () => {
+    if (!editingText.trim()) {
+      setIsEditing(false);
+      setEditingText(todo.text);
+      return;
+    }
+
+    const todos = getTodos();
+    const updatedTodos = todos.map(t => t.id === todo.id ? {
+      ...t,
+      text: editingText.trim()
+    } : t);
+    saveTodos(updatedTodos);
+    onTodosChanged();
+    setIsEditing(false);
+  };
+
+  const handleEditCancel = () => {
+    setIsEditing(false);
+    setEditingText(todo.text);
   };
 
   const getImportanceClass = (importance: string): string => {
@@ -68,27 +98,62 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
         
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
-            <p className={`text-safespace-foreground ${todo.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''}`}>
-              {todo.text}
-            </p>
-            
-            <div className="flex items-center gap-2 ml-2">
-              <span className={`text-xs ${getImportanceClass(todo.importance)}`}>
-                {todo.importance}
-              </span>
-              
-              <div className="relative">
+            {isEditing ? (
+              <div className="flex-1 flex items-center gap-2">
+                <Input
+                  value={editingText}
+                  onChange={(e) => setEditingText(e.target.value)}
+                  className="h-8 text-sm py-1 flex-1"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleEditSave();
+                    } else if (e.key === 'Escape') {
+                      handleEditCancel();
+                    }
+                  }}
+                />
                 <button 
-                  onClick={onSetActive} 
-                  className={`px-2 py-1 text-xs ${isActive ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'}`}
+                  onClick={handleEditSave}
+                  className="text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
                 >
-                  {isActive ? 'Active' : 'Set Active'}
+                  <Save className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={handleEditCancel}
+                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+                >
+                  <X className="w-4 h-4" />
                 </button>
               </div>
-            </div>
+            ) : (
+              <p 
+                className={`text-safespace-foreground ${todo.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''} cursor-pointer`}
+                onDoubleClick={handleEditStart}
+              >
+                {todo.text}
+              </p>
+            )}
+            
+            {!isEditing && (
+              <div className="flex items-center gap-2 ml-2">
+                <span className={`text-xs ${getImportanceClass(todo.importance)}`}>
+                  {todo.importance}
+                </span>
+                
+                <div className="relative">
+                  <button 
+                    onClick={onSetActive} 
+                    className={`px-2 py-1 text-xs ${isActive ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'}`}
+                  >
+                    {isActive ? 'Active' : 'Set Active'}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
           
-          {todo.subtasks.length > 0 && (
+          {todo.subtasks.length > 0 && !isEditing && (
             <div className="mt-3 space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Steps</h4>
@@ -107,43 +172,45 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
             </div>
           )}
           
-          <div className="mt-3">
-            {activeTodoId === todo.id ? (
-              <div className="flex gap-2 items-center animate-fade-in">
-                <input 
-                  type="text" 
-                  value={newSubtaskText} 
-                  onChange={e => setNewSubtaskText(e.target.value)} 
-                  placeholder="Add a step..." 
-                  className="flex-1 px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-black/30 dark:text-white dark:placeholder-gray-400" 
-                />
+          {!isEditing && (
+            <div className="mt-3">
+              {activeTodoId === todo.id ? (
+                <div className="flex gap-2 items-center animate-fade-in">
+                  <input 
+                    type="text" 
+                    value={newSubtaskText} 
+                    onChange={e => setNewSubtaskText(e.target.value)} 
+                    placeholder="Add a step..." 
+                    className="flex-1 px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-black/30 dark:text-white dark:placeholder-gray-400" 
+                  />
+                  <button 
+                    onClick={handleAddSubtask} 
+                    disabled={!newSubtaskText.trim()} 
+                    className={`px-3 py-1.5 rounded-md text-xs transition-colors ${!newSubtaskText.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+                  >
+                    Add
+                  </button>
+                  <button 
+                    onClick={() => setActiveTodoId(null)} 
+                    className="px-2 py-1.5 rounded-md text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
                 <button 
-                  onClick={handleAddSubtask} 
-                  disabled={!newSubtaskText.trim()} 
-                  className={`px-3 py-1.5 rounded-md text-xs transition-colors ${!newSubtaskText.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+                  onClick={() => {
+                    setActiveTodoId(todo.id);
+                    setNewSubtaskText('');
+                  }} 
+                  className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                 >
-                  Add
+                  <Plus className="w-3 h-3" />
+                  <span>Add Step</span>
                 </button>
-                <button 
-                  onClick={() => setActiveTodoId(null)} 
-                  className="px-2 py-1.5 rounded-md text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <button 
-                onClick={() => {
-                  setActiveTodoId(todo.id);
-                  setNewSubtaskText('');
-                }} 
-                className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-              >
-                <Plus className="w-3 h-3" />
-                <span>Add Step</span>
-              </button>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
