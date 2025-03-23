@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Check, Save, X } from 'lucide-react';
 import { getTodos, saveTodos } from '../../lib/storage';
@@ -122,7 +121,7 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
             </div>
           ) : (
             <span 
-              className={`text-sm flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/60' : 'text-safespace-foreground'} cursor-pointer`}
+              className={`text-sm flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/60' : 'text-safespace-foreground'}`}
               onDoubleClick={() => handleEditStart(subtask.id, subtask.text)}
             >
               {subtask.text}
