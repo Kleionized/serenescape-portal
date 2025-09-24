@@ -21,43 +21,50 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({
   onCancel
 }) => {
   return (
-    <div className="mb-4 p-4 bg-gray-50/50 rounded-md animate-fade-in dark:bg-black/20">
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Add Task to {section}</h3>
+    <div className="rounded-2xl border border-safespace-muted bg-white p-4">
+      <h3 className="mb-3 text-sm font-semibold text-safespace-foreground/70">
+        Add task to <span className="text-safespace-primary">{section}</span>
+      </h3>
       <div className="space-y-3">
-        <textarea 
-          value={text} 
-          onChange={e => onTextChange(e.target.value)} 
-          placeholder="Enter task description..." 
-          className="w-full p-3 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 resize-none dark:bg-black/30 dark:text-white dark:placeholder-gray-400" 
-          rows={2} 
+        <textarea
+          value={text}
+          onChange={(e) => onTextChange(e.target.value)}
+          placeholder="Describe the next step"
+          className="w-full resize-none rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none"
+          rows={2}
         />
-        
-        <div className="flex items-center gap-4">
+
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
           <div className="flex-1">
-            <label className="block text-sm text-gray-500 dark:text-gray-400 mb-1">Importance:</label>
-            <select 
-              value={importance} 
-              onChange={e => onImportanceChange(e.target.value as 'low' | 'medium' | 'high')} 
-              className="w-full p-2 border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-black/30 dark:text-white"
+            <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.25em] text-safespace-foreground/45">
+              Importance
+            </label>
+            <select
+              value={importance}
+              onChange={(e) => onImportanceChange(e.target.value as 'low' | 'medium' | 'high')}
+              className="w-full rounded-xl border border-safespace-muted px-3 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
           </div>
-          
-          <div className="flex gap-2 mt-6">
-            <button 
-              onClick={onAdd} 
-              disabled={!text.trim()} 
-              className={`px-4 py-2 rounded-md text-sm transition-colors ${!text.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onAdd}
+              disabled={!text.trim()}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                !text.trim()
+                  ? 'bg-safespace-muted text-safespace-foreground/40'
+                  : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
+              }`}
             >
-              Add Task
+              Add
             </button>
-            
-            <button 
-              onClick={onCancel} 
-              className="px-4 py-2 rounded-md text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            <button
+              onClick={onCancel}
+              className="rounded-full border border-safespace-muted px-4 py-2 text-sm font-semibold text-safespace-foreground/60 hover:border-safespace-primary/40 hover:text-safespace-primary"
             >
               Cancel
             </button>

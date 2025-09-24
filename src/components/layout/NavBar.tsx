@@ -1,100 +1,101 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, MessageSquare, Search, Archive, ListTodo, Menu, X, Heart } from 'lucide-react';
+import { Archive, Heart, ListTodo, Menu, MessageSquare, Search, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 const NavBar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const navItems = [
-    { path: '/', label: 'Home', icon: <Home className="w-5 h-5" /> },
-    { path: '/thought-dump', label: 'Thought Dump', icon: <MessageSquare className="w-5 h-5" /> },
-    { path: '/root-cause', label: 'Root Cause', icon: <Search className="w-5 h-5" /> },
-    { path: '/todo', label: 'Todo', icon: <ListTodo className="w-5 h-5" /> },
-    { path: '/saved-entries', label: 'Saved Entries', icon: <Archive className="w-5 h-5" /> }
+    { path: '/', label: 'Home' },
+    { path: '/thought-dump', label: 'Thought Dump' },
+    { path: '/root-cause', label: 'Root Cause' },
+    { path: '/todo', label: 'Focus' },
+    { path: '/saved-entries', label: 'Saved Entries' }
   ];
-  
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-  
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-  
+
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-safespace-background backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-safespace-primary flex items-center justify-center">
-                <Heart className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-lg font-medium text-safespace-foreground">Your Safe Space</span>
-            </Link>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center">
-            <div className="flex items-center space-x-1 mr-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    location.pathname === item.path
-                      ? 'bg-safespace-primary/10 text-safespace-primary'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <ThemeToggle />
-          </div>
-          
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <ThemeToggle />
-            <button
-              type="button"
-              className="ml-2 bg-safespace-background p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-safespace-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-safespace-primary"
-              onClick={toggleMobileMenu}
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Mobile menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-safespace-background/95 backdrop-blur-md animate-fade-in">
-          <div className="pt-2 pb-3 space-y-1 px-4">
-            {navItems.map((item) => (
+    <nav className="fixed inset-x-0 top-0 z-40 border-b border-safespace-muted/40 bg-safespace-background/85 backdrop-blur dark:border-white/5 dark:bg-slate-950/80">
+      <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+        <Link to="/" className="flex items-center gap-2 text-base font-semibold text-safespace-foreground dark:text-slate-100">
+          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/25">
+            <Heart className="h-4 w-4" />
+          </span>
+          <span>Your Safe Space</span>
+        </Link>
+
+        <div className="hidden items-center gap-6 md:flex">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  location.pathname === item.path
-                    ? 'bg-safespace-primary/10 text-safespace-primary'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                className={`relative px-1 text-[15px] font-semibold transition ${
+                  isActive
+                    ? 'text-safespace-foreground dark:text-slate-100'
+                    : 'text-safespace-foreground/55 hover:text-safespace-foreground dark:text-slate-300 dark:hover:text-slate-100'
                 }`}
-                onClick={closeMobileMenu}
               >
-                <div className="flex items-center gap-3">
-                  {item.icon}
-                  <span>{item.label}</span>
-                </div>
+                {item.label}
+                {isActive && (
+                  <span className="absolute -bottom-2 left-1/2 h-[3px] w-3/5 -translate-x-1/2 rounded-full bg-safespace-primary" />
+                )}
               </Link>
-            ))}
+            );
+          })}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-2xl border border-safespace-muted/60 text-safespace-foreground transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/10 dark:text-slate-100 dark:hover:text-safespace-primary md:hidden"
+            onClick={toggleMobileMenu}
+            aria-expanded={isMobileMenuOpen}
+            aria-label="Toggle navigation"
+          >
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {isMobileMenuOpen && (
+        <div className="border-t border-safespace-muted/40 bg-safespace-background/95 px-5 pb-6 pt-4 shadow-sm backdrop-blur dark:border-white/5 dark:bg-slate-950/95 md:hidden">
+          <div className="flex flex-col gap-2 text-base">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              const Icon =
+                item.path === '/thought-dump'
+                  ? MessageSquare
+                  : item.path === '/root-cause'
+                    ? Search
+                    : item.path === '/todo'
+                      ? ListTodo
+                      : item.path === '/saved-entries'
+                        ? Archive
+                        : Heart;
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 rounded-2xl px-3 py-2 transition ${
+                    isActive
+                      ? 'bg-white text-safespace-foreground dark:bg-slate-900 dark:text-slate-100'
+                      : 'text-safespace-foreground/70 hover:bg-white/80 hover:text-safespace-foreground dark:text-slate-200 dark:hover:bg-slate-900/80 dark:hover:text-slate-100'
+                  }`}
+                  onClick={closeMobileMenu}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}

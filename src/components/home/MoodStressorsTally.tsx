@@ -1,7 +1,7 @@
 import React from 'react';
 import { MoodStressor } from '../../lib/types';
 import { getStressors, resolveStressor } from '../../lib/storage';
-import { Check } from 'lucide-react';
+import { Check, Feather, Flame, Eye, EyeOff } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 const MoodStressorsTally = () => {
   const [stressors, setStressors] = React.useState<MoodStressor[]>([]);
@@ -37,60 +37,60 @@ const MoodStressorsTally = () => {
     loadStressors();
   };
   const getStressColor = (count: number): string => {
-    if (count >= 5) return 'bg-safespace-stress-high text-white';
-    if (count >= 3) return 'bg-safespace-stress-medium text-gray-900';
-    return 'bg-safespace-stress-low text-gray-900';
+    if (count >= 5) return 'text-safespace-stress-high';
+    if (count >= 3) return 'text-safespace-stress-medium';
+    return 'text-safespace-stress-low';
   };
   const filteredStressors = showResolved ? stressors : stressors.filter(stressor => !stressor.resolved);
-  return <div className="h-full flex flex-col animate-scale-in">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="heading-sm">Mood Stressors Tally</h2>
-        
+  return (
+    <div className="flex h-full flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70">
+          <Feather className="h-4 w-4 text-safespace-primary" />
+          <span>Mood stressors</span>
+        </div>
+        <button
+          onClick={() => setShowResolved((prev) => !prev)}
+          className="inline-flex items-center gap-2 rounded-full border border-safespace-muted px-3 py-1 text-xs font-medium text-safespace-foreground/60 transition hover:border-safespace-primary/40 hover:text-safespace-primary"
+        >
+          {showResolved ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+          {showResolved ? 'Hide resolved' : 'Show resolved'}
+        </button>
       </div>
-      
-      {filteredStressors.length === 0 ? <div className="text-center py-6 flex-1 flex flex-col justify-center">
-          <p className="text-safespace-foreground dark:text-white">
-            {showResolved ? "No stressors recorded yet." : "No active stressors recorded yet."}
-          </p>
-          <p className="text-sm text-safespace-foreground dark:text-white/80 mt-2">
-            Your stressors from mood check-ins will appear here.
-          </p>
-        </div> : <div className="space-y-4 flex-1 overflow-y-auto pr-2">
-          {filteredStressors.map(stressor => <div key={stressor.id} className="flex items-center justify-between group py-2">
-              <div className="flex items-center gap-2">
-                {stressor.resolved && <Check className="w-4 h-4 text-green-500" />}
-                <span className={`text-safespace-foreground dark:text-white ${stressor.resolved ? 'line-through text-gray-400 dark:text-gray-500' : ''}`}>
+
+      {filteredStressors.length === 0 ? (
+        <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-safespace-muted p-8 text-center text-sm text-safespace-foreground/60">
+          <Flame className="mb-3 h-6 w-6 text-safespace-primary/70" />
+          {showResolved ? 'No stressors recorded yet.' : 'All clear for now.'}
+        </div>
+      ) : (
+        <ul className="space-y-3">
+          {filteredStressors.map((stressor) => (
+            <li key={stressor.id} className="flex items-center justify-between rounded-xl border border-safespace-muted bg-white px-4 py-3 text-sm">
+              <div className="flex items-center gap-3">
+                {stressor.resolved && <Check className="h-4 w-4 text-safespace-stress-low" />}
+                <span className={`text-safespace-foreground ${stressor.resolved ? 'line-through opacity-60' : ''}`}>
                   {stressor.name}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className={`${getStressColor(stressor.count)} px-3 py-1 rounded-full text-sm font-medium`}>
+              <div className="flex items-center gap-3">
+                <span className={`text-xs font-semibold uppercase tracking-[0.25em] ${getStressColor(stressor.count)}`}>
                   {stressor.count}
                 </span>
-                
-                {!stressor.resolved && <button onClick={() => handleResolveStressor(stressor.id, stressor.name)} className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" title="Mark as resolved">
-                    <Check className="w-4 h-4 text-green-500" />
-                  </button>}
+                {!stressor.resolved && (
+                  <button
+                    onClick={() => handleResolveStressor(stressor.id, stressor.name)}
+                    className="text-xs font-medium text-safespace-primary hover:text-safespace-primary/70"
+                  >
+                    mark done
+                  </button>
+                )}
               </div>
-            </div>)}
-        </div>}
-      
-      <div className="mt-auto pt-4 text-xs text-safespace-foreground dark:text-white/70">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-full bg-safespace-stress-low"></span>
-            <span>1-2 occurrences</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-full bg-safespace-stress-medium"></span>
-            <span>3-4 occurrences</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-3 h-3 rounded-full bg-safespace-stress-high"></span>
-            <span>5+ occurrences</span>
-          </div>
-        </div>
-      </div>
-    </div>;
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 };
 export default MoodStressorsTally;

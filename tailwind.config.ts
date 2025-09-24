@@ -19,6 +19,15 @@ export default {
 			}
 		},
 		extend: {
+			backgroundImage: {
+				'safespace-hero': 'radial-gradient(circle at 20% 20%, rgba(255, 209, 233, 0.9), rgba(255, 255, 255, 0.6) 45%, rgba(255, 255, 255, 0))',
+				'safespace-card': 'linear-gradient(135deg, rgba(255, 235, 245, 0.9), rgba(255, 255, 255, 0.95))',
+				'safespace-overlay': 'radial-gradient(circle at 80% 20%, rgba(195, 210, 254, 0.65), rgba(255, 255, 255, 0))',
+			},
+			boxShadow: {
+				'soft-lg': '0 20px 45px -25px rgba(233, 99, 150, 0.55)',
+				'soft-sm': '0 12px 30px -16px rgba(180, 172, 255, 0.45)'
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

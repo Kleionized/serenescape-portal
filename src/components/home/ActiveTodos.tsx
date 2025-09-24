@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { getActiveTodos, getTodos, saveActiveTodos, toggleTodoCompletion, deleteCompletedTodos } from '../../lib/storage';
 import { TodoItem } from '../../lib/types';
-import { Check, ChevronDown, ChevronRight, ChevronUp, Trash2 } from 'lucide-react';
+import { Check, ChevronDown, ChevronRight, ChevronUp, Trash2, ListTodo, Sparkle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import TodoSubtaskList from '../todo/TodoSubtaskList';
@@ -75,13 +74,13 @@ const ActiveTodos = () => {
   const getImportanceClass = (importance: string): string => {
     switch (importance) {
       case 'high':
-        return 'bg-safespace-stress-high/20 text-safespace-stress-high';
+        return 'text-safespace-stress-high';
       case 'medium':
-        return 'bg-safespace-stress-medium/20 text-safespace-stress-medium';
+        return 'text-safespace-stress-medium';
       case 'low':
-        return 'bg-gray-100 text-gray-600';
+        return 'text-safespace-foreground/50';
       default:
-        return 'bg-gray-100 text-gray-600';
+        return 'text-safespace-foreground/50';
     }
   };
   
@@ -93,79 +92,95 @@ const ActiveTodos = () => {
     );
   };
 
-  return <div className="h-full flex flex-col animate-scale-in">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="heading-sm">To-Dos</h2>
-        
-        {activeTodos.some(todo => todo.completed) && <button onClick={handleDeleteCompleted} className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-red-500 text-white hover:bg-red-600 transition-colors">
-            <Trash2 className="w-3 h-3" />
-            <span>Delete Completed</span>
-          </button>}
+  const totalCompleted = activeTodos.filter((todo) => todo.completed).length;
+
+  return (
+    <div className="flex h-full flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70">
+          <ListTodo className="h-4 w-4 text-safespace-secondary" />
+          <span>Today’s focus</span>
+        </div>
+        {activeTodos.some((todo) => todo.completed) && (
+          <button
+            onClick={handleDeleteCompleted}
+            className="text-xs font-semibold text-safespace-primary hover:text-safespace-primary/80"
+          >
+            Clear completed
+          </button>
+        )}
       </div>
-      
-      {activeTodos.length === 0 ? <div className="text-center py-6 flex-1 flex flex-col justify-center">
-          <p className="text-safespace-foreground dark:text-white">No active to-dos yet.</p>
-          <p className="text-sm text-safespace-foreground dark:text-white/80 mt-2">
-            <Link to="/todo" className="text-safespace-primary hover:underline">
-              Add some tasks
-            </Link>{" "}
-            to get started.
-          </p>
-        </div> : <div className="space-y-4 flex-1 overflow-y-auto pr-2">
-          {activeTodos.map(todo => 
-            <div key={todo.id} className={`flex flex-col transition-all ${todo.completed ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-400' : 'bg-white/50 dark:bg-gray-800/30 text-gray-800 dark:text-white'} rounded-lg`}>
-              <div className="flex items-center gap-3 py-3 px-3">
-                <button onClick={() => handleToggleTodo(todo.id)} className={`flex-shrink-0 w-6 h-6 rounded-full border ${todo.completed ? 'bg-safespace-primary border-safespace-primary text-white' : 'border-gray-300 dark:border-gray-600 hover:border-safespace-primary'} flex items-center justify-center transition-colors`}>
-                  {todo.completed && <Check className="w-4 h-4" />}
-                </button>
-                
-                <span className={`flex-1 ${todo.completed ? 'line-through' : ''}`}>
-                  {todo.text}
-                </span>
-                
-                <span className={`pill-tag text-xs ${getImportanceClass(todo.importance)}`}>
-                  {todo.importance}
-                </span>
-                
-                {todo.subtasks.length > 0 && (
-                  <button 
-                    onClick={() => toggleExpandTodo(todo.id)} 
-                    className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 ml-1"
+
+      <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/40">
+        {activeTodos.length === 0 ? 'No active tasks' : `${totalCompleted}/${activeTodos.length} complete`}
+      </p>
+
+      {activeTodos.length === 0 ? (
+        <div className="flex flex-1 flex-col items-center justify-center rounded-xl border border-dashed border-safespace-muted px-6 py-8 text-center text-sm text-safespace-foreground/60">
+          <Sparkle className="mb-2 h-6 w-6 text-safespace-secondary" />
+          Nothing selected yet.
+          <Link to="/todo" className="mt-2 text-xs font-semibold text-safespace-primary hover:underline">
+            Choose a focus from the board
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {activeTodos.map((todo) => {
+            const isExpanded = expandedTodos.includes(todo.id);
+            return (
+              <div key={todo.id} className="rounded-xl border border-safespace-muted bg-white px-4 py-3 text-sm">
+                <div className="flex items-start gap-3">
+                  <button
+                    onClick={() => handleToggleTodo(todo.id)}
+                    className={`mt-0.5 flex h-5 w-5 items-center justify-center rounded border ${
+                      todo.completed
+                        ? 'border-safespace-primary bg-safespace-primary text-white'
+                        : 'border-safespace-muted text-safespace-foreground'
+                    }`}
+                    aria-label={todo.completed ? 'Mark as incomplete' : 'Mark as complete'}
                   >
-                    {expandedTodos.includes(todo.id) ? 
-                      <ChevronUp className="w-4 h-4" /> : 
-                      <ChevronDown className="w-4 h-4" />
-                    }
+                    {todo.completed && <Check className="h-3 w-3" />}
                   </button>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`flex-1 ${todo.completed ? 'line-through text-safespace-foreground/40' : 'text-safespace-foreground'}`}>
+                        {todo.text}
+                      </span>
+                      <span className={`rounded-full border border-safespace-muted px-2 py-0.5 text-[11px] uppercase tracking-[0.25em] ${getImportanceClass(todo.importance)}`}>
+                        {todo.importance}
+                      </span>
+                    </div>
+                    {todo.subtasks.length > 0 && (
+                      <button
+                        onClick={() => toggleExpandTodo(todo.id)}
+                        className="inline-flex items-center gap-1 text-xs text-safespace-foreground/50 hover:text-safespace-primary"
+                      >
+                        {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                        subtasks
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {isExpanded && todo.subtasks.length > 0 && (
+                  <div className="mt-3 border-t border-safespace-muted pt-3">
+                    <TodoSubtaskList todoId={todo.id} subtasks={todo.subtasks} onSubtasksChanged={loadActiveTodos} />
+                  </div>
                 )}
               </div>
-              
-              {expandedTodos.includes(todo.id) && todo.subtasks.length > 0 && (
-                <div className="px-4 pb-3">
-                  <TodoSubtaskList 
-                    todoId={todo.id}
-                    subtasks={todo.subtasks}
-                    onSubtasksChanged={loadActiveTodos}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-        </div>}
-      
-      {allCompleted && <div className="mt-auto pt-4 p-4 bg-safespace-primary/10 dark:bg-safespace-primary/20 rounded-lg text-center animate-fade-in">
-          <p className="text-safespace-primary font-medium">Great job! All your active tasks are completed.</p>
-          <div className="mt-3 flex justify-center gap-3">
-            <button onClick={handleDeleteCompleted} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-sm bg-red-500 text-white hover:bg-red-600 transition-colors">
-              <Trash2 className="w-4 h-4" />
-              <span>Delete Completed</span>
-            </button>
-            <Link to="/todo" className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-sm bg-safespace-primary text-white hover:bg-safespace-primary/90 transition-colors">
-              Select new tasks
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>}
-    </div>;
+            );
+          })}
+        </div>
+      )}
+
+      {allCompleted && activeTodos.length > 0 && (
+        <div className="rounded-xl border border-safespace-muted bg-white px-4 py-3 text-center text-xs text-safespace-foreground/60">
+          Everything here is wrapped up. Pick a new focus from the board when you’re ready.
+          <Link to="/todo" className="ml-1 font-semibold text-safespace-primary hover:underline">
+            Open board
+          </Link>
+        </div>
+      )}
+    </div>
+  );
 };
 export default ActiveTodos;

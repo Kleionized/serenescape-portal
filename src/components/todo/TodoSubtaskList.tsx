@@ -81,22 +81,27 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
   };
 
   return (
-    <div className="pl-2 border-l-2 border-gray-200 space-y-2 my-2 dark:border-gray-700">
-      {subtasks.map(subtask => (
-        <div key={subtask.id} className="flex items-start gap-2">
-          <button 
-            onClick={() => handleToggleSubtask(subtask.id)} 
-            className={`flex-shrink-0 w-4 h-4 mt-1 rounded-sm border ${subtask.completed ? 'bg-safespace-primary border-safespace-primary text-white' : 'border-gray-300 hover:border-safespace-primary dark:border-gray-600'} flex items-center justify-center transition-colors`}
+    <div className="my-2 space-y-2 border-l border-safespace-muted pl-3">
+      {subtasks.map((subtask) => (
+        <div key={subtask.id} className="flex items-start gap-2 rounded-lg bg-safespace-muted px-3 py-2">
+          <button
+            onClick={() => handleToggleSubtask(subtask.id)}
+            className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border ${
+              subtask.completed
+                ? 'border-safespace-primary bg-safespace-primary text-white'
+                : 'border-safespace-muted text-safespace-primary'
+            }`}
+            aria-label={subtask.completed ? 'Mark step as incomplete' : 'Mark step as complete'}
           >
-            {subtask.completed && <Check className="w-3 h-3" />}
+            {subtask.completed && <Check className="h-3 w-3" />}
           </button>
-          
+
           {editingSubtaskId === subtask.id ? (
-            <div className="flex-1 flex items-center gap-2">
+            <div className="flex flex-1 items-center gap-2">
               <Input
                 value={editingText}
                 onChange={(e) => setEditingText(e.target.value)}
-                className="h-8 text-sm py-1 flex-1"
+                className="h-8 flex-1 rounded-lg border border-safespace-muted text-xs"
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -106,22 +111,22 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
                   }
                 }}
               />
-              <button 
+              <button
                 onClick={() => handleEditSave(subtask.id)}
-                className="text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
+                className="text-safespace-primary hover:text-safespace-primary/70"
               >
-                <Save className="w-4 h-4" />
+                <Save className="h-3.5 w-3.5" />
               </button>
-              <button 
+              <button
                 onClick={handleEditCancel}
-                className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+                className="text-safespace-foreground/50 hover:text-safespace-primary"
               >
-                <X className="w-4 h-4" />
+                <X className="h-3.5 w-3.5" />
               </button>
             </div>
           ) : (
-            <span 
-              className={`text-sm flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/60' : 'text-safespace-foreground'}`}
+            <span
+              className={`flex-1 text-xs ${subtask.completed ? 'line-through text-safespace-foreground/50' : 'text-safespace-foreground'}`}
               onDoubleClick={() => handleEditStart(subtask.id, subtask.text)}
             >
               {subtask.text}

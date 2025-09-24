@@ -60,9 +60,10 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
     setStressors(newStressors);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (overrideStressors?: string[]) => {
     if (selectedMood) {
-      addMoodCheckIn(selectedMood, stressors);
+      const payload = overrideStressors ?? stressors;
+      addMoodCheckIn(selectedMood, payload);
       toast({
         title: "Mood Check-In Recorded",
         description: "Your mood has been recorded successfully."
@@ -73,13 +74,17 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
     }
   };
 
+  const handleSkip = () => {
+    handleSubmit([]);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-transparent backdrop-blur-sm rounded-xl p-8 max-w-2xl w-full mx-4 shadow-xl animate-scale-in border dark:border-gray-800/50 border-white/50">
+      <div className="bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm rounded-xl p-8 max-w-2xl w-full mx-4 shadow-xl animate-scale-in border border-white/50 dark:border-white/10">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-md text-safespace-primary">Mood Check-In</h2>
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-            <X className="w-5 h-5" />
+          <h2 className="heading-md text-safespace-primary dark:text-safespace-primary/80">Mood Check-In</h2>
+          <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+            <X className="w-5 h-5 text-safespace-foreground dark:text-slate-200" />
           </button>
         </div>
         
@@ -195,21 +200,30 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
               )}
             </div>
             
-            <div className="flex justify-end space-x-3">
-              <Button 
-                variant="outline" 
-                onClick={() => setStep('mood')} 
-                className="border-gray-300 dark:border-gray-600 dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <Button
+                variant="ghost"
+                onClick={handleSkip}
+                className="text-safespace-foreground/70 hover:text-safespace-primary dark:text-gray-300"
               >
-                Back
+                Skip for now
               </Button>
-              <Button 
-                onClick={handleSubmit} 
-                disabled={stressors.length === 0} 
-                className="dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70"
-              >
-                {stressors.length > 0 ? 'Submit' : 'Skip'}
-              </Button>
+              <div className="flex gap-3">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setStep('mood')} 
+                  className="border-gray-300 dark:border-gray-600 dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
+                >
+                  Back
+                </Button>
+                <Button 
+                  onClick={() => handleSubmit()}
+                  disabled={stressors.length === 0}
+                  className="dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70"
+                >
+                  Save check-in
+                </Button>
+              </div>
             </div>
           </div>
         )}

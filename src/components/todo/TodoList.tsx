@@ -22,12 +22,27 @@ const TodoList: React.FC<TodoListProps> = ({
     }
   };
   if (todos.length === 0) {
-    return <div className="text-center py-3">
-        
-      </div>;
+    return (
+      <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/70 px-6 py-12 text-center text-sm text-safespace-foreground/60">
+        Nothing here yet—add a task when you feel ready.
+      </div>
+    );
   }
-  return <div className="space-y-3">
-      {todos.map(todo => <TodoItemComponent key={todo.id} todo={todo} isActive={activeTodoIds.includes(todo.id)} isExpanded={expandedTodos.includes(todo.id)} onToggleExpand={() => handleToggleTodoExpand(todo.id)} onSetActive={() => onSetActiveTodo(todo.id)} onTodosChanged={onTodosChanged} />)}
-    </div>;
+
+  return (
+    <div className="space-y-3">
+      {todos.map((todo) => (
+        <TodoItemComponent
+          key={todo.id}
+          todo={todo}
+          isActive={activeTodoIds.includes(todo.id)}
+          isExpanded={expandedTodos.includes(todo.id)}
+          onToggleExpand={() => handleToggleTodoExpand(todo.id)}
+          onSetActive={() => onSetActiveTodo(todo.id)}
+          onTodosChanged={onTodosChanged}
+        />
+      ))}
+    </div>
+  );
 };
 export default TodoList;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { TodoItem } from '../../lib/types';
 import { Check, ChevronDown, ChevronUp, Plus, Save, X } from 'lucide-react';
@@ -30,10 +29,14 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
 
   const handleToggleTodo = () => {
     const todos = getTodos();
-    const updatedTodos = todos.map(t => t.id === todo.id ? {
-      ...t,
-      completed: !t.completed
-    } : t);
+    const updatedTodos = todos.map((t) =>
+      t.id === todo.id
+        ? {
+            ...t,
+            completed: !t.completed
+          }
+        : t
+    );
     saveTodos(updatedTodos);
     onTodosChanged();
   };
@@ -59,10 +62,14 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
     }
 
     const todos = getTodos();
-    const updatedTodos = todos.map(t => t.id === todo.id ? {
-      ...t,
-      text: editingText.trim()
-    } : t);
+    const updatedTodos = todos.map((t) =>
+      t.id === todo.id
+        ? {
+            ...t,
+            text: editingText.trim()
+          }
+        : t
+    );
     saveTodos(updatedTodos);
     onTodosChanged();
     setIsEditing(false);
@@ -76,34 +83,39 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
   const getImportanceClass = (importance: string): string => {
     switch (importance) {
       case 'high':
-        return 'text-gray-500 dark:text-gray-400';
+        return 'text-safespace-stress-high';
       case 'medium':
-        return 'text-gray-500 dark:text-gray-400';
+        return 'text-safespace-stress-medium';
       case 'low':
-        return 'text-gray-500 dark:text-gray-400';
+        return 'text-safespace-foreground/60';
       default:
-        return 'text-gray-500 dark:text-gray-400';
+        return 'text-safespace-foreground/60';
     }
   };
 
   return (
-    <div className={`border border-gray-100 dark:border-gray-800 rounded-lg ${todo.completed ? 'bg-gray-50/50 dark:bg-black/10' : 'bg-white/50 dark:bg-black/5'}`}>
-      <div className="p-4 flex items-start gap-3">
-        <button 
-          onClick={handleToggleTodo} 
-          className={`flex-shrink-0 w-6 h-6 mt-0.5 rounded-full border ${todo.completed ? 'border-gray-300 bg-gray-100 text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400' : 'border-gray-300 hover:border-gray-400 dark:border-gray-700 dark:hover:border-gray-600'} flex items-center justify-center transition-colors`}
+    <div className="rounded-2xl border border-safespace-muted/60 bg-white/90 p-5 text-sm shadow-sm backdrop-blur">
+      <div className="flex items-start gap-4">
+        <button
+          onClick={handleToggleTodo}
+          className={`mt-1 flex h-6 w-6 items-center justify-center rounded-full border text-xs transition ${
+            todo.completed
+              ? 'border-safespace-primary bg-safespace-primary text-white'
+              : 'border-safespace-muted/70 bg-white text-safespace-foreground hover:border-safespace-primary/40'
+          }`}
+          aria-label={todo.completed ? 'Mark as incomplete' : 'Mark as complete'}
         >
-          {todo.completed && <Check className="w-4 h-4" />}
+          {todo.completed && <Check className="h-3.5 w-3.5" />}
         </button>
-        
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between">
+
+        <div className="flex-1 space-y-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
             {isEditing ? (
-              <div className="flex-1 flex items-center gap-2">
+              <div className="flex flex-1 items-center gap-2">
                 <Input
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
-                  className="h-8 text-sm py-1 flex-1"
+                  className="h-10 flex-1 rounded-xl border border-safespace-muted/60 text-sm"
                   autoFocus
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -113,57 +125,67 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
                     }
                   }}
                 />
-                <button 
+                <button
                   onClick={handleEditSave}
-                  className="text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
+                  className="text-safespace-primary transition hover:text-safespace-primary/80"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="h-4 w-4" />
                 </button>
-                <button 
+                <button
                   onClick={handleEditCancel}
-                  className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-safespace-foreground/50 transition hover:text-safespace-primary"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             ) : (
-              <p 
-                className={`text-safespace-foreground ${todo.completed ? 'line-through text-gray-400 dark:text-gray-500' : ''} cursor-pointer`}
+              <p
+                className={`flex-1 leading-relaxed ${
+                  todo.completed
+                    ? 'line-through text-safespace-foreground/40'
+                    : 'text-safespace-foreground'
+                }`}
                 onDoubleClick={handleEditStart}
               >
                 {todo.text}
               </p>
             )}
-            
-            {!isEditing && (
-              <div className="flex items-center gap-2 ml-2">
-                <span className={`text-xs ${getImportanceClass(todo.importance)}`}>
-                  {todo.importance}
-                </span>
-                
-                <div className="relative">
-                  <button 
-                    onClick={onSetActive} 
-                    className={`px-2 py-1 text-xs ${isActive ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300'}`}
-                  >
-                    {isActive ? 'Active' : 'Set Active'}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {todo.subtasks.length > 0 && !isEditing && (
-            <div className="mt-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400">Steps</h4>
-                <button onClick={onToggleExpand} className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
-                  {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full bg-safespace-background/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-safespace-foreground/55">
+                {todo.section}
+              </span>
+              <span
+                className={`rounded-full border border-safespace-muted px-3 py-1 text-[11px] uppercase tracking-[0.25em] ${getImportanceClass(todo.importance)}`}
+              >
+                {todo.importance}
+              </span>
+              {!isEditing && (
+                <button
+                  onClick={onSetActive}
+                  className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] transition ${
+                    isActive
+                      ? 'bg-safespace-primary text-white'
+                      : 'bg-white/80 text-safespace-foreground/60 ring-1 ring-safespace-muted/60 hover:text-safespace-foreground'
+                  }`}
+                >
+                  {isActive ? 'in focus' : 'set focus'}
                 </button>
-              </div>
-              
+              )}
+            </div>
+          </div>
+
+          {todo.subtasks.length > 0 && !isEditing && (
+            <div className="space-y-2">
+              <button
+                onClick={onToggleExpand}
+                className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/55 transition hover:text-safespace-primary"
+              >
+                {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                steps
+              </button>
               {isExpanded && (
-                <TodoSubtaskList 
+                <TodoSubtaskList
                   todoId={todo.id}
                   subtasks={todo.subtasks}
                   onSubtasksChanged={onTodosChanged}
@@ -171,42 +193,46 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
               )}
             </div>
           )}
-          
+
           {!isEditing && (
-            <div className="mt-3">
+            <div>
               {activeTodoId === todo.id ? (
-                <div className="flex gap-2 items-center animate-fade-in">
-                  <input 
-                    type="text" 
-                    value={newSubtaskText} 
-                    onChange={e => setNewSubtaskText(e.target.value)} 
-                    placeholder="Add a step..." 
-                    className="flex-1 px-3 py-1.5 text-sm border border-gray-200 dark:border-gray-700 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-300 dark:focus:ring-gray-600 dark:bg-black/30 dark:text-white dark:placeholder-gray-400" 
+                <div className="flex flex-wrap items-center gap-2 rounded-xl border border-safespace-muted/60 bg-white/70 px-3 py-2">
+                  <input
+                    type="text"
+                    value={newSubtaskText}
+                    onChange={(e) => setNewSubtaskText(e.target.value)}
+                    placeholder="Add a gentle next step"
+                    className="min-w-[160px] flex-1 border-0 bg-transparent text-xs text-safespace-foreground placeholder:text-safespace-foreground/40 focus:outline-none"
                   />
-                  <button 
-                    onClick={handleAddSubtask} 
-                    disabled={!newSubtaskText.trim()} 
-                    className={`px-3 py-1.5 rounded-md text-xs transition-colors ${!newSubtaskText.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'}`}
+                  <button
+                    onClick={handleAddSubtask}
+                    disabled={!newSubtaskText.trim()}
+                    className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] transition ${
+                      !newSubtaskText.trim()
+                        ? 'bg-safespace-muted text-safespace-foreground/40'
+                        : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
+                    }`}
                   >
-                    Add
+                    add
                   </button>
-                  <button 
-                    onClick={() => setActiveTodoId(null)} 
-                    className="px-2 py-1.5 rounded-md text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  <button
+                    onClick={() => setActiveTodoId(null)}
+                    className="px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-safespace-foreground/50 transition hover:text-safespace-primary"
                   >
-                    Cancel
+                    cancel
                   </button>
                 </div>
               ) : (
-                <button 
+                <button
                   onClick={() => {
                     setActiveTodoId(todo.id);
                     setNewSubtaskText('');
-                  }} 
-                  className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                  }}
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/50 transition hover:text-safespace-primary"
                 >
-                  <Plus className="w-3 h-3" />
-                  <span>Add Step</span>
+                  <Plus className="h-3 w-3" />
+                  add step
                 </button>
               )}
             </div>

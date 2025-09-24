@@ -6,7 +6,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 320 28% 18%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -14,39 +14,39 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 348 62% 70%;
+    --primary-foreground: 320 28% 18%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 18 68% 88%;
+    --secondary-foreground: 320 28% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 318 16% 35%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 24 60% 88%;
+    --accent-foreground: 318 28% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 348 62% 70%;
 
     --radius: 1rem;
 
     /* Safe Space custom variables */
-    --safespace-background: 32 30% 98%;
-    --safespace-foreground: 215 25% 27%;
+    --safespace-background: 12 44% 97%;
+    --safespace-foreground: 320 20% 24%;
     --safespace-card: 0 0% 100%;
-    --safespace-card-hover: 210 40% 98%;
-    --safespace-primary: 175 84% 32%;
-    --safespace-secondary: 350 89% 60%;
-    --safespace-accent: 32 95% 84%;
-    --safespace-muted: 210 40% 93%;
-    --safespace-stress-low: 48 95% 76%;
-    --safespace-stress-medium: 30 95% 62%;
-    --safespace-stress-high: 0 72% 58%;
+    --safespace-card-hover: 12 32% 93%;
+    --safespace-primary: 348 62% 70%;
+    --safespace-secondary: 18 60% 88%;
+    --safespace-accent: 24 55% 92%;
+    --safespace-muted: 0 0% 95%;
+    --safespace-stress-low: 150 33% 78%;
+    --safespace-stress-medium: 28 70% 70%;
+    --safespace-stress-high: 352 66% 62%;
   }
 
   .dark {
@@ -59,37 +59,37 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary: 348 52% 68%;
+    --primary-foreground: 320 20% 16%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 18 40% 45%;
+    --secondary-foreground: 20 30% 92%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 84.9%;
+    --muted: 315 18% 16%;
+    --muted-foreground: 10 32% 80%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 24 50% 52%;
+    --accent-foreground: 20 30% 92%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 315 20% 18%;
+    --input: 315 20% 18%;
+    --ring: 348 52% 68%;
 
     /* Safe Space custom variables - dark mode */
-    --safespace-background: 240 10% 8%;
+    --safespace-background: 314 26% 10%;
     --safespace-foreground: 0 0% 100%;
-    --safespace-card: 240 8% 12%;
-    --safespace-card-hover: 240 8% 14%;
-    --safespace-primary: 175 84% 32%;
-    --safespace-secondary: 350 89% 60%;
-    --safespace-accent: 32 80% 70%;
-    --safespace-muted: 240 10% 20%;
-    --safespace-stress-low: 48 70% 60%;
-    --safespace-stress-medium: 30 70% 55%;
-    --safespace-stress-high: 0 62% 50%;
+    --safespace-card: 315 20% 15%;
+    --safespace-card-hover: 315 22% 18%;
+    --safespace-primary: 335 86% 72%;
+    --safespace-secondary: 259 64% 77%;
+    --safespace-accent: 24 85% 70%;
+    --safespace-muted: 315 21% 24%;
+    --safespace-stress-low: 160 60% 55%;
+    --safespace-stress-medium: 28 80% 58%;
+    --safespace-stress-high: 350 75% 60%;
   }
 
   * {
@@ -103,6 +103,10 @@
   body {
     @apply bg-safespace-background text-safespace-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
+  }
+
+  .dark body {
+    background-image: none;
   }
 }
 

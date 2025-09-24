@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { getStressors, addStressor, addReflectionEntry } from '../lib/storage';
 import { MoodStressor } from '../lib/types';
-import { Search, PlusCircle } from 'lucide-react';
+import { Search, PlusCircle, NotebookPen, Undo2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import PageContainer from '../components/layout/PageContainer';
 
 const RootCause = () => {
   const [stressors, setStressors] = useState<MoodStressor[]>([]);
@@ -11,14 +11,14 @@ const RootCause = () => {
   const [newStressor, setNewStressor] = useState<string>('');
   const [worstCase, setWorstCase] = useState<string>('');
   const [resolution, setResolution] = useState<string>('');
-  
+
   useEffect(() => {
     loadStressors();
   }, []);
 
   const loadStressors = () => {
     const loadedStressors = getStressors();
-    const unresolvedStressors = loadedStressors.filter(s => !s.resolved);
+    const unresolvedStressors = loadedStressors.filter((s) => !s.resolved);
     setStressors(unresolvedStressors);
   };
 
@@ -34,102 +34,148 @@ const RootCause = () => {
     e.preventDefault();
     if (!selectedStressor || !worstCase.trim() || !resolution.trim()) return;
     addReflectionEntry(selectedStressor, worstCase, resolution);
-    toast.success("Your reflection has been saved");
+    toast.success('Your reflection has been saved');
     setWorstCase('');
     setResolution('');
     setSelectedStressor('');
   };
 
-  return <div className="min-h-screen bg-safespace-background pt-28">
-      <div className="max-w-6xl mx-auto px-6 pb-20 flex flex-col h-[calc(100vh-7rem)]">
-        <header className="mb-10">
-          <h1 className="heading-lg text-safespace-foreground">Root Cause</h1>
-        </header>
-        
-        <div className="flex-1">
-          {!selectedStressor ? <div className="max-w-2xl mx-auto h-full flex flex-col">
-              <div className="mb-10 text-center">
-                <Search className="w-10 h-10 text-safespace-primary mx-auto mb-4 opacity-80" />
-                <h2 className="heading-md mb-2">What's causing your stress?</h2>
+  return (
+    <PageContainer
+      title="Root Cause"
+      subtitle="Name what’s present and sketch gentle next steps."
+      showSubtitle
+      hideHeader
+    >
+      <div className="flex flex-col gap-10">
+        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 dark:border-white/10 dark:bg-slate-900/80">
+          <div className="space-y-3">
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45">
+              Gentle investigations
+            </span>
+            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+              Notice what keeps tugging at you
+            </h1>
+            <p className="text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300">
+              Pick a stressor, explore the story around it, and sketch a smaller next step.
+            </p>
+          </div>
+        </section>
+
+        {!selectedStressor ? (
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+            <section className="flex flex-col gap-5 rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+              <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-safespace-foreground/70">
+                <Search className="h-4 w-4 text-safespace-primary" />
+                Select something to explore
               </div>
-              
-              <div className="space-y-8 flex-1">
-                {stressors.length > 0 && <div className="space-y-4 flex-1">
-                    <div className="grid grid-cols-1 gap-3">
-                      {stressors.map(stressor => <button key={stressor.id} onClick={() => setSelectedStressor(stressor.name)} className="p-4 text-left rounded-xl hover:bg-white/30 transition-all dark:hover:bg-gray-800/30">
-                          <span className="font-medium">{stressor.name}</span>
-                          <span className="ml-2 text-gray-500">({stressor.count} occurrences)</span>
-                        </button>)}
-                    </div>
-                  </div>}
-                
-                <div className="pt-4">
-                  <div className="flex items-center my-6">
-                    <div className="flex-1 border-t border-gray-200 dark:border-gray-700"></div>
-                    <span className="mx-4 text-gray-400">or</span>
-                    <div className="flex-1 border-t border-gray-200 dark:border-gray-700"></div>
+              <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">
+                Pick a saved stressor or add one to begin.
+              </p>
+              <div className="space-y-2">
+                {stressors.length === 0 && (
+                  <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/70 px-4 py-10 text-center text-sm text-safespace-foreground/60 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-300">
+                    No unresolved stressors yet. Add one to start a reflection.
                   </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <input type="text" value={newStressor} onChange={e => setNewStressor(e.target.value)} placeholder="Enter what's stressing you out..." className="flex-1 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-safespace-primary/40 dark:focus:ring-safespace-primary/60 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800/50" />
-                      <button onClick={handleAddStressor} disabled={!newStressor.trim()} className={`inline-flex items-center gap-2 px-5 py-2 rounded-xl font-medium transition-all ${!newStressor.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'}`}>
-                        <PlusCircle className="w-4 h-4" />
-                        <span>Add</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                )}
+                {stressors.map((stressor) => (
+                  <button
+                    key={stressor.id}
+                    onClick={() => setSelectedStressor(stressor.name)}
+                    className="flex w-full items-center justify-between rounded-2xl border border-safespace-muted/60 bg-white/80 px-4 py-3 text-left text-sm text-safespace-foreground/80 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/10 dark:bg-slate-950/50 dark:text-slate-200 dark:hover:text-safespace-primary"
+                  >
+                    {stressor.name}
+                    <span className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/40">{stressor.count}</span>
+                  </button>
+                ))}
               </div>
-            </div> : <div className="max-w-3xl mx-auto animate-fade-in h-full flex flex-col">
-              <form onSubmit={handleSubmit} className="space-y-10 flex-1 flex flex-col">
-                <div className="mb-6">
-                  <h2 className="heading-md mb-2 text-center">Reflecting on: <span className="text-safespace-primary">{selectedStressor}</span></h2>
-                </div>
-                
-                <div className="space-y-10 flex-1 flex flex-col">
-                  <div className="flex-1">
-                    <label className="block text-lg font-medium mb-4">
-                      What about the stressor worries you?
-                    </label>
-                    <ScrollArea className="w-full h-[60%] min-h-[200px] rounded-2xl border border-gray-200 dark:border-gray-800">
-                      <textarea 
-                        value={worstCase} 
-                        onChange={e => setWorstCase(e.target.value)} 
-                        placeholder="Type here..." 
-                        className="w-full h-full min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" 
-                      />
-                    </ScrollArea>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <label className="block text-lg font-medium mb-4">
-                      What actionable steps can you take?
-                    </label>
-                    <ScrollArea className="w-full h-[60%] min-h-[200px] rounded-2xl border border-gray-200 dark:border-gray-800">
-                      <textarea 
-                        value={resolution} 
-                        onChange={e => setResolution(e.target.value)} 
-                        placeholder="Type here..." 
-                        className="w-full h-full min-h-[200px] p-6 rounded-2xl focus:outline-none resize-none dark:text-white bg-transparent" 
-                      />
-                    </ScrollArea>
-                  </div>
-                  
-                  <div className="flex justify-between items-center pt-4">
-                    <button type="button" onClick={() => setSelectedStressor('')} className="px-6 py-3 rounded-xl text-safespace-foreground hover:bg-white/20 transition-all dark:hover:bg-gray-800/20 dark:text-white">
-                      Back
-                    </button>
-                    <button type="submit" disabled={!worstCase.trim() || !resolution.trim()} className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${!worstCase.trim() || !resolution.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'}`}>
-                      <span>Save Reflection</span>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>}
-        </div>
+            </section>
+
+            <aside className="flex flex-col gap-4 rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+              <h3 className="text-sm font-semibold text-safespace-foreground/75">Add a stressor</h3>
+              <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">Give it a short name you’ll recognise later. You can rephrase during reflection.</p>
+              <input
+                type="text"
+                value={newStressor}
+                onChange={(e) => setNewStressor(e.target.value)}
+                placeholder="e.g. feedback chat"
+                className="rounded-xl border border-safespace-muted/60 px-4 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100"
+              />
+              <button
+                onClick={handleAddStressor}
+                disabled={!newStressor.trim()}
+                className={`inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  !newStressor.trim()
+                    ? 'bg-safespace-muted text-safespace-foreground/40'
+                    : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
+                }`}
+              >
+                <PlusCircle className="h-4 w-4" />
+                Add stressor
+              </button>
+            </aside>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-4 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+              <div className="inline-flex items-center gap-2 font-semibold text-safespace-foreground dark:text-slate-100">
+                <NotebookPen className="h-4 w-4 text-safespace-primary" />
+                Reflecting on <span className="text-safespace-primary">{selectedStressor}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedStressor('')}
+                className="inline-flex items-center gap-2 text-xs font-semibold text-safespace-foreground/60 transition hover:text-safespace-primary dark:text-slate-300"
+              >
+                <Undo2 className="h-4 w-4" />
+                choose different
+              </button>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <label className="flex flex-col gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-5 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+                <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
+                  What feels most worrying?
+                </span>
+                <textarea
+                  value={worstCase}
+                  onChange={(e) => setWorstCase(e.target.value)}
+                  placeholder="Write the story your mind is telling without judgement."
+                  className="min-h-[180px] resize-none rounded-xl border border-safespace-muted/60 px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100 dark:placeholder:text-slate-400"
+                />
+              </label>
+
+              <label className="flex flex-col gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-5 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+                <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
+                  What gentle steps feel possible?
+                </span>
+                <textarea
+                  value={resolution}
+                  onChange={(e) => setResolution(e.target.value)}
+                  placeholder="List small next steps or supports to lean on."
+                  className="min-h-[180px] resize-none rounded-xl border border-safespace-muted/60 px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100 dark:placeholder:text-slate-400"
+                />
+              </label>
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={!worstCase.trim() || !resolution.trim()}
+                className={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-semibold transition ${
+                  !worstCase.trim() || !resolution.trim()
+                    ? 'bg-safespace-muted text-safespace-foreground/40'
+                    : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
+                }`}
+              >
+                Save reflection
+              </button>
+            </div>
+          </form>
+        )}
       </div>
-    </div>;
+    </PageContainer>
+  );
 };
 
 export default RootCause;
