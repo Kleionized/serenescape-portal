@@ -43,16 +43,13 @@ const RootCause = () => {
   return (
     <PageContainer
       title="Root Cause"
-      subtitle="Name what’s present and sketch gentle next steps."
+      subtitle="Name what’s present and sketch your next steps."
       showSubtitle
       hideHeader
     >
       <div className="flex flex-col gap-10">
         <section className="card-surface p-6 sm:p-8">
           <div className="space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45">
-              Gentle investigations
-            </span>
             <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
               Notice what keeps tugging at you
             </h1>
@@ -141,19 +138,19 @@ const RootCause = () => {
                   value={worstCase}
                   onChange={(e) => setWorstCase(e.target.value)}
                   placeholder="Write the story your mind is telling without judgement."
-                  className="min-h-[180px] resize-none input-surface px-3 py-2"
+                  className="min-h-[220px] resize-none input-surface px-3 py-2"
                 />
               </label>
 
               <label className="card-surface flex flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
-                  What gentle steps feel possible?
+                  What steps feel possible?
                 </span>
                 <textarea
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
                   placeholder="List small next steps or supports to lean on."
-                  className="min-h-[180px] resize-none input-surface px-3 py-2"
+                  className="min-h-[220px] resize-none input-surface px-3 py-2"
                 />
               </label>
             </div>
