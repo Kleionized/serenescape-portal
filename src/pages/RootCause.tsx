@@ -48,7 +48,7 @@ const RootCause = () => {
       hideHeader
     >
       <div className="flex flex-col gap-10">
-        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 dark:border-white/10 dark:bg-slate-900/80">
+        <section className="card-surface p-6 sm:p-8">
           <div className="space-y-3">
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45">
               Gentle investigations
@@ -64,7 +64,7 @@ const RootCause = () => {
 
         {!selectedStressor ? (
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-            <section className="flex flex-col gap-5 rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+            <section className="card-surface flex flex-col gap-5 p-6">
               <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-safespace-foreground/70">
                 <Search className="h-4 w-4 text-safespace-primary" />
                 Select something to explore
@@ -91,7 +91,7 @@ const RootCause = () => {
               </div>
             </section>
 
-            <aside className="flex flex-col gap-4 rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+            <aside className="card-surface flex flex-col gap-4 p-6">
               <h3 className="text-sm font-semibold text-safespace-foreground/75">Add a stressor</h3>
               <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">Give it a short name you’ll recognise later. You can rephrase during reflection.</p>
               <input
@@ -99,7 +99,7 @@ const RootCause = () => {
                 value={newStressor}
                 onChange={(e) => setNewStressor(e.target.value)}
                 placeholder="e.g. feedback chat"
-                className="rounded-xl border border-safespace-muted/60 px-4 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100"
+                className="input-surface px-4 py-2"
               />
               <button
                 onClick={handleAddStressor}
@@ -117,7 +117,7 @@ const RootCause = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-4 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+            <div className="card-section flex flex-wrap items-center justify-between gap-3 text-sm text-safespace-foreground/70 dark:text-slate-200">
               <div className="inline-flex items-center gap-2 font-semibold text-safespace-foreground dark:text-slate-100">
                 <NotebookPen className="h-4 w-4 text-safespace-primary" />
                 Reflecting on <span className="text-safespace-primary">{selectedStressor}</span>
@@ -133,7 +133,7 @@ const RootCause = () => {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <label className="flex flex-col gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-5 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+              <label className="card-surface flex flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What feels most worrying?
                 </span>
@@ -141,11 +141,11 @@ const RootCause = () => {
                   value={worstCase}
                   onChange={(e) => setWorstCase(e.target.value)}
                   placeholder="Write the story your mind is telling without judgement."
-                  className="min-h-[180px] resize-none rounded-xl border border-safespace-muted/60 px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="min-h-[180px] resize-none input-surface px-3 py-2"
                 />
               </label>
 
-              <label className="flex flex-col gap-3 rounded-3xl border border-safespace-muted/60 bg-white/80 p-5 text-sm text-safespace-foreground/70 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+              <label className="card-surface flex flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What gentle steps feel possible?
                 </span>
@@ -153,7 +153,7 @@ const RootCause = () => {
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
                   placeholder="List small next steps or supports to lean on."
-                  className="min-h-[180px] resize-none rounded-xl border border-safespace-muted/60 px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="min-h-[180px] resize-none input-surface px-3 py-2"
                 />
               </label>
             </div>

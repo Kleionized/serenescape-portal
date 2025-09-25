@@ -22,7 +22,7 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
   onSetActive,
   onTodosChanged
 }) => {
-  const [activeTodoId, setActiveTodoId] = useState<string | null>(null);
+  const [isAddingSubtask, setIsAddingSubtask] = useState(false);
   const [newSubtaskText, setNewSubtaskText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(todo.text);
@@ -42,11 +42,11 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
   };
 
   const handleAddSubtask = () => {
-    if (!newSubtaskText.trim() || !activeTodoId) return;
-    addSubtask(activeTodoId, newSubtaskText);
+    if (!newSubtaskText.trim()) return;
+    addSubtask(todo.id, newSubtaskText);
     onTodosChanged();
     setNewSubtaskText('');
-    setActiveTodoId(null);
+    setIsAddingSubtask(false);
   };
 
   const handleEditStart = () => {
@@ -94,14 +94,14 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
   };
 
   return (
-    <div className="rounded-2xl border border-safespace-muted/60 bg-white/90 p-5 text-sm shadow-sm backdrop-blur">
+    <div className="card-section p-5 text-sm">
       <div className="flex items-start gap-4">
         <button
           onClick={handleToggleTodo}
           className={`mt-1 flex h-6 w-6 items-center justify-center rounded-full border text-xs transition ${
             todo.completed
               ? 'border-safespace-primary bg-safespace-primary text-white'
-              : 'border-safespace-muted/70 bg-white text-safespace-foreground hover:border-safespace-primary/40'
+              : 'border-safespace-muted/70 bg-white text-safespace-foreground hover:border-safespace-primary/40 dark:border-white/15 dark:bg-slate-950/60 dark:text-slate-100'
           }`}
           aria-label={todo.completed ? 'Mark as incomplete' : 'Mark as complete'}
         >
@@ -115,7 +115,7 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
                 <Input
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
-                  className="h-10 flex-1 rounded-xl border border-safespace-muted/60 text-sm"
+                  className="h-10 flex-1 rounded-xl border border-safespace-muted/60 text-sm dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100"
                   autoFocus
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -142,8 +142,8 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
               <p
                 className={`flex-1 leading-relaxed ${
                   todo.completed
-                    ? 'line-through text-safespace-foreground/40'
-                    : 'text-safespace-foreground'
+                    ? 'line-through text-safespace-foreground/40 dark:text-slate-500'
+                    : 'text-safespace-foreground dark:text-slate-100'
                 }`}
                 onDoubleClick={handleEditStart}
               >
@@ -152,11 +152,11 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
             )}
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-safespace-background/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-safespace-foreground/55">
+              <span className="rounded-full bg-safespace-background/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-safespace-foreground/55 dark:bg-slate-900/70 dark:text-slate-200">
                 {todo.section}
               </span>
               <span
-                className={`rounded-full border border-safespace-muted px-3 py-1 text-[11px] uppercase tracking-[0.25em] ${getImportanceClass(todo.importance)}`}
+                className={`rounded-full border border-safespace-muted px-3 py-1 text-[11px] uppercase tracking-[0.25em] ${getImportanceClass(todo.importance)} dark:border-white/15`}
               >
                 {todo.importance}
               </span>
@@ -166,7 +166,7 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
                   className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] transition ${
                     isActive
                       ? 'bg-safespace-primary text-white'
-                      : 'bg-white/80 text-safespace-foreground/60 ring-1 ring-safespace-muted/60 hover:text-safespace-foreground'
+                      : 'bg-white/80 text-safespace-foreground/60 ring-1 ring-safespace-muted/60 hover:text-safespace-foreground dark:bg-slate-950/60 dark:text-slate-200 dark:ring-white/15 dark:hover:text-slate-100'
                   }`}
                 >
                   {isActive ? 'in focus' : 'set focus'}
@@ -179,7 +179,7 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
             <div className="space-y-2">
               <button
                 onClick={onToggleExpand}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/55 transition hover:text-safespace-primary"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/55 transition hover:text-safespace-primary dark:text-slate-300"
               >
                 {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                 steps
@@ -196,40 +196,30 @@ const TodoItemComponent: React.FC<TodoItemComponentProps> = ({
 
           {!isEditing && (
             <div>
-              {activeTodoId === todo.id ? (
-                <div className="flex flex-wrap items-center gap-2 rounded-xl border border-safespace-muted/60 bg-white/70 px-3 py-2">
-                  <input
-                    type="text"
-                    value={newSubtaskText}
-                    onChange={(e) => setNewSubtaskText(e.target.value)}
-                    placeholder="Add a gentle next step"
-                    className="min-w-[160px] flex-1 border-0 bg-transparent text-xs text-safespace-foreground placeholder:text-safespace-foreground/40 focus:outline-none"
-                  />
-                  <button
-                    onClick={handleAddSubtask}
-                    disabled={!newSubtaskText.trim()}
-                    className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] transition ${
-                      !newSubtaskText.trim()
-                        ? 'bg-safespace-muted text-safespace-foreground/40'
-                        : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
-                    }`}
-                  >
-                    add
-                  </button>
-                  <button
-                    onClick={() => setActiveTodoId(null)}
-                    className="px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-safespace-foreground/50 transition hover:text-safespace-primary"
-                  >
-                    cancel
-                  </button>
-                </div>
+              {isAddingSubtask ? (
+                <input
+                  type="text"
+                  value={newSubtaskText}
+                  onChange={(e) => setNewSubtaskText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddSubtask();
+                    } else if (e.key === 'Escape') {
+                      setIsAddingSubtask(false);
+                      setNewSubtaskText('');
+                    }
+                  }}
+                  className="input-surface w-full text-xs"
+                  placeholder="Press enter to save, esc to cancel"
+                  autoFocus
+                />
               ) : (
                 <button
                   onClick={() => {
-                    setActiveTodoId(todo.id);
+                    setIsAddingSubtask(true);
                     setNewSubtaskText('');
                   }}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/50 transition hover:text-safespace-primary"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-safespace-foreground/50 transition hover:text-safespace-primary dark:text-slate-300 dark:hover:text-safespace-primary"
                 >
                   <Plus className="h-3 w-3" />
                   add step

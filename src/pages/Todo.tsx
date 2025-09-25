@@ -169,7 +169,7 @@ const Todo = () => {
       hideHeader
     >
       <div className="flex flex-col gap-10">
-        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 dark:border-white/10 dark:bg-slate-900/80">
+        <section className="card-surface p-6 sm:p-8">
           <div className="space-y-3">
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
               Focus
@@ -183,7 +183,7 @@ const Todo = () => {
           </div>
         </section>
 
-        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+        <section className="card-surface p-6">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -197,20 +197,20 @@ const Todo = () => {
                       setIsManagingTags(false);
                       setNewTagName('');
                     }}
-                    className="inline-flex items-center gap-1 rounded-full border border-safespace-muted px-3 py-1.5 font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                    className="button-muted"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     {isAddingTag ? 'Cancel' : 'New tag'}
                   </button>
                   <button
                     onClick={() => setIsManagingTags((prev) => !prev)}
-                    className="inline-flex items-center gap-1 rounded-full border border-safespace-muted px-3 py-1.5 font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                    className="button-muted"
                   >
                     {isManagingTags ? 'Done' : 'Manage tags'}
                   </button>
                   <button
                     onClick={handleDeleteCompletedTodos}
-                    className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 font-semibold text-safespace-primary transition hover:text-safespace-primary/80"
+                    className="button-ghost text-safespace-primary"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                     Clear completed
@@ -219,13 +219,13 @@ const Todo = () => {
               </div>
 
               {isAddingTag && (
-                <div className="flex flex-wrap gap-2 rounded-2xl border border-safespace-muted/60 bg-white/90 p-4 shadow-sm dark:border-white/15 dark:bg-slate-900/70">
+                <div className="card-section card-section-hover flex flex-wrap gap-2">
                   <input
                     type="text"
                     value={newTagName}
                     onChange={(e) => setNewTagName(e.target.value)}
                     placeholder="e.g. Morning, Deep work"
-                    className="flex-1 rounded-xl border border-safespace-muted px-4 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100"
+                    className="flex-1 input-surface"
                   />
                   <button
                     onClick={handleAddTag}
@@ -278,7 +278,7 @@ const Todo = () => {
               )}
             </div>
 
-              <div className="flex flex-col gap-4 rounded-2xl border border-safespace-muted/60 bg-white/80 p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/75">
+              <div className="card-section card-section-hover flex flex-col gap-4 p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="space-y-1">
                     <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/40 dark:text-slate-400">
@@ -287,27 +287,27 @@ const Todo = () => {
                     <h2 className="text-lg font-semibold text-safespace-foreground dark:text-slate-100">Task list</h2>
                   </div>
                   <button
-                  onClick={() => {
-                    if (!isAddingTask) {
-                      setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
-                    }
-                    setIsAddingTask((prev) => !prev);
-                    setNewTaskText('');
-                  }}
-                    className="inline-flex items-center gap-2 rounded-full border border-safespace-muted px-4 py-2 text-sm font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
-                >
+                    onClick={() => {
+                      if (!isAddingTask) {
+                        setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
+                      }
+                      setIsAddingTask((prev) => !prev);
+                      setNewTaskText('');
+                    }}
+                    className="button-muted"
+                  >
                   <Plus className="h-4 w-4" />
                   {isAddingTask ? 'Cancel' : 'New task'}
                 </button>
               </div>
 
               {isAddingTask && (
-                <div className="flex flex-col gap-4 rounded-2xl border border-safespace-muted/60 bg-white/90 p-4 shadow-sm dark:border-white/15 dark:bg-slate-900/80">
+                <div className="card-section card-section-hover flex flex-col gap-4 p-4">
                   <textarea
                     value={newTaskText}
                     onChange={(e) => setNewTaskText(e.target.value)}
                     placeholder="Describe a compassionate next step"
-                    className="min-h-[120px] w-full resize-none rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                    className="min-h-[100px] w-full resize-none rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
                   />
 
                   <div className="flex flex-col gap-4 sm:flex-row">
@@ -346,7 +346,7 @@ const Todo = () => {
                         setIsAddingTask(false);
                         setNewTaskText('');
                       }}
-                      className="rounded-full border border-safespace-muted px-4 py-2 text-sm font-semibold text-safespace-foreground/60 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                      className="button-muted"
                     >
                       Cancel
                     </button>

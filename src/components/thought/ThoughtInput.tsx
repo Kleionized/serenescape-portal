@@ -24,7 +24,7 @@ const ThoughtInput = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5 rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 dark:border-white/10 dark:bg-slate-900/80">
+      <form onSubmit={handleSubmit} className="card-surface flex flex-col gap-5 p-6 sm:p-8">
         <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.35em] text-safespace-primary dark:text-safespace-primary/80">
           <span className="inline-flex items-center gap-2 uppercase tracking-[0.35em] text-safespace-primary">
             <Sparkles className="h-3.5 w-3.5" />

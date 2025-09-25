@@ -19,9 +19,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
   return (
     <div className="bg-safespace-background dark:bg-slate-950">
       <div
-        className={`mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-10 px-5 pb-24 ${
-          hideHeader ? 'pt-24' : 'pt-28'
-        } sm:px-8 lg:px-12`}
+        className={`page-shell ${hideHeader ? 'page-shell--compact' : 'page-shell--spacious'}`}
       >
         {!hideHeader && (
           <header className="flex flex-col gap-1">

@@ -225,6 +225,7 @@ export const addSubtask = (todoId: string, text: string): void => {
       text,
       completed: false
     });
+    todo.completed = false;
     
     saveTodos(todos);
   }

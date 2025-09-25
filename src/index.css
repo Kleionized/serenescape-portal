@@ -101,16 +101,55 @@
   }
 
   body {
-    @apply bg-safespace-background text-safespace-foreground antialiased;
+    @apply bg-safespace-background text-safespace-foreground antialiased transition-colors duration-300 ease-out;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
   .dark body {
+    @apply bg-slate-950 text-slate-100;
     background-image: none;
   }
 }
 
 @layer components {
+  .card-surface {
+    @apply rounded-3xl border border-safespace-muted/60 bg-white/85 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80;
+  }
+
+  .card-section {
+    @apply rounded-2xl border border-safespace-muted/50 bg-white/80 px-4 py-3 shadow-sm transition-colors duration-300 ease-out dark:border-white/10 dark:bg-slate-900/70;
+  }
+
+  .card-section-hover {
+    @apply hover:border-safespace-primary/40 hover:bg-white/95 dark:hover:border-safespace-primary/40 dark:hover:bg-slate-900/85;
+  }
+
+  .button-muted {
+    @apply inline-flex items-center gap-2 rounded-full border border-safespace-muted bg-white/70 px-3 py-1.5 text-sm font-semibold text-safespace-foreground/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/60 hover:border-safespace-primary/40 hover:bg-safespace-card-hover hover:text-safespace-primary dark:border-white/15 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900/80 dark:hover:text-safespace-primary;
+  }
+
+  .button-ghost {
+    @apply inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold text-safespace-foreground/70 transition-colors duration-200 hover:bg-safespace-muted/60 hover:text-safespace-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/60 dark:text-slate-200 dark:hover:bg-slate-900/70 dark:hover:text-safespace-primary;
+  }
+
+  .input-surface {
+    @apply rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100;
+  }
+
+  .page-shell {
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 sm:gap-10 sm:px-8 lg:px-12;
+    min-height: 100dvh;
+    padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+  }
+
+  .page-shell--spacious {
+    padding-top: clamp(7rem, 14vh, 9.25rem);
+  }
+
+  .page-shell--compact {
+    padding-top: clamp(5.5rem, 12vh, 7.5rem);
+  }
+
   .glass-card {
     @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md dark:bg-black/80 dark:border-gray-800/50 dark:shadow-lg;
   }

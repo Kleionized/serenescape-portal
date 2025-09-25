@@ -106,7 +106,7 @@ const SavedEntries = () => {
       hideHeader
     >
       <div className="flex flex-col gap-10">
-        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8 dark:border-white/10 dark:bg-slate-900/80">
+        <section className="card-surface p-6 sm:p-8">
           <div className="space-y-3">
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
               Gentle archives
@@ -120,7 +120,7 @@ const SavedEntries = () => {
           </div>
         </section>
 
-        <div className="rounded-3xl border border-safespace-muted/60 bg-white/90 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+        <div className="card-surface p-6">
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -203,7 +203,7 @@ const SavedEntries = () => {
                         onClick={() =>
                           isEditMode ? toggleEntrySelection(entry.id) : setActiveEntry(entry)
                         }
-                        className={`group relative flex w-full items-center justify-between rounded-2xl border border-safespace-muted/50 bg-white/85 px-5 py-4 text-left transition hover:border-safespace-primary/40 hover:bg-white dark:border-white/10 dark:bg-slate-900/70 dark:hover:bg-slate-900/90 ${
+                        className={`group relative flex w-full items-center justify-between card-section card-section-hover px-5 py-4 ${
                           isSelected ? 'ring-2 ring-safespace-primary/60' : ''
                         }`}
                       >
@@ -255,7 +255,7 @@ const SavedEntries = () => {
             <div className="flex flex-col gap-4 px-6 pb-6 pt-4 text-sm leading-relaxed text-safespace-foreground/80 dark:text-slate-200">
               {activeEntry?.type === 'reflection' ? (
                 <div className="space-y-4">
-                  <div className="rounded-2xl border border-safespace-muted/40 bg-white/85 px-4 py-3 dark:border-white/15 dark:bg-slate-900/70">
+                  <div className="card-section px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                       Reflection focus
                     </p>
@@ -263,7 +263,7 @@ const SavedEntries = () => {
                       {activeEntry.stressor || 'No reflection focus recorded.'}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-safespace-muted/40 bg-white/85 px-4 py-3 dark:border-white/15 dark:bg-slate-900/70">
+                  <div className="card-section px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                       What feels most worrying?
                     </p>
@@ -271,7 +271,7 @@ const SavedEntries = () => {
                       {activeEntry.worstCase || 'No worries logged this time.'}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-safespace-muted/40 bg-white/85 px-4 py-3 dark:border-white/15 dark:bg-slate-900/70">
+                  <div className="card-section px-4 py-3">
                     <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                       What gentle steps feel possible?
                     </p>
@@ -281,7 +281,7 @@ const SavedEntries = () => {
                   </div>
                 </div>
               ) : (
-                <p className="whitespace-pre-line rounded-2xl border border-safespace-muted/40 bg-white/85 px-4 py-3 text-safespace-foreground dark:border-white/15 dark:bg-slate-900/70 dark:text-slate-100">
+                <p className="card-section whitespace-pre-line px-4 py-3 text-safespace-foreground dark:text-slate-100">
                   {activeEntry?.text || 'Empty note.'}
                 </p>
               )}

@@ -37,7 +37,7 @@ const Index = () => {
       hideHeader
     >
       <div className="flex flex-col gap-10">
-        <section className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8">
+        <section className="card-surface p-6 sm:p-8">
           <div className="flex flex-col gap-6">
             <div className="space-y-3">
               <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45">
@@ -56,7 +56,7 @@ const Index = () => {
                 <Link
                   key={to}
                   to={to}
-                  className="group flex items-center gap-3 rounded-2xl border border-transparent bg-safespace-background/80 p-4 text-left transition hover:border-safespace-primary/30 hover:bg-white dark:bg-slate-900/70 dark:hover:bg-slate-900/90"
+                  className="group flex items-center gap-3 card-section card-section-hover"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-safespace-muted/50 transition group-hover:ring-safespace-primary/40 dark:bg-slate-950">
                     <Icon className="h-5 w-5 text-safespace-primary dark:text-safespace-primary/90" />
@@ -76,10 +76,10 @@ const Index = () => {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-3xl border border-safespace-muted/60 bg-white/80 p-6 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+          <div className="card-surface p-6">
             <MoodStressorsTally />
           </div>
-          <div className="rounded-3xl border border-safespace-muted/60 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
+          <div className="card-surface p-0">
             <ScrollArea className="h-full p-6">
               <ActiveTodos />
             </ScrollArea>

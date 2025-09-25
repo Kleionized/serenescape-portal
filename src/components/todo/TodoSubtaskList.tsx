@@ -25,15 +25,17 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
     const todos = getTodos();
     const updatedTodos = todos.map(todo => {
       if (todo.id === todoId) {
-        const updatedSubtasks = todo.subtasks.map(subtask => 
+        const updatedSubtasks = todo.subtasks.map(subtask =>
           subtask.id === subtaskId ? {
             ...subtask,
             completed: !subtask.completed
           } : subtask
         );
+        const allComplete = updatedSubtasks.length > 0 && updatedSubtasks.every((subtask) => subtask.completed);
         return {
           ...todo,
-          subtasks: updatedSubtasks
+          subtasks: updatedSubtasks,
+          completed: allComplete
         };
       }
       return todo;
@@ -81,15 +83,15 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
   };
 
   return (
-    <div className="my-2 space-y-2 border-l border-safespace-muted pl-3">
+    <div className="my-2 space-y-2 border-l border-safespace-muted pl-3 dark:border-white/10">
       {subtasks.map((subtask) => (
-        <div key={subtask.id} className="flex items-start gap-2 rounded-lg bg-safespace-muted px-3 py-2">
+        <div key={subtask.id} className="card-section card-section-hover flex items-start gap-3 px-3 py-2 text-xs">
           <button
             onClick={() => handleToggleSubtask(subtask.id)}
-            className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border ${
+            className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border transition ${
               subtask.completed
                 ? 'border-safespace-primary bg-safespace-primary text-white'
-                : 'border-safespace-muted text-safespace-primary'
+                : 'border-safespace-muted text-safespace-primary dark:border-white/20'
             }`}
             aria-label={subtask.completed ? 'Mark step as incomplete' : 'Mark step as complete'}
           >
@@ -101,7 +103,7 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
               <Input
                 value={editingText}
                 onChange={(e) => setEditingText(e.target.value)}
-                className="h-8 flex-1 rounded-lg border border-safespace-muted text-xs"
+                className="h-8 flex-1 rounded-lg border border-safespace-muted text-xs dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100"
                 autoFocus
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
@@ -126,7 +128,7 @@ const TodoSubtaskList: React.FC<TodoSubtaskListProps> = ({
             </div>
           ) : (
             <span
-              className={`flex-1 text-xs ${subtask.completed ? 'line-through text-safespace-foreground/50' : 'text-safespace-foreground'}`}
+              className={`flex-1 ${subtask.completed ? 'line-through text-safespace-foreground/50 dark:text-slate-500' : 'text-safespace-foreground dark:text-slate-100'}`}
               onDoubleClick={() => handleEditStart(subtask.id, subtask.text)}
             >
               {subtask.text}

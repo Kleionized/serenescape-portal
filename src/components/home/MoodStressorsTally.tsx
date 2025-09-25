@@ -45,13 +45,13 @@ const MoodStressorsTally = () => {
   return (
     <div className="flex h-full flex-col gap-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70">
-          <Feather className="h-4 w-4 text-safespace-primary" />
+        <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
+          <Feather className="h-4 w-4 text-safespace-primary dark:text-safespace-primary/80" />
           <span>Mood stressors</span>
         </div>
         <button
           onClick={() => setShowResolved((prev) => !prev)}
-          className="inline-flex items-center gap-2 rounded-full border border-safespace-muted px-3 py-1 text-xs font-medium text-safespace-foreground/60 transition hover:border-safespace-primary/40 hover:text-safespace-primary"
+          className="button-muted px-3 py-1 text-xs font-medium"
         >
           {showResolved ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
           {showResolved ? 'Hide resolved' : 'Show resolved'}
@@ -59,17 +59,17 @@ const MoodStressorsTally = () => {
       </div>
 
       {filteredStressors.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-safespace-muted p-8 text-center text-sm text-safespace-foreground/60">
-          <Flame className="mb-3 h-6 w-6 text-safespace-primary/70" />
+        <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-safespace-muted p-8 text-center text-sm text-safespace-foreground/60 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-300">
+          <Flame className="mb-3 h-6 w-6 text-safespace-primary/70 dark:text-safespace-primary/80" />
           {showResolved ? 'No stressors recorded yet.' : 'All clear for now.'}
         </div>
       ) : (
         <ul className="space-y-3">
           {filteredStressors.map((stressor) => (
-            <li key={stressor.id} className="flex items-center justify-between rounded-xl border border-safespace-muted bg-white px-4 py-3 text-sm">
+            <li key={stressor.id} className="card-section card-section-hover">
               <div className="flex items-center gap-3">
                 {stressor.resolved && <Check className="h-4 w-4 text-safespace-stress-low" />}
-                <span className={`text-safespace-foreground ${stressor.resolved ? 'line-through opacity-60' : ''}`}>
+                <span className={`text-safespace-foreground dark:text-slate-100 ${stressor.resolved ? 'line-through opacity-60' : ''}`}>
                   {stressor.name}
                 </span>
               </div>
@@ -80,7 +80,7 @@ const MoodStressorsTally = () => {
                 {!stressor.resolved && (
                   <button
                     onClick={() => handleResolveStressor(stressor.id, stressor.name)}
-                    className="text-xs font-medium text-safespace-primary hover:text-safespace-primary/70"
+                    className="text-xs font-medium text-safespace-primary transition hover:text-safespace-primary/70"
                   >
                     mark done
                   </button>

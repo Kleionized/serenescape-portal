@@ -23,7 +23,7 @@ const TodoList: React.FC<TodoListProps> = ({
   };
   if (todos.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/70 px-6 py-12 text-center text-sm text-safespace-foreground/60">
+      <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/70 px-6 py-12 text-center text-sm text-safespace-foreground/60 dark:border-white/15 dark:bg-slate-900/70 dark:text-slate-300">
         Nothing here yet—add a task when you feel ready.
       </div>
     );
