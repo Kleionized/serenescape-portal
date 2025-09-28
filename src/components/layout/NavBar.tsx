@@ -19,11 +19,11 @@ const NavBar = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-40 border-b border-safespace-muted/40 bg-safespace-background/85 backdrop-blur dark:border-white/5 dark:bg-slate-950/80">
+    <nav className="fixed inset-x-0 top-6 z-40 border-b border-safespace-muted/40 bg-safespace-background/85 backdrop-blur dark:border-transparent dark:bg-slate-950/80">
       <div className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
-        <Link to="/" className="flex items-center gap-2 text-base font-semibold text-safespace-foreground dark:text-slate-100">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/25">
-            <Heart className="h-4 w-4" />
+        <Link to="/" className="flex items-center gap-3 text-lg font-semibold text-safespace-foreground dark:text-slate-100">
+          <span className="flex h-10 w-10 items-center justify-center rounded-3xl bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/25">
+            <Heart className="h-5 w-5" />
           </span>
           <span>Your Safe Space</span>
         </Link>

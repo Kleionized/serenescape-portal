@@ -36,51 +36,47 @@ const Index = () => {
       showSubtitle
       hideHeader
     >
-      <div className="flex flex-col gap-10">
-        <section className="card-surface p-6 sm:p-8">
-          <div className="flex flex-col gap-6">
-            <div className="space-y-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45">
-                Today
-              </span>
-              <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
-                Take a gentle checkpoint
-              </h1>
-              <p className="text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300">
-                Choose the flow that meets you where you are right now.
-              </p>
-            </div>
+      <div className="flex flex-1 flex-col gap-10">
+        <section className="page-hero page-hero--expanded">
+          <div className="page-hero__header">
+            <span className="page-hero__eyebrow">Today</span>
+            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+              Take a gentle checkpoint
+            </h1>
+            <p className="page-hero__description">
+              Choose the flow that meets you where you are right now.
+            </p>
+          </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              {quickActions.map(({ to, label, description, Icon }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  className="group flex items-center gap-3 card-section card-section-hover"
-                >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-safespace-muted/50 transition group-hover:ring-safespace-primary/40 dark:bg-slate-950">
-                    <Icon className="h-5 w-5 text-safespace-primary dark:text-safespace-primary/90" />
+          <div className="grid gap-3 sm:grid-cols-3">
+            {quickActions.map(({ to, label, description, Icon }) => (
+              <Link
+                key={to}
+                to={to}
+                className="card-section card-section-hover group flex items-center gap-3"
+              >
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-safespace-muted/50 transition group-hover:ring-safespace-primary/40 dark:bg-slate-950">
+                  <Icon className="h-5 w-5 text-safespace-primary dark:text-safespace-primary/90" />
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
+                    {label}
                   </span>
-                  <span className="flex flex-col">
-                    <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
-                      {label}
-                    </span>
-                    <span className="text-xs text-safespace-foreground/55 dark:text-slate-300">
-                      {description}
-                    </span>
+                  <span className="text-xs text-safespace-foreground/55 dark:text-slate-300">
+                    {description}
                   </span>
-                </Link>
-              ))}
-            </div>
+                </span>
+              </Link>
+            ))}
           </div>
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="card-surface p-6">
+          <div className="card-surface flex min-h-[22rem] flex-col p-6">
             <MoodStressorsTally />
           </div>
-          <div className="card-surface p-0">
-            <ScrollArea className="h-full p-6">
+          <div className="card-surface flex min-h-[22rem] flex-col p-0">
+            <ScrollArea className="h-full p-5">
               <ActiveTodos />
             </ScrollArea>
           </div>

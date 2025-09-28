@@ -124,6 +124,30 @@
     @apply hover:border-safespace-primary/40 hover:bg-white/95 dark:hover:border-safespace-primary/40 dark:hover:bg-slate-900/85;
   }
 
+  .page-hero {
+    @apply card-surface flex flex-col gap-6;
+    padding: clamp(1.4rem, 3vw, 2.5rem);
+    min-height: clamp(12rem, 20vh, 18rem);
+    justify-content: center;
+  }
+
+  .page-hero--expanded {
+    min-height: clamp(15rem, 26vh, 21rem);
+  }
+
+  .page-hero__header {
+    @apply flex flex-col gap-3;
+    max-width: 42rem;
+  }
+
+  .page-hero__eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400;
+  }
+
+  .page-hero__description {
+    @apply text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300;
+  }
+
   .button-muted {
     @apply inline-flex items-center gap-2 rounded-full border border-safespace-muted bg-white/70 px-3 py-1.5 text-sm font-semibold text-safespace-foreground/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/60 hover:border-safespace-primary/40 hover:bg-safespace-card-hover hover:text-safespace-primary dark:border-white/15 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900/80 dark:hover:text-safespace-primary;
   }
@@ -137,17 +161,18 @@
   }
 
   .page-shell {
-    @apply mx-auto flex w-full max-w-6xl flex-col gap-8 px-5 sm:gap-10 sm:px-8 lg:px-12;
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-10 px-5 sm:gap-12 sm:px-8 lg:px-12;
     min-height: 100dvh;
-    padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+    padding-top: clamp(7rem, 15vh, 9.75rem);
+    padding-bottom: clamp(3.75rem, 11vh, 6.75rem);
   }
 
   .page-shell--spacious {
-    padding-top: clamp(7rem, 14vh, 9.25rem);
+    padding-top: clamp(8.25rem, 17vh, 10.75rem);
   }
 
   .page-shell--compact {
-    padding-top: clamp(5.5rem, 12vh, 7.5rem);
+    padding-top: clamp(6.75rem, 14vh, 8.75rem);
   }
 
   .glass-card {

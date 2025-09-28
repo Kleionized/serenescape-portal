@@ -168,22 +168,20 @@ const Todo = () => {
       showSubtitle
       hideHeader
     >
-      <div className="flex flex-col gap-10">
-        <section className="card-surface p-6 sm:p-8">
-          <div className="space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-              Focus
-            </span>
+      <div className="flex flex-1 flex-col gap-10">
+        <section className="page-hero">
+          <div className="page-hero__header">
+            <span className="page-hero__eyebrow">Focus</span>
             <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
               Choose one calm priority
             </h1>
-            <p className="text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300">
+            <p className="page-hero__description">
               Keep tasks light, surface only what matters today, and let everything else stay parked.
             </p>
           </div>
         </section>
 
-        <section className="card-surface p-6">
+        <section className="card-surface flex min-h-[27.4rem] flex-col p-6">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap items-center justify-between gap-3">

@@ -1,17 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { getEntries, deleteEntry, deleteAllEntries } from '../lib/storage';
 import { SavedEntry } from '../lib/types';
-import { MessageSquare, Search, Clock, AlertTriangle, ChevronRight } from 'lucide-react';
+import { MessageSquare, Search, AlertTriangle, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PageContainer from '@/components/layout/PageContainer';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 const SavedEntries = () => {
   const [entries, setEntries] = useState<SavedEntry[]>([]);
@@ -81,7 +76,7 @@ const SavedEntries = () => {
 
   const getPreviewText = (entry: SavedEntry) => {
     if (entry.type === 'thought') {
-      return entry.text || 'Untitled thought';
+      return formatDate(entry.createdAt);
     }
 
     const snippets = [entry.stressor, entry.worstCase, entry.resolution].filter(Boolean);
@@ -98,6 +93,12 @@ const SavedEntries = () => {
     return `${detailHeading(activeEntry)} · ${formatDate(activeEntry.createdAt)}`;
   }, [activeEntry]);
 
+  const entryTypeLabel = activeEntry
+    ? activeEntry.type === 'reflection'
+      ? 'Reflection'
+      : 'Thought'
+    : '';
+
   return (
     <PageContainer
       title="Saved Entries"
@@ -105,22 +106,20 @@ const SavedEntries = () => {
       showSubtitle
       hideHeader
     >
-      <div className="flex flex-col gap-10">
-        <section className="card-surface p-6 sm:p-8">
-          <div className="space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-              Gentle archives
-            </span>
+      <div className="flex flex-1 flex-col gap-10">
+        <section className="page-hero">
+          <div className="page-hero__header">
+            <span className="page-hero__eyebrow">Archives</span>
             <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
               Revisit what you’ve captured
             </h1>
-            <p className="text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300">
+            <p className="page-hero__description">
               Dip back into saved reflections or clear them out when they feel complete.
             </p>
           </div>
         </section>
 
-        <div className="card-surface p-6">
+        <div className="card-surface flex min-h-[27.4rem] flex-col p-6">
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -133,21 +132,22 @@ const SavedEntries = () => {
               </div>
               {entries.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
-                  <Button
-                    variant="outline"
+                  <button
+                    type="button"
                     onClick={toggleEditMode}
-                    className="rounded-full border border-safespace-muted px-4 py-2 text-sm font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                    className="inline-flex items-center gap-2 rounded-full border border-safespace-muted px-5 py-2 text-sm font-semibold text-safespace-foreground/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200 dark:focus-visible:ring-offset-slate-950"
                   >
                     {isEditMode ? 'Done selecting' : 'Select entries'}
-                  </Button>
+                  </button>
                   {isEditMode && (
-                    <Button
+                    <button
+                      type="button"
                       onClick={() => setShowDeleteConfirm(true)}
                       disabled={selectedEntries.length === 0 && entries.length === 0}
-                      className="rounded-full bg-safespace-primary px-4 py-2 text-sm font-semibold text-safespace-primary-foreground transition hover:bg-safespace-primary/90 disabled:cursor-not-allowed disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                      className="inline-flex items-center gap-2 rounded-full bg-safespace-primary px-5 py-2 text-sm font-semibold text-safespace-primary-foreground shadow-sm transition hover:bg-safespace-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:bg-safespace-muted disabled:text-safespace-foreground/40 dark:focus-visible:ring-offset-slate-950"
                     >
                       {selectedEntries.length > 0 ? `Delete ${selectedEntries.length}` : 'Delete all'}
-                    </Button>
+                    </button>
                   )}
                 </div>
               )}
@@ -196,6 +196,12 @@ const SavedEntries = () => {
                     const preview = getPreviewText(entry);
                     const isSelected = selectedEntries.includes(entry.id);
 
+                    const entryClasses = cn(
+                      'group relative flex w-full items-center justify-between rounded-3xl border border-safespace-muted/45 px-5 py-4 text-left shadow-sm transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-white/10 dark:bg-slate-950/70 dark:focus-visible:ring-offset-slate-950',
+                      'bg-white hover:border-safespace-primary/40 dark:hover:border-safespace-primary/35',
+                      isSelected && 'border-safespace-primary/50'
+                    );
+
                     return (
                       <button
                         key={entry.id}
@@ -203,9 +209,7 @@ const SavedEntries = () => {
                         onClick={() =>
                           isEditMode ? toggleEntrySelection(entry.id) : setActiveEntry(entry)
                         }
-                        className={`group relative flex w-full items-center justify-between card-section card-section-hover px-5 py-4 ${
-                          isSelected ? 'ring-2 ring-safespace-primary/60' : ''
-                        }`}
+                        className={entryClasses}
                       >
                         <div className="flex flex-1 flex-col gap-1">
                           <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/60 dark:text-slate-300">
@@ -242,49 +246,74 @@ const SavedEntries = () => {
         </div>
 
         <Dialog open={!!activeEntry} onOpenChange={(open) => !open && setActiveEntry(null)}>
-          <DialogContent className="max-w-2xl overflow-hidden border-safespace-muted bg-white/95 p-0 dark:border-white/10 dark:bg-slate-950/95">
-            <DialogHeader className="border-b border-safespace-muted/60 bg-white/90 px-6 py-4 dark:border-white/10 dark:bg-slate-950/90">
-              <DialogTitle className="text-safespace-foreground dark:text-slate-100">
-                {detailHeading(activeEntry)}
-              </DialogTitle>
-              <DialogDescription className="text-safespace-foreground/60 dark:text-slate-300">
-                {detailSubtitle}
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="flex flex-col gap-4 px-6 pb-6 pt-4 text-sm leading-relaxed text-safespace-foreground/80 dark:text-slate-200">
-              {activeEntry?.type === 'reflection' ? (
-                <div className="space-y-4">
-                  <div className="card-section px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      Reflection focus
-                    </p>
-                    <p className="mt-1 text-sm text-safespace-foreground dark:text-slate-100">
-                      {activeEntry.stressor || 'No reflection focus recorded.'}
-                    </p>
-                  </div>
-                  <div className="card-section px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      What feels most worrying?
-                    </p>
-                    <p className="mt-1 text-sm text-safespace-foreground dark:text-slate-100">
-                      {activeEntry.worstCase || 'No worries logged this time.'}
-                    </p>
-                  </div>
-                  <div className="card-section px-4 py-3">
-                    <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      What gentle steps feel possible?
-                    </p>
-                    <p className="mt-1 text-sm text-safespace-foreground dark:text-slate-100">
-                      {activeEntry.resolution || 'No action steps noted.'}
-                    </p>
-                  </div>
+          <DialogContent className="max-w-3xl border-none bg-transparent p-0 sm:p-2">
+            <div className="card-surface flex flex-col gap-6 bg-white p-6 sm:gap-8 sm:p-8 dark:bg-slate-950">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="space-y-3">
+                  {entryTypeLabel && (
+                    <span className="page-hero__eyebrow uppercase tracking-[0.3em] text-safespace-foreground/50 dark:text-slate-300">
+                      {entryTypeLabel}
+                    </span>
+                  )}
+                  <DialogTitle className="text-2xl font-semibold text-safespace-foreground dark:text-slate-100">
+                    {detailHeading(activeEntry)}
+                  </DialogTitle>
+                  {detailSubtitle ? (
+                    <DialogDescription className="text-sm text-safespace-foreground/60 dark:text-slate-300">
+                      {detailSubtitle}
+                    </DialogDescription>
+                  ) : (
+                    <DialogDescription className="sr-only">
+                      Saved entry details
+                    </DialogDescription>
+                  )}
                 </div>
-              ) : (
-                <p className="card-section whitespace-pre-line px-4 py-3 text-safespace-foreground dark:text-slate-100">
-                  {activeEntry?.text || 'Empty note.'}
-                </p>
-              )}
+
+              </div>
+
+              <div className="space-y-4 text-sm leading-relaxed text-safespace-foreground/80 dark:text-slate-200">
+                {activeEntry?.type === 'reflection' ? (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                      <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
+                        Reflection focus
+                      </p>
+                      <p className="mt-2 text-sm text-safespace-foreground dark:text-slate-100">
+                        {activeEntry.stressor || 'No reflection focus recorded.'}
+                      </p>
+                    </div>
+                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                      <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
+                        What feels most worrying?
+                      </p>
+                      <p className="mt-2 text-sm text-safespace-foreground dark:text-slate-100">
+                        {activeEntry.worstCase || 'No worries logged this time.'}
+                      </p>
+                    </div>
+                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 sm:col-span-2 dark:bg-white/10">
+                      <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
+                        What steps feel possible?
+                      </p>
+                      <p className="mt-2 text-sm text-safespace-foreground dark:text-slate-100">
+                        {activeEntry.resolution || 'No action steps noted.'}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                    <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
+                      Thought entry
+                    </p>
+                    <p className="mt-2 whitespace-pre-line text-sm text-safespace-foreground dark:text-slate-100">
+                      {activeEntry?.text || 'Empty note.'}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <p className="text-xs text-safespace-foreground/50 dark:text-slate-400">
+                Revisit when you want to notice patterns or archive it once it feels complete.
+              </p>
             </div>
           </DialogContent>
         </Dialog>

@@ -32,7 +32,7 @@ const PageContainer: React.FC<PageContainerProps> = ({
           </header>
         )}
 
-        <main className="flex flex-1 flex-col gap-8 text-safespace-foreground dark:text-slate-100">
+        <main className="flex flex-1 flex-col gap-10 pt-4 text-safespace-foreground dark:text-slate-100 sm:gap-12">
           {children}
         </main>
       </div>

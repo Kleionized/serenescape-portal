@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MoodLevel } from '../../lib/types';
 import { addMoodCheckIn, getStressors } from '../../lib/storage';
@@ -6,227 +5,300 @@ import { X, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 
+const moodOptions: Array<{
+  value: MoodLevel;
+  label: string;
+  emoji: string;
+  helper: string;
+}> = [
+  {
+    value: 'calm',
+    label: 'Calm',
+    emoji: '😌',
+    helper: 'Steady and grounded'
+  },
+  {
+    value: 'slightly-stressed',
+    label: 'Slightly tense',
+    emoji: '😕',
+    helper: 'A little buzz beneath the surface'
+  },
+  {
+    value: 'moderately-stressed',
+    label: 'Stretched thin',
+    emoji: '😟',
+    helper: 'Mind is juggling a few worries'
+  },
+  {
+    value: 'very-stressed',
+    label: 'On edge',
+    emoji: '😫',
+    helper: 'Everything feels extra loud right now'
+  }
+];
+
 interface MoodCheckInOverlayProps {
   onClose: () => void;
 }
 
-const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({
-  onClose
-}) => {
+const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   const [step, setStep] = useState<'mood' | 'stressors'>('mood');
   const [selectedMood, setSelectedMood] = useState<MoodLevel | null>(null);
   const [stressors, setStressors] = useState<string[]>([]);
-  const [currentStressor, setCurrentStressor] = useState<string>('');
+  const [currentStressor, setCurrentStressor] = useState('');
   const [recentStressors, setRecentStressors] = useState<string[]>([]);
 
   useEffect(() => {
     const allStressors = getStressors();
-    const activeStressorNames = allStressors.filter(s => !s.resolved).sort((a, b) => b.count - a.count).slice(0, 5).map(s => s.name);
+    const activeStressorNames = allStressors
+      .filter((stressor) => !stressor.resolved)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5)
+      .map((stressor) => stressor.name);
     setRecentStressors(activeStressorNames);
   }, []);
+
+  const activeMood = selectedMood
+    ? moodOptions.find((option) => option.value === selectedMood)
+    : null;
 
   const handleMoodSelect = (mood: MoodLevel) => {
     setSelectedMood(mood);
     if (mood === 'calm') {
-      handleSubmit();
+      handleSubmit(mood);
     } else {
       setStep('stressors');
     }
   };
 
   const handleAddStressor = () => {
-    if (currentStressor.trim()) {
-      setStressors([...stressors, currentStressor.trim()]);
-      setCurrentStressor('');
-    }
+    const trimmed = currentStressor.trim();
+    if (!trimmed) return;
+
+    setStressors((prev) => [...prev, trimmed]);
+    setCurrentStressor('');
   };
 
   const handleAddRecentStressor = (stressorName: string) => {
-    if (!stressors.includes(stressorName)) {
-      setStressors([...stressors, stressorName]);
-    }
+    setStressors((prev) =>
+      prev.includes(stressorName) ? prev : [...prev, stressorName]
+    );
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && currentStressor.trim()) {
-      e.preventDefault();
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && currentStressor.trim()) {
+      event.preventDefault();
       handleAddStressor();
     }
   };
 
   const handleRemoveStressor = (index: number) => {
-    const newStressors = [...stressors];
-    newStressors.splice(index, 1);
-    setStressors(newStressors);
+    setStressors((prev) => prev.filter((_, idx) => idx !== index));
   };
 
-  const handleSubmit = (overrideStressors?: string[]) => {
-    if (selectedMood) {
-      const payload = overrideStressors ?? stressors;
-      addMoodCheckIn(selectedMood, payload);
-      toast({
-        title: "Mood Check-In Recorded",
-        description: "Your mood has been recorded successfully."
-      });
+  const handleSubmit = (moodOverride?: MoodLevel, overrideStressors?: string[]) => {
+    const mood = moodOverride ?? selectedMood;
+    if (!mood) return;
 
-      window.dispatchEvent(new Event('mood-checkin-recorded'));
-      onClose();
-    }
+    const payload = overrideStressors ?? stressors;
+    addMoodCheckIn(mood, payload);
+
+    toast({
+      title: 'Check-in saved',
+      description:
+        mood === 'calm'
+          ? 'Logged how you’re arriving right now.'
+          : payload.length > 0
+            ? 'Captured what’s feeling loud so you can move gently.'
+            : 'Noted your mood—come back if you want to capture details.'
+    });
+
+    window.dispatchEvent(new Event('mood-checkin-recorded'));
+    onClose();
   };
 
   const handleSkip = () => {
-    handleSubmit([]);
+    handleSubmit(undefined, []);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm rounded-xl p-8 max-w-2xl w-full mx-4 shadow-xl animate-scale-in border border-white/50 dark:border-white/10">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="heading-md text-safespace-primary dark:text-safespace-primary/80">Mood Check-In</h2>
-          <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
-            <X className="w-5 h-5 text-safespace-foreground dark:text-slate-200" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-safespace-background/80 backdrop-blur-xl">
+      <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8">
+        <div className="card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-6 shadow-2xl sm:p-8 dark:border-white/10 dark:bg-slate-950/95">
+          <button
+            onClick={onClose}
+            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-2xl border border-transparent text-safespace-foreground/60 transition hover:border-safespace-muted/60 hover:text-safespace-foreground dark:text-slate-300"
+            aria-label="Close mood check-in"
+          >
+            <X className="h-4 w-4" />
           </button>
-        </div>
-        
-        {step === 'mood' && (
-          <div className="space-y-6 animate-fade-in">
-            <p className="text-gray-600 dark:text-gray-300">
-              How are you feeling right now?
-            </p>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <button 
-                onClick={() => handleMoodSelect('calm')} 
-                className="p-6 border dark:border-gray-800 border-gray-200 rounded-lg hover:bg-safespace-accent/10 hover:border-safespace-accent dark:hover:bg-safespace-accent/5 transition-colors flex flex-col items-center gap-2"
-              >
-                <span className="text-4xl">😌</span>
-                <span className="dark:text-white">Calm</span>
-              </button>
-              
-              <button 
-                onClick={() => handleMoodSelect('slightly-stressed')} 
-                className="p-6 border dark:border-gray-800 border-gray-200 rounded-lg hover:bg-safespace-stress-low/10 hover:border-safespace-stress-low dark:hover:bg-safespace-stress-low/5 transition-colors flex flex-col items-center gap-2"
-              >
-                <span className="text-4xl">😕</span>
-                <span className="dark:text-white">Slightly Stressed</span>
-              </button>
-              
-              <button 
-                onClick={() => handleMoodSelect('moderately-stressed')} 
-                className="p-6 border dark:border-gray-800 border-gray-200 rounded-lg hover:bg-safespace-stress-medium/10 hover:border-safespace-stress-medium dark:hover:bg-safespace-stress-medium/5 transition-colors flex flex-col items-center gap-2"
-              >
-                <span className="text-4xl">😟</span>
-                <span className="dark:text-white">Moderately Stressed</span>
-              </button>
-              
-              <button 
-                onClick={() => handleMoodSelect('very-stressed')} 
-                className="p-6 border dark:border-gray-800 border-gray-200 rounded-lg hover:bg-safespace-stress-high/10 hover:border-safespace-stress-high dark:hover:bg-safespace-stress-high/5 transition-colors flex flex-col items-center gap-2"
-              >
-                <span className="text-4xl">😫</span>
-                <span className="dark:text-white">Very Stressed</span>
-              </button>
-            </div>
-          </div>
-        )}
-        
-        {step === 'stressors' && (
-          <div className="space-y-6 animate-fade-in">
-            <div className="flex items-center gap-2 mb-2">
-              <button 
-                onClick={() => setStep('mood')} 
-                className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              </button>
-              <p className="text-gray-600 dark:text-gray-300">
-                What's causing your stress right now? (Add one or more stressors)
+
+          <div className="space-y-6 pr-1">
+            <div className="space-y-2">
+              <span className="page-hero__eyebrow">Quick check-in</span>
+              <h2 className="text-2xl font-semibold text-safespace-foreground dark:text-slate-100">
+                {step === 'mood' ? 'How are you arriving?' : 'What’s tugging at you?'}
+              </h2>
+              <p className="page-hero__description">
+                {step === 'mood'
+                  ? 'Choose the option that describes where your nervous system is landing right now.'
+                  : 'Name any stressors that feel present. Add a few or skip if nothing needs airtime.'}
               </p>
             </div>
-            
-            {recentStressors.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Recent stressors:</p>
-                <div className="flex flex-wrap gap-2">
-                  {recentStressors.map((stressorName, idx) => (
-                    <button 
-                      key={idx} 
-                      onClick={() => handleAddRecentStressor(stressorName)} 
-                      className={`px-3 py-1 rounded-full text-sm ${stressors.includes(stressorName) ? 'bg-safespace-primary text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300'}`}
+
+            {step === 'mood' && (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {moodOptions.map((option) => {
+                  const isSelected = selectedMood === option.value;
+                  const accentHover =
+                    option.value === 'calm'
+                      ? 'hover:border-safespace-accent/50 hover:bg-safespace-accent/10'
+                      : option.value === 'slightly-stressed'
+                        ? 'hover:border-safespace-stress-low/50 hover:bg-safespace-stress-low/10'
+                        : option.value === 'moderately-stressed'
+                          ? 'hover:border-safespace-stress-medium/50 hover:bg-safespace-stress-medium/10'
+                          : 'hover:border-safespace-stress-high/40 hover:bg-safespace-stress-high/10';
+
+                  return (
+                    <button
+                      key={option.value}
+                      onClick={() => handleMoodSelect(option.value)}
+                      className={`card-section card-section-hover flex flex-col gap-3 px-5 py-6 text-left transition ${accentHover} ${
+                        isSelected
+                          ? 'border-safespace-primary/50 text-safespace-primary'
+                          : 'text-safespace-foreground/80'
+                      }`}
+                      aria-pressed={isSelected}
                     >
-                      {stressorName}
+                      <span className="text-4xl" aria-hidden>
+                        {option.emoji}
+                      </span>
+                      <span className="text-base font-semibold text-safespace-foreground dark:text-slate-100">
+                        {option.label}
+                      </span>
+                      <span className="text-sm text-safespace-foreground/60 dark:text-slate-300">
+                        {option.helper}
+                      </span>
                     </button>
-                  ))}
+                  );
+                })}
+              </div>
+            )}
+
+            {step === 'stressors' && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setStep('mood')}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-safespace-muted/60 text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/10 dark:text-slate-300"
+                    aria-label="Back to mood options"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </button>
+                  {activeMood && (
+                    <span className="text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
+                      Logging stressors while feeling <span className="text-safespace-primary">{activeMood.label.toLowerCase()}</span>
+                    </span>
+                  )}
+                </div>
+
+                {recentStressors.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
+                      Recent picks
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {recentStressors.map((stressorName) => {
+                        const isActive = stressors.includes(stressorName);
+                        return (
+                          <button
+                            key={stressorName}
+                            onClick={() => handleAddRecentStressor(stressorName)}
+                            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm transition ${
+                              isActive
+                                ? 'bg-safespace-primary text-white shadow-sm'
+                                : 'bg-white/80 text-safespace-foreground/70 ring-1 ring-safespace-muted/50 hover:text-safespace-foreground dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/15'
+                            }`}
+                          >
+                            {stressorName}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <input
+                      type="text"
+                      value={currentStressor}
+                      onChange={(event) => setCurrentStressor(event.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Name what’s gripping your mind"
+                      className="input-surface flex-1 px-4 py-3"
+                    />
+                    <Button
+                      type="button"
+                      onClick={handleAddStressor}
+                      disabled={!currentStressor.trim()}
+                      className="rounded-full px-5 py-2 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                    >
+                      Add
+                    </Button>
+                  </div>
+
+                  {stressors.length > 0 && (
+                    <div className="card-section flex flex-wrap gap-2">
+                      {stressors.map((stressor, index) => (
+                        <span
+                          key={`${stressor}-${index}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-sm text-safespace-foreground/75 ring-1 ring-safespace-muted/40 dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/10"
+                        >
+                          {stressor}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveStressor(index)}
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs text-safespace-foreground/50 transition hover:bg-safespace-muted/40 hover:text-safespace-foreground"
+                            aria-label={`Remove ${stressor}`}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <Button
+                    variant="ghost"
+                    onClick={handleSkip}
+                    className="justify-start text-safespace-foreground/70 hover:text-safespace-primary dark:text-slate-300"
+                  >
+                    Skip for now
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setStep('mood')}
+                      className="rounded-full border-safespace-muted/60 px-5 py-2 text-sm font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      onClick={() => handleSubmit(undefined)}
+                      disabled={stressors.length === 0}
+                      className="rounded-full px-6 py-2 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                    >
+                      Save check-in
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
-            
-            <div className="space-y-3">
-              <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  value={currentStressor} 
-                  onChange={e => setCurrentStressor(e.target.value)} 
-                  onKeyDown={handleKeyDown} 
-                  placeholder="Enter a stressor..." 
-                  className="flex-1 p-3 border dark:border-gray-700 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-safespace-primary dark:bg-gray-700 dark:text-white dark:placeholder-gray-400" 
-                />
-                <button 
-                  onClick={handleAddStressor} 
-                  disabled={!currentStressor.trim()} 
-                  className={`px-4 py-2 rounded-md font-medium transition-colors ${!currentStressor.trim() ? 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500' : 'bg-safespace-primary text-white hover:bg-safespace-primary/90 dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70'}`}
-                >
-                  Add
-                </button>
-              </div>
-              
-              {stressors.length > 0 && (
-                <div className="space-y-2 mt-4">
-                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Added Stressors:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {stressors.map((stressor, index) => (
-                      <div key={index} className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center gap-2">
-                        <span className="dark:text-white">{stressor}</span>
-                        <button 
-                          onClick={() => handleRemoveStressor(index)} 
-                          className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <Button
-                variant="ghost"
-                onClick={handleSkip}
-                className="text-safespace-foreground/70 hover:text-safespace-primary dark:text-gray-300"
-              >
-                Skip for now
-              </Button>
-              <div className="flex gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setStep('mood')} 
-                  className="border-gray-300 dark:border-gray-600 dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
-                >
-                  Back
-                </Button>
-                <Button 
-                  onClick={() => handleSubmit()}
-                  disabled={stressors.length === 0}
-                  className="dark:bg-safespace-primary/80 dark:hover:bg-safespace-primary/70"
-                >
-                  Save check-in
-                </Button>
-              </div>
-            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
