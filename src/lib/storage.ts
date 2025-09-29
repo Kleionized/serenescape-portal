@@ -38,7 +38,8 @@ const STORAGE_KEYS = {
   distractions: 'safespace_distractions',
   todoSections: 'safespace_todo_sections',
   moodCheckIns: 'safespace_mood_checkins',
-  lastMoodCheckIn: 'safespace_last_mood_checkin'
+  lastMoodCheckIn: 'safespace_last_mood_checkin',
+  stressorCleanup: 'safespace_stressor_cleanup'
 };
 
 // Get stressors from localStorage
@@ -86,6 +87,22 @@ export const deleteStressor = (id: string): void => {
   const stressors = getStressors();
   const updatedStressors = stressors.filter(s => s.id !== id);
   saveStressors(updatedStressors);
+};
+
+export const clearResolvedStressors = (): void => {
+  const stressors = getStressors();
+  const filtered = stressors.filter((stressor) => !stressor.resolved);
+  if (filtered.length !== stressors.length) {
+    saveStressors(filtered);
+  }
+};
+
+export const getLastStressorCleanup = (): string | null => {
+  return localStorage.getItem(STORAGE_KEYS.stressorCleanup);
+};
+
+export const setLastStressorCleanup = (dateKey: string): void => {
+  localStorage.setItem(STORAGE_KEYS.stressorCleanup, dateKey);
 };
 
 // Get todos from localStorage

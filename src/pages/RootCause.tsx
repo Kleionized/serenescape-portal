@@ -62,7 +62,7 @@ const RootCause = () => {
 
         {!selectedStressor ? (
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-            <section className="card-surface flex min-h-[27.4rem] flex-col gap-5 p-6">
+            <section className="card-surface flex min-h-[29rem] flex-col gap-5 p-6">
               <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-safespace-foreground/70">
                 <Search className="h-4 w-4 text-safespace-primary" />
                 Select something to explore
@@ -89,7 +89,7 @@ const RootCause = () => {
               </div>
             </section>
 
-            <aside className="card-surface flex min-h-[24rem] flex-col gap-6 p-6">
+            <aside className="card-surface flex min-h-[26rem] flex-col gap-6 p-6">
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-safespace-foreground/75">Add a stressor</h3>
                 <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">
@@ -180,7 +180,7 @@ const RootCause = () => {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <label className="card-surface flex min-h-[22rem] flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
+              <label className="card-surface flex min-h-[24rem] flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What feels most worrying?
                 </span>
@@ -192,7 +192,7 @@ const RootCause = () => {
                 />
               </label>
 
-              <label className="card-surface flex min-h-[22rem] flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
+              <label className="card-surface flex min-h-[24rem] flex-col gap-3 p-5 text-sm text-safespace-foreground/70 dark:text-slate-200">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What steps feel possible?
                 </span>

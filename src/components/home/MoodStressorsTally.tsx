@@ -1,12 +1,28 @@
 import React from 'react';
 import { MoodStressor } from '../../lib/types';
-import { getStressors, resolveStressor } from '../../lib/storage';
+import {
+  getStressors,
+  resolveStressor,
+  clearResolvedStressors,
+  getLastStressorCleanup,
+  setLastStressorCleanup
+} from '../../lib/storage';
 import { Check, Feather, Flame, Eye, EyeOff } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 const MoodStressorsTally = () => {
   const [stressors, setStressors] = React.useState<MoodStressor[]>([]);
   const [showResolved, setShowResolved] = React.useState(false);
+  const runDailyCleanup = React.useCallback(() => {
+    const todayKey = new Date().toISOString().slice(0, 10);
+    const lastRun = getLastStressorCleanup();
+    if (lastRun !== todayKey) {
+      clearResolvedStressors();
+      setLastStressorCleanup(todayKey);
+    }
+  }, []);
+
   React.useEffect(() => {
+    runDailyCleanup();
     loadStressors();
 
     // Add event listener for mood check-ins
@@ -16,7 +32,7 @@ const MoodStressorsTally = () => {
     return () => {
       window.removeEventListener('mood-checkin-recorded', loadStressors);
     };
-  }, []);
+  }, [runDailyCleanup]);
   const loadStressors = () => {
     const loadedStressors = getStressors();
     // Sort by resolved status first, then by count (highest first)
@@ -42,8 +58,14 @@ const MoodStressorsTally = () => {
     return 'text-safespace-stress-low';
   };
   const filteredStressors = showResolved ? stressors : stressors.filter(stressor => !stressor.resolved);
+  const containerMinHeight = filteredStressors.length === 0
+    ? '20rem'
+    : filteredStressors.length <= 3
+      ? '26rem'
+      : '32rem';
+
   return (
-    <div className="flex h-full flex-col gap-6">
+    <div className="flex h-full flex-col gap-6" style={{ minHeight: containerMinHeight }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
           <Feather className="h-4 w-4 text-safespace-primary dark:text-safespace-primary/80" />

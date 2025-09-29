@@ -23,7 +23,7 @@ const ThoughtInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card-surface flex min-h-[27.4rem] flex-col gap-6 p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="card-surface flex min-h-[29rem] flex-col gap-6 p-6 sm:p-8">
       <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
         <Sparkles className="h-4 w-4 text-safespace-primary" />
         <span>Free write</span>
@@ -32,7 +32,7 @@ const ThoughtInput = () => {
         value={thought}
         onChange={(e) => setThought(e.target.value)}
         placeholder="Let anything surface. There’s no wrong way to begin."
-        className="min-h-[14rem] w-full flex-1 resize-none rounded-2xl border border-safespace-muted/60 bg-white/90 p-6 text-base leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
+        className="min-h-[16rem] w-full flex-1 resize-none rounded-2xl border border-safespace-muted/60 bg-white/90 p-6 text-base leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400"
       />
       <div className="flex justify-end">
         <Button

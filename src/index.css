@@ -161,18 +161,18 @@
   }
 
   .page-shell {
-    @apply mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 sm:gap-7 sm:px-8 lg:px-12;
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-5 px-5 sm:gap-6 sm:px-8 lg:px-12;
     min-height: 100dvh;
-    padding-top: clamp(1.25rem, 4vh, 3rem);
-    padding-bottom: clamp(2rem, 7vh, 4rem);
+    padding-top: clamp(0.25rem, 2.5vh, 1.5rem);
+    padding-bottom: clamp(1.5rem, 6vh, 3rem);
   }
 
   .page-shell--spacious {
-    padding-top: clamp(2rem, 5vh, 3.5rem);
+    padding-top: clamp(1rem, 3.5vh, 2.25rem);
   }
 
   .page-shell--compact {
-    padding-top: clamp(1.25rem, 3.5vh, 2.75rem);
+    padding-top: clamp(0.5rem, 2vh, 1.5rem);
   }
 
   .glass-card {

@@ -119,7 +119,7 @@ const SavedEntries = () => {
           </div>
         </section>
 
-        <div className="card-surface flex min-h-[27.4rem] flex-col p-6">
+        <div className="card-surface flex min-h-[29rem] flex-col p-6">
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>

@@ -94,8 +94,14 @@ const ActiveTodos = () => {
 
   const totalCompleted = activeTodos.filter((todo) => todo.completed).length;
 
+  const panelMinHeight = activeTodos.length === 0
+    ? '20rem'
+    : activeTodos.length <= 2
+      ? '26rem'
+      : '32rem';
+
   return (
-    <div className="flex h-full flex-col gap-6">
+    <div className="flex h-full flex-col gap-6" style={{ minHeight: panelMinHeight }}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
           <ListTodo className="h-4 w-4 text-amber-500" />
