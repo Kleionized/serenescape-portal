@@ -23,7 +23,7 @@ const ThoughtInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card-surface flex min-h-[29rem] flex-col gap-6 p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="card-surface flex min-h-[29rem] flex-col gap-6 px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
       <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
         <Sparkles className="h-4 w-4 text-safespace-primary" />
         <span>Free write</span>

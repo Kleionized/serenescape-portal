@@ -72,11 +72,11 @@ const Index = () => {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="card-surface flex flex-col p-6">
+          <div className="card-surface flex flex-col px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
             <MoodStressorsTally />
           </div>
           <div className="card-surface flex flex-col p-0">
-            <ScrollArea className="flex-1 p-5">
+            <ScrollArea className="flex-1 px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
               <ActiveTodos />
             </ScrollArea>
           </div>

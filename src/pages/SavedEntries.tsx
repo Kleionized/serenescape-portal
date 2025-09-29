@@ -119,7 +119,7 @@ const SavedEntries = () => {
           </div>
         </section>
 
-        <div className="card-surface flex min-h-[29rem] flex-col p-6">
+        <div className="card-surface flex min-h-[29rem] flex-col px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -247,7 +247,7 @@ const SavedEntries = () => {
 
         <Dialog open={!!activeEntry} onOpenChange={(open) => !open && setActiveEntry(null)}>
           <DialogContent className="max-w-3xl border-none bg-transparent p-0 sm:p-2">
-            <div className="card-surface flex flex-col gap-6 bg-white p-6 sm:gap-8 sm:p-8 dark:bg-slate-950">
+            <div className="card-surface flex flex-col gap-6 bg-white px-6 pt-6 pb-8 sm:gap-8 sm:px-8 sm:pt-8 sm:pb-10 dark:bg-slate-950">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-3">
                   {entryTypeLabel && (
