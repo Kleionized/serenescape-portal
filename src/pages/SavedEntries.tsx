@@ -157,7 +157,7 @@ const SavedEntries = () => {
               <div className="rounded-2xl border border-safespace-muted/60 bg-white/85 p-5 text-sm text-safespace-foreground/70 shadow-sm dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="h-5 w-5 text-safespace-primary" />
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <p className="font-semibold text-safespace-foreground dark:text-white">
                       {selectedEntries.length > 0
                         ? `Delete ${selectedEntries.length} entr${selectedEntries.length === 1 ? 'y' : 'ies'}?`
@@ -190,7 +190,7 @@ const SavedEntries = () => {
               </div>
             ) : (
               <ScrollArea className="max-h-[60vh] pr-4">
-                <div className="space-y-3 pr-2">
+                <div className="space-y-4 pr-2">
                   {entries.map((entry) => {
                     const isReflection = entry.type === 'reflection';
                     const preview = getPreviewText(entry);

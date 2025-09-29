@@ -86,7 +86,7 @@ const MoodStressorsTally = () => {
           {showResolved ? 'No stressors recorded yet.' : 'All clear for now.'}
         </div>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-4">
           {filteredStressors.map((stressor) => (
             <li key={stressor.id} className="card-section card-section-hover">
               <div className="flex items-center gap-3">

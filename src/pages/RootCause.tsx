@@ -70,7 +70,7 @@ const RootCause = () => {
               <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">
                 Pick a saved stressor or add one to begin.
               </p>
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 space-y-3">
                 {stressors.length === 0 && (
                   <div className="flex h-full min-h-[12rem] items-center justify-center rounded-2xl border border-dashed border-safespace-muted/60 bg-white/70 px-4 text-center text-sm text-safespace-foreground/60 dark:border-white/10 dark:bg-slate-900/60 dark:text-slate-300">
                     No unresolved stressors yet. Add one to start a reflection.
