@@ -22,7 +22,6 @@ const AppContent = () => {
 
   return (
     <>
-      <NavBar />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/thought-dump" element={<ThoughtDump />} />

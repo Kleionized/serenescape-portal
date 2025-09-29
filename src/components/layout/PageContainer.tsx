@@ -1,5 +1,6 @@
 
 import React, { ReactNode } from 'react';
+import NavBar from './NavBar';
 
 interface PageContainerProps {
   children: ReactNode;
@@ -21,6 +22,8 @@ const PageContainer: React.FC<PageContainerProps> = ({
       <div
         className={`page-shell ${hideHeader ? 'page-shell--compact' : 'page-shell--spacious'}`}
       >
+        <NavBar />
+
         {!hideHeader && (
           <header className="flex flex-col gap-1">
             <h1 className="heading-lg text-safespace-foreground dark:text-slate-100">{title}</h1>

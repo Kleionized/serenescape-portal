@@ -122,7 +122,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-safespace-background/80 backdrop-blur-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-safespace-background/80 backdrop-blur-xl dark:bg-slate-950/85">
       <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8">
         <div className="card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-6 shadow-2xl sm:p-8 dark:border-white/10 dark:bg-slate-950/95">
           <button
@@ -137,12 +137,12 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
             <div className="space-y-2">
               <span className="page-hero__eyebrow">Quick check-in</span>
               <h2 className="text-2xl font-semibold text-safespace-foreground dark:text-slate-100">
-                {step === 'mood' ? 'How are you arriving?' : 'What’s tugging at you?'}
+                {step === 'mood' ? 'How are you arriving?' : 'Name what feels loud'}
               </h2>
               <p className="page-hero__description">
                 {step === 'mood'
-                  ? 'Choose the option that describes where your nervous system is landing right now.'
-                  : 'Name any stressors that feel present. Add a few or skip if nothing needs airtime.'}
+                  ? 'Choose the option that matches where your nervous system is landing.'
+                  : 'Pick a couple of stressors or skip if nothing needs attention.'}
               </p>
             </div>
 
@@ -196,8 +196,8 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                     <ArrowLeft className="h-4 w-4" />
                   </button>
                   {activeMood && (
-                    <span className="text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
-                      Logging stressors while feeling <span className="text-safespace-primary">{activeMood.label.toLowerCase()}</span>
+                    <span className="text-sm text-safespace-foreground/65 dark:text-slate-300">
+                      Checking in while feeling <span className="text-safespace-primary">{activeMood.label.toLowerCase()}</span>
                     </span>
                   )}
                 </div>
@@ -205,7 +205,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                 {recentStressors.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      Recent picks
+                      Soft reminders
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {recentStressors.map((stressorName) => {
@@ -249,17 +249,17 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                   </div>
 
                   {stressors.length > 0 && (
-                    <div className="card-section flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 rounded-2xl border border-safespace-muted/45 bg-white/80 px-4 py-3 dark:border-white/10 dark:bg-slate-900/70">
                       {stressors.map((stressor, index) => (
                         <span
                           key={`${stressor}-${index}`}
-                          className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-sm text-safespace-foreground/75 ring-1 ring-safespace-muted/40 dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/10"
+                          className="inline-flex items-center gap-2 rounded-full bg-safespace-muted/60 px-3 py-1.5 text-sm text-safespace-foreground/75 dark:bg-white/10 dark:text-slate-200"
                         >
                           {stressor}
                           <button
                             type="button"
                             onClick={() => handleRemoveStressor(index)}
-                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs text-safespace-foreground/50 transition hover:bg-safespace-muted/40 hover:text-safespace-foreground"
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs text-safespace-foreground/60 transition hover:bg-safespace-muted/40 hover:text-safespace-foreground"
                             aria-label={`Remove ${stressor}`}
                           >
                             <X className="h-3 w-3" />

@@ -12,7 +12,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import TodoList from '../components/todo/TodoList';
 import { TodoItem } from '../lib/types';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, ListTodo, Sparkles } from 'lucide-react';
 
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -97,6 +97,11 @@ const Todo = () => {
     }
     return todos.filter((todo) => todo.section === selectedTag);
   }, [todos, selectedTag]);
+
+  const visibleCompletedCount = useMemo(
+    () => filteredTodos.filter((todo) => todo.completed).length,
+    [filteredTodos]
+  );
 
   const handleAddTag = () => {
     const trimmed = newTagName.trim();
@@ -185,9 +190,10 @@ const Todo = () => {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-lg font-semibold text-safespace-foreground dark:text-slate-100">
-                  Tags
-                </h2>
+                <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
+                  <Sparkles className="h-4 w-4 text-safespace-primary" />
+                  <span>Tags</span>
+                </div>
                 <div className="flex flex-wrap items-center gap-2 text-xs">
                   <button
                     onClick={() => {
@@ -205,13 +211,6 @@ const Todo = () => {
                     className="button-muted"
                   >
                     {isManagingTags ? 'Done' : 'Manage tags'}
-                  </button>
-                  <button
-                    onClick={handleDeleteCompletedTodos}
-                    className="button-ghost text-safespace-primary"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                    Clear completed
                   </button>
                 </div>
               </div>
@@ -278,26 +277,47 @@ const Todo = () => {
 
               <div className="card-section card-section-hover flex flex-col gap-4 p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/40 dark:text-slate-400">
-                      {selectedTag === 'all' ? 'Showing everything' : `Showing ${selectedTag}`}
-                    </p>
-                    <h2 className="text-lg font-semibold text-safespace-foreground dark:text-slate-100">Task list</h2>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-safespace-primary/10 text-safespace-primary dark:bg-safespace-primary/15">
+                      <ListTodo className="h-5 w-5" />
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">Task list</span>
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="pill-tag bg-safespace-muted/60 px-3 py-1 text-safespace-foreground/70 dark:bg-white/10 dark:text-slate-200">
+                          {selectedTag === 'all' ? 'All tags' : selectedTag}
+                        </span>
+                        <span className="pill-tag bg-safespace-muted/40 px-3 py-1 text-safespace-foreground/60 dark:bg-white/10 dark:text-slate-300">
+                          {filteredTodos.length === 0
+                            ? '0 tasks'
+                            : `${visibleCompletedCount}/${filteredTodos.length} complete`}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      if (!isAddingTask) {
-                        setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
-                      }
-                      setIsAddingTask((prev) => !prev);
-                      setNewTaskText('');
-                    }}
-                    className="button-muted"
-                  >
-                  <Plus className="h-4 w-4" />
-                  {isAddingTask ? 'Cancel' : 'New task'}
-                </button>
-              </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleDeleteCompletedTodos}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-safespace-muted/50 text-safespace-foreground/65 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200" 
+                      aria-label="Clear completed tasks"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (!isAddingTask) {
+                          setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
+                        }
+                        setIsAddingTask((prev) => !prev);
+                        setNewTaskText('');
+                      }}
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-safespace-muted/50 text-safespace-foreground/65 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                      aria-label={isAddingTask ? 'Cancel new task' : 'Add new task'}
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
 
               {isAddingTask && (
                 <div className="card-section card-section-hover flex flex-col gap-4 p-4">

@@ -98,7 +98,7 @@ const ActiveTodos = () => {
     <div className="flex h-full flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
-          <ListTodo className="h-4 w-4 text-safespace-secondary dark:text-safespace-primary/80" />
+          <ListTodo className="h-4 w-4 text-amber-500" />
           <span>Today’s focus</span>
         </div>
         {activeTodos.some((todo) => todo.completed) && (

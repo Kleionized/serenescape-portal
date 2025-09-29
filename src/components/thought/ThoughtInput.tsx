@@ -24,11 +24,9 @@ const ThoughtInput = () => {
 
   return (
     <form onSubmit={handleSubmit} className="card-surface flex min-h-[27.4rem] flex-col gap-6 p-6 sm:p-8">
-      <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.35em] text-safespace-primary dark:text-safespace-primary/80">
-        <span className="inline-flex items-center gap-2 uppercase tracking-[0.35em] text-safespace-primary">
-          <Sparkles className="h-3.5 w-3.5" />
-          free write
-        </span>
+      <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
+        <Sparkles className="h-4 w-4 text-safespace-primary" />
+        <span>Free write</span>
       </div>
       <textarea
         value={thought}

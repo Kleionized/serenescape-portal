@@ -113,28 +113,28 @@ const RootCause = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex h-full flex-col justify-center rounded-2xl border border-safespace-muted/40 bg-white/92 px-5 py-6 text-sm text-safespace-foreground/70 shadow-sm dark:border-white/10 dark:bg-slate-950/80 dark:text-slate-200">
-                    <p className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
-                      Ready when you are
-                    </p>
-                    <p className="mt-2 text-xs leading-relaxed text-safespace-foreground/55 dark:text-slate-300">
-                      You’ve already named a few. Tap one on the left or add a fresh one below.
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {stressors.slice(0, 3).map((stressor) => (
+                  <div className="flex h-full flex-col items-center justify-center gap-5 rounded-2xl border border-safespace-muted/40 bg-white/92 px-5 py-6 text-sm text-safespace-foreground/70 shadow-sm dark:border-white/10 dark:bg-slate-950/80 dark:text-slate-200">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/20">
+                      <Search className="h-6 w-6" />
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {stressors.slice(0, 4).map((stressor) => (
                         <span
                           key={stressor.id}
-                          className="pill-tag bg-safespace-muted/60 text-xs text-safespace-foreground/70 dark:bg-white/10 dark:text-slate-200"
+                          className="pill-tag bg-safespace-muted/60 px-3 py-1 text-xs text-safespace-foreground/70 dark:bg-white/10 dark:text-slate-200"
                         >
                           {stressor.name}
                         </span>
                       ))}
-                      {stressors.length > 3 && (
-                        <span className="pill-tag bg-safespace-muted/40 text-xs text-safespace-foreground/60 dark:bg-white/10 dark:text-slate-300">
-                          +{stressors.length - 3}
+                      {stressors.length > 4 && (
+                        <span className="pill-tag bg-safespace-muted/40 px-3 py-1 text-xs text-safespace-foreground/60 dark:bg-white/10 dark:text-slate-300">
+                          +{stressors.length - 4}
                         </span>
                       )}
                     </div>
+                    <p className="text-xs text-safespace-foreground/55 dark:text-slate-300">
+                      Pick from the list or add a new one below.
+                    </p>
                   </div>
                 )}
               </div>
@@ -188,7 +188,7 @@ const RootCause = () => {
                   value={worstCase}
                   onChange={(e) => setWorstCase(e.target.value)}
                   placeholder="Write the story your mind is telling without judgement."
-                  className="min-h-[14rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="my-3 flex-1 min-h-[22rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
                 />
               </label>
 
@@ -200,7 +200,7 @@ const RootCause = () => {
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
                   placeholder="List small next steps or supports to lean on."
-                  className="min-h-[14rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="my-2 flex-1 min-h-[14rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
                 />
               </label>
             </div>
