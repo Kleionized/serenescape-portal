@@ -6,7 +6,7 @@ import { Home } from 'lucide-react';
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-safespace-background pt-20">
-      <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+      <div className="safe-area-block--tight mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <div className="flex flex-col items-center justify-center py-14 sm:py-16">
           <div className="mb-4 text-7xl font-bold text-safespace-primary sm:text-8xl lg:text-9xl">404</div>
           <p className="mb-8 text-center text-gray-500">
