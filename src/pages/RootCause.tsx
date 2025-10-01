@@ -51,7 +51,7 @@ const RootCause = () => {
         <section className="page-hero">
           <div className="page-hero__header">
             <span className="page-hero__eyebrow">Pattern spotting</span>
-            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+            <h1 className="text-2xl font-semibold text-safespace-foreground sm:text-3xl dark:text-slate-100">
               Notice what keeps tugging at you
             </h1>
             <p className="page-hero__description">
@@ -62,7 +62,7 @@ const RootCause = () => {
 
         {!selectedStressor ? (
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-            <section className="card-surface flex min-h-[29rem] flex-col gap-5 px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+            <section className="card-surface flex min-h-[24rem] flex-col gap-5 px-4 pt-5 pb-7 sm:min-h-[29rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
               <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-safespace-foreground/70">
                 <Search className="h-4 w-4 text-safespace-primary" />
                 Select something to explore
@@ -89,7 +89,7 @@ const RootCause = () => {
               </div>
             </section>
 
-            <aside className="card-surface flex min-h-[26rem] flex-col gap-6 px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+            <aside className="card-surface flex min-h-[22rem] flex-col gap-6 px-4 pt-5 pb-7 sm:min-h-[26rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-safespace-foreground/75">Add a stressor</h3>
                 <p className="text-sm text-safespace-foreground/60 dark:text-slate-300">
@@ -99,7 +99,7 @@ const RootCause = () => {
 
               <div className="flex-1">
                 {stressors.length === 0 ? (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-safespace-muted/50 bg-white/85 px-5 py-8 text-center text-sm text-safespace-foreground/60 shadow-sm dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-300">
+                  <div className="flex h-full flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-safespace-muted/50 bg-white/85 px-4 py-8 text-center text-sm text-safespace-foreground/60 shadow-sm sm:px-5 dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-300">
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-safespace-accent/15 text-safespace-accent dark:bg-safespace-accent/20">
                       <PlusCircle className="h-6 w-6" />
                     </div>
@@ -113,7 +113,7 @@ const RootCause = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex h-full flex-col items-center justify-center gap-5 rounded-2xl border border-safespace-muted/40 bg-white/92 px-5 py-6 text-sm text-safespace-foreground/70 shadow-sm dark:border-white/10 dark:bg-slate-950/80 dark:text-slate-200">
+                  <div className="flex h-full flex-col items-center justify-center gap-5 rounded-2xl border border-safespace-muted/40 bg-white/92 px-4 py-6 text-sm text-safespace-foreground/70 shadow-sm sm:px-5 dark:border-white/10 dark:bg-slate-950/80 dark:text-slate-200">
                     <div className="flex h-14 w-14 items-center justify-center rounded-full bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/20">
                       <Search className="h-6 w-6" />
                     </div>
@@ -180,7 +180,7 @@ const RootCause = () => {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <label className="card-surface flex min-h-[24rem] flex-col gap-3 px-6 pt-5 pb-8 text-sm text-safespace-foreground/70 dark:text-slate-200 sm:px-8 sm:pt-6 sm:pb-10">
+              <label className="card-surface flex min-h-[20rem] flex-col gap-3 px-4 pt-5 pb-7 text-sm text-safespace-foreground/70 dark:text-slate-200 sm:min-h-[24rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What feels most worrying?
                 </span>
@@ -188,11 +188,11 @@ const RootCause = () => {
                   value={worstCase}
                   onChange={(e) => setWorstCase(e.target.value)}
                   placeholder="Write the story your mind is telling without judgement."
-                  className="my-3 flex-1 min-h-[22rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="my-3 flex-1 min-h-[18rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none sm:min-h-[22rem] sm:px-4 dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
                 />
               </label>
 
-              <label className="card-surface flex min-h-[24rem] flex-col gap-3 px-6 pt-5 pb-8 text-sm text-safespace-foreground/70 dark:text-slate-200 sm:px-8 sm:pt-6 sm:pb-10">
+              <label className="card-surface flex min-h-[18rem] flex-col gap-3 px-4 pt-5 pb-7 text-sm text-safespace-foreground/70 dark:text-slate-200 sm:min-h-[24rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
                 <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
                   What steps feel possible?
                 </span>
@@ -200,7 +200,7 @@ const RootCause = () => {
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
                   placeholder="List small next steps or supports to lean on."
-                  className="my-2 flex-1 min-h-[14rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                  className="my-2 flex-1 min-h-[12rem] resize-none rounded-2xl border border-safespace-muted/60 bg-white/85 px-3 py-2 text-sm leading-relaxed text-safespace-foreground placeholder:text-safespace-foreground/45 focus:border-safespace-primary/40 focus:outline-none sm:min-h-[14rem] sm:px-4 dark:border-white/10 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
                 />
               </label>
             </div>

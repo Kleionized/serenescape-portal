@@ -177,7 +177,7 @@ const Todo = () => {
         <section className="page-hero">
           <div className="page-hero__header">
             <span className="page-hero__eyebrow">Focus</span>
-            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+            <h1 className="text-2xl font-semibold text-safespace-foreground sm:text-3xl dark:text-slate-100">
               Choose one calm priority
             </h1>
             <p className="page-hero__description">
@@ -186,7 +186,7 @@ const Todo = () => {
           </div>
         </section>
 
-        <section className="card-surface flex min-h-[29rem] flex-col px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+        <section className="card-surface flex min-h-[24rem] flex-col px-4 pt-5 pb-7 sm:min-h-[29rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
@@ -216,7 +216,7 @@ const Todo = () => {
               </div>
 
               {isAddingTag && (
-                <div className="card-section card-section-hover flex flex-wrap gap-2">
+                <div className="card-section card-section-hover flex flex-wrap gap-2 p-4 sm:p-5">
                   <input
                     type="text"
                     value={newTagName}
@@ -275,7 +275,7 @@ const Todo = () => {
               )}
             </div>
 
-              <div className="card-section card-section-hover flex flex-col gap-4 p-5">
+              <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-safespace-primary/10 text-safespace-primary dark:bg-safespace-primary/15">
@@ -320,7 +320,7 @@ const Todo = () => {
                 </div>
 
               {isAddingTask && (
-                <div className="card-section card-section-hover flex flex-col gap-4 p-4">
+                <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
                   <textarea
                     value={newTaskText}
                     onChange={(e) => setNewTaskText(e.target.value)}

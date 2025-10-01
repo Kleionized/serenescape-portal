@@ -126,7 +126,7 @@
 
   .page-hero {
     @apply card-surface flex flex-col gap-6;
-    padding: clamp(1.2rem, 2.6vw, 2.2rem);
+    padding: clamp(1rem, 2.6vw, 2.2rem);
     min-height: clamp(10rem, 16vh, 15rem);
     justify-content: center;
   }
@@ -148,6 +148,22 @@
     @apply text-sm leading-relaxed text-safespace-foreground/60 dark:text-slate-300;
   }
 
+  @media (max-width: 640px) {
+    .page-hero {
+      padding: 1.1rem;
+      min-height: clamp(11.5rem, 30vh, 16.5rem);
+      gap: 1.25rem;
+    }
+
+    .page-hero--expanded {
+      min-height: clamp(12.5rem, 36vh, 18.5rem);
+    }
+
+    .page-hero__header {
+      gap: 0.9rem;
+    }
+  }
+
   .button-muted {
     @apply inline-flex items-center gap-2 rounded-full border border-safespace-muted bg-white/70 px-3 py-1.5 text-sm font-semibold text-safespace-foreground/70 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-safespace-primary/60 hover:border-safespace-primary/40 hover:bg-safespace-card-hover hover:text-safespace-primary dark:border-white/15 dark:bg-slate-900/60 dark:text-slate-200 dark:hover:bg-slate-900/80 dark:hover:text-safespace-primary;
   }
@@ -161,10 +177,10 @@
   }
 
   .page-shell {
-    @apply mx-auto flex w-full max-w-6xl flex-col gap-5 px-5 sm:gap-6 sm:px-8 lg:px-12;
+    @apply mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 sm:gap-6 sm:px-6 md:px-8 lg:px-12;
     min-height: 100dvh;
-    padding-top: clamp(0.25rem, 2.5vh, 1.5rem);
-    padding-bottom: clamp(1.5rem, 6vh, 3rem);
+    padding-top: clamp(0.5rem, 2.5vh, 1.5rem);
+    padding-bottom: clamp(1.25rem, 6vh, 3rem);
   }
 
   .page-shell--spacious {

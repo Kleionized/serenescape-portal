@@ -40,7 +40,7 @@ const Index = () => {
         <section className="page-hero page-hero--expanded">
           <div className="page-hero__header">
             <span className="page-hero__eyebrow">Today</span>
-            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+            <h1 className="text-2xl font-semibold text-safespace-foreground sm:text-3xl dark:text-slate-100">
               Take a gentle checkpoint
             </h1>
             <p className="page-hero__description">
@@ -48,14 +48,14 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {quickActions.map(({ to, label, description, Icon }) => (
               <Link
                 key={to}
                 to={to}
-                className="card-section card-section-hover group flex items-center gap-3"
+                className="card-section card-section-hover group flex w-full items-center gap-3 sm:flex-col sm:items-start sm:gap-4 lg:flex-row lg:items-center"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-safespace-muted/50 transition group-hover:ring-safespace-primary/40 dark:bg-slate-950">
+                <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-safespace-muted/50 transition group-hover:ring-safespace-primary/40 dark:bg-slate-950">
                   <Icon className="h-5 w-5 text-safespace-primary dark:text-safespace-primary/90" />
                 </span>
                 <span className="flex flex-col">
@@ -72,11 +72,11 @@ const Index = () => {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="card-surface flex flex-col px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+          <div className="card-surface flex flex-col px-4 pt-5 pb-7 sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
             <MoodStressorsTally />
           </div>
           <div className="card-surface flex flex-col p-0">
-            <ScrollArea className="flex-1 px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+            <ScrollArea className="flex-1 px-4 pt-5 pb-7 sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
               <ActiveTodos />
             </ScrollArea>
           </div>

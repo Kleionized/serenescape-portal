@@ -6,10 +6,10 @@ import { Home } from 'lucide-react';
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-safespace-background pt-20">
-      <div className="max-w-6xl mx-auto px-6 pb-20">
-        <div className="flex flex-col items-center justify-center py-16">
-          <div className="text-safespace-primary text-9xl font-bold mb-4">404</div>
-          <p className="text-gray-500 mb-8 text-center">
+      <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+        <div className="flex flex-col items-center justify-center py-14 sm:py-16">
+          <div className="mb-4 text-7xl font-bold text-safespace-primary sm:text-8xl lg:text-9xl">404</div>
+          <p className="mb-8 text-center text-gray-500">
             The page you requested doesn't exist or has been moved to a new location.
           </p>
           <Link 

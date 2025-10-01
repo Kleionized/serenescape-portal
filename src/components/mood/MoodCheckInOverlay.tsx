@@ -123,8 +123,8 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-safespace-background/80 backdrop-blur-xl dark:bg-slate-950/85">
-      <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8">
-        <div className="card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-6 shadow-2xl sm:p-8 dark:border-white/10 dark:bg-slate-950/95">
+      <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+        <div className="card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-5 shadow-2xl sm:p-7 lg:p-8 dark:border-white/10 dark:bg-slate-950/95">
           <button
             onClick={onClose}
             className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-2xl border border-transparent text-safespace-foreground/60 transition hover:border-safespace-muted/60 hover:text-safespace-foreground dark:text-slate-300"
@@ -133,7 +133,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
             <X className="h-4 w-4" />
           </button>
 
-          <div className="space-y-6 pr-1">
+          <div className="space-y-6 pr-0 sm:pr-1">
             <div className="space-y-2">
               <span className="page-hero__eyebrow">Quick check-in</span>
               <h2 className="text-2xl font-semibold text-safespace-foreground dark:text-slate-100">

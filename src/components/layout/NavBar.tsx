@@ -20,13 +20,31 @@ const NavBar = () => {
 
   return (
     <nav className="mb-0 rounded-3xl border border-safespace-muted/40 bg-safespace-background/90 backdrop-blur dark:border-transparent dark:bg-slate-950/80">
-      <div className="flex h-[4.5rem] w-full items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
-        <Link to="/" className="flex items-center gap-3 text-lg font-semibold text-safespace-foreground dark:text-slate-100">
-          <span className="flex h-10 w-10 items-center justify-center rounded-3xl bg-safespace-primary/15 text-safespace-primary dark:bg-safespace-primary/25">
-            <Heart className="h-5 w-5" />
-          </span>
-          <span>Your Safe Space</span>
-        </Link>
+      <div className="flex w-full flex-col gap-4 px-4 py-4 sm:px-6 md:h-[4.5rem] md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 lg:px-12">
+        <div className="flex w-full items-center justify-between gap-3 md:w-auto">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-3 text-base font-semibold text-safespace-foreground transition-colors hover:text-safespace-primary sm:text-lg dark:text-slate-100 dark:hover:text-safespace-primary"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-3xl bg-safespace-primary/15 text-safespace-primary sm:h-10 sm:w-10 dark:bg-safespace-primary/25">
+              <Heart className="h-5 w-5" />
+            </span>
+            <span className="truncate">Your Safe Space</span>
+          </Link>
+
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-safespace-muted/60 text-safespace-foreground transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/10 dark:text-slate-100 dark:hover:text-safespace-primary"
+              onClick={toggleMobileMenu}
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle navigation"
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
 
         <div className="hidden items-center gap-6 md:flex">
           {navItems.map((item) => {
@@ -50,22 +68,13 @@ const NavBar = () => {
           })}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-2 md:flex">
           <ThemeToggle />
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl border border-safespace-muted/60 text-safespace-foreground transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/10 dark:text-slate-100 dark:hover:text-safespace-primary md:hidden"
-            onClick={toggleMobileMenu}
-            aria-expanded={isMobileMenuOpen}
-            aria-label="Toggle navigation"
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
         </div>
       </div>
 
       {isMobileMenuOpen && (
-        <div className="border-t border-safespace-muted/40 bg-safespace-background/95 px-5 pb-6 pt-4 shadow-sm backdrop-blur dark:border-transparent dark:bg-slate-950/95 md:hidden">
+        <div className="border-t border-safespace-muted/40 bg-safespace-background/95 px-4 pb-6 pt-4 shadow-sm backdrop-blur dark:border-transparent dark:bg-slate-950/95 md:hidden">
           <div className="flex flex-col gap-2 text-base">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
@@ -96,6 +105,11 @@ const NavBar = () => {
                 </Link>
               );
             })}
+          </div>
+
+          <div className="mt-5 flex items-center justify-between rounded-2xl border border-safespace-muted/50 bg-white/85 px-3 py-2 text-sm font-semibold text-safespace-foreground/70 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-200">
+            <span>Theme</span>
+            <ThemeToggle />
           </div>
         </div>
       )}

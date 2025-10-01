@@ -110,7 +110,7 @@ const SavedEntries = () => {
         <section className="page-hero">
           <div className="page-hero__header">
             <span className="page-hero__eyebrow">Archives</span>
-            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+            <h1 className="text-2xl font-semibold text-safespace-foreground sm:text-3xl dark:text-slate-100">
               Revisit what you’ve captured
             </h1>
             <p className="page-hero__description">
@@ -119,7 +119,7 @@ const SavedEntries = () => {
           </div>
         </section>
 
-        <div className="card-surface flex min-h-[29rem] flex-col px-6 pt-6 pb-8 sm:px-8 sm:pt-8 sm:pb-10">
+        <div className="card-surface flex min-h-[24rem] flex-col px-4 pt-5 pb-7 sm:min-h-[29rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -154,7 +154,7 @@ const SavedEntries = () => {
             </div>
 
             {showDeleteConfirm && (
-              <div className="rounded-2xl border border-safespace-muted/60 bg-white/85 p-5 text-sm text-safespace-foreground/70 shadow-sm dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
+              <div className="rounded-2xl border border-safespace-muted/60 bg-white/85 p-4 text-sm text-safespace-foreground/70 shadow-sm sm:p-5 dark:border-white/10 dark:bg-slate-900/80 dark:text-slate-200">
                 <div className="flex items-start gap-3">
                   <AlertTriangle className="h-5 w-5 text-safespace-primary" />
                   <div className="space-y-4">
@@ -185,12 +185,12 @@ const SavedEntries = () => {
             )}
 
             {entries.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/80 px-6 py-12 text-center text-sm text-safespace-foreground/60 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-300">
+              <div className="rounded-2xl border border-dashed border-safespace-muted/60 bg-white/80 px-4 py-10 text-center text-sm text-safespace-foreground/60 sm:px-6 sm:py-12 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-300">
                 Nothing saved yet. Once you write or reflect, it will appear here.
               </div>
             ) : (
-              <ScrollArea className="max-h-[60vh] pr-4">
-                <div className="space-y-4 pr-2">
+              <ScrollArea className="max-h-[60vh] pr-2 sm:pr-4">
+                <div className="space-y-4 pr-1 sm:pr-2">
                   {entries.map((entry) => {
                     const isReflection = entry.type === 'reflection';
                     const preview = getPreviewText(entry);
@@ -247,7 +247,7 @@ const SavedEntries = () => {
 
         <Dialog open={!!activeEntry} onOpenChange={(open) => !open && setActiveEntry(null)}>
           <DialogContent className="max-w-3xl border-none bg-transparent p-0 sm:p-2">
-            <div className="card-surface flex flex-col gap-6 bg-white px-6 pt-6 pb-8 sm:gap-8 sm:px-8 sm:pt-8 sm:pb-10 dark:bg-slate-950">
+            <div className="card-surface flex flex-col gap-6 bg-white px-4 pt-5 pb-7 sm:gap-8 sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10 dark:bg-slate-950">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-3">
                   {entryTypeLabel && (
@@ -272,7 +272,7 @@ const SavedEntries = () => {
               <div className="space-y-4 text-sm leading-relaxed text-safespace-foreground/80 dark:text-slate-200">
                 {activeEntry?.type === 'reflection' ? (
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                    <div className="card-section border-none bg-safespace-muted/40 px-4 py-4 sm:px-5 dark:bg-white/10">
                       <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                         Reflection focus
                       </p>
@@ -280,7 +280,7 @@ const SavedEntries = () => {
                         {activeEntry.stressor || 'No reflection focus recorded.'}
                       </p>
                     </div>
-                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                    <div className="card-section border-none bg-safespace-muted/40 px-4 py-4 sm:px-5 dark:bg-white/10">
                       <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                         What feels most worrying?
                       </p>
@@ -288,7 +288,7 @@ const SavedEntries = () => {
                         {activeEntry.worstCase || 'No worries logged this time.'}
                       </p>
                     </div>
-                    <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 sm:col-span-2 dark:bg-white/10">
+                    <div className="card-section border-none bg-safespace-muted/40 px-4 py-4 sm:col-span-2 sm:px-5 dark:bg-white/10">
                       <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                         What steps feel possible?
                       </p>
@@ -298,7 +298,7 @@ const SavedEntries = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="card-section border-none bg-safespace-muted/40 px-5 py-4 dark:bg-white/10">
+                  <div className="card-section border-none bg-safespace-muted/40 px-4 py-4 sm:px-5 dark:bg-white/10">
                     <p className="text-xs uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
                       Thought entry
                     </p>

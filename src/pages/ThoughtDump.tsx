@@ -15,7 +15,7 @@ const ThoughtDump = () => {
         <section className="page-hero">
           <div className="page-hero__header">
             <span className="page-hero__eyebrow">Unfiltered words</span>
-            <h1 className="text-3xl font-semibold text-safespace-foreground dark:text-slate-100">
+            <h1 className="text-2xl font-semibold text-safespace-foreground sm:text-3xl dark:text-slate-100">
               Empty what’s buzzing inside
             </h1>
             <p className="page-hero__description">
