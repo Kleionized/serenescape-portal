@@ -12,7 +12,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import TodoList from '../components/todo/TodoList';
 import { TodoItem } from '../lib/types';
-import { Trash2, Plus, ListTodo, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Todo = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
@@ -23,6 +24,7 @@ const Todo = () => {
   const [newTagName, setNewTagName] = useState('');
   const [isManagingTags, setIsManagingTags] = useState(false);
   const [isAddingTask, setIsAddingTask] = useState(false);
+  const [showTagTools, setShowTagTools] = useState(false);
   const [newTaskText, setNewTaskText] = useState('');
   const [newTaskImportance, setNewTaskImportance] = useState<'low' | 'medium' | 'high'>('medium');
   const [newTaskTag, setNewTaskTag] = useState<string>('');
@@ -42,6 +44,14 @@ const Todo = () => {
       setNewTaskTag(sections[0]);
     }
   }, [sections, selectedTag, newTaskTag]);
+
+  useEffect(() => {
+    if (!showTagTools) {
+      setIsAddingTag(false);
+      setIsManagingTags(false);
+      setNewTagName('');
+    }
+  }, [showTagTools]);
 
   const loadTodos = () => {
     const loadedTodos = getTodos();
@@ -187,167 +197,211 @@ const Todo = () => {
         </section>
 
         <section className="card-surface flex min-h-[24rem] flex-col px-4 pt-5 pb-7 sm:min-h-[29rem] sm:px-6 sm:pt-6 sm:pb-8 lg:px-8 lg:pt-8 lg:pb-10">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
+            <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
+                <div className="flex items-center gap-2 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
                   <Sparkles className="h-4 w-4 text-safespace-primary" />
-                  <span>Tags</span>
+                  <span>Focus areas</span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 text-xs">
+                {sections.length > 0 && (
                   <button
-                    onClick={() => {
-                      setIsAddingTag((prev) => !prev);
-                      setIsManagingTags(false);
-                      setNewTagName('');
-                    }}
-                    className="button-muted"
+                    type="button"
+                    onClick={() => setShowTagTools((prev) => !prev)}
+                    className="button-muted px-3 py-1 text-xs font-semibold"
                   >
-                    <Plus className="h-3.5 w-3.5" />
-                    {isAddingTag ? 'Cancel' : 'New tag'}
+                    {showTagTools ? 'Hide organizer' : 'Organize tags'}
                   </button>
-                  <button
-                    onClick={() => setIsManagingTags((prev) => !prev)}
-                    className="button-muted"
+                )}
+              </div>
+
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex w-full flex-col gap-2 sm:max-w-xs">
+                  <label
+                    htmlFor="focus-select"
+                    className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400"
                   >
-                    {isManagingTags ? 'Done' : 'Manage tags'}
-                  </button>
+                    Active filter
+                  </label>
+                  <select
+                    id="focus-select"
+                    value={selectedTag}
+                    onChange={(event) => setSelectedTag(event.target.value)}
+                    className="input-surface w-full px-3 py-2 pr-8 text-sm"
+                  >
+                    {tags.map((tag) => (
+                      <option key={tag} value={tag}>
+                        {tag === 'all' ? 'All focus areas' : tag}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs text-safespace-foreground/60 dark:text-slate-300">
+                  <span>{filteredTodos.length} task{filteredTodos.length === 1 ? '' : 's'} in view</span>
+                  {visibleCompletedCount > 0 && (
+                    <span>{visibleCompletedCount} done</span>
+                  )}
                 </div>
               </div>
 
-              {isAddingTag && (
-                <div className="card-section card-section-hover flex flex-wrap gap-2 p-4 sm:p-5">
-                  <input
-                    type="text"
-                    value={newTagName}
-                    onChange={(e) => setNewTagName(e.target.value)}
-                    placeholder="e.g. Morning, Deep work"
-                    className="flex-1 input-surface"
-                  />
-                  <button
-                    onClick={handleAddTag}
-                    disabled={!newTagName.trim()}
-                    className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                      !newTagName.trim()
-                        ? 'bg-safespace-muted text-safespace-foreground/40'
-                        : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
-                    }`}
-                  >
-                    Save tag
-                  </button>
-                </div>
-              )}
-
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => {
-                  const isActive = selectedTag === tag;
-                  return (
+              {showTagTools && (
+                <div className="space-y-4 border-t border-safespace-muted/40 pt-4 dark:border-white/10">
+                  <div className="flex flex-wrap items-center gap-2">
                     <button
-                      key={tag}
-                      onClick={() => setSelectedTag(tag)}
-                      className={`group inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm transition ${
-                        isActive
-                          ? 'bg-safespace-primary text-white shadow-sm'
-                          : 'bg-white/80 text-safespace-foreground/70 ring-1 ring-safespace-muted/50 hover:text-safespace-foreground dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/15 dark:hover:text-slate-100'
-                      }`}
+                      type="button"
+                      onClick={() => {
+                        setIsAddingTag((prev) => !prev);
+                        if (!isAddingTag) {
+                          setNewTagName('');
+                        }
+                        setIsManagingTags(false);
+                      }}
+                      className="button-muted px-3 py-1 text-xs font-semibold"
                     >
-                      {tag === 'all' ? 'All' : tag}
-                      {isManagingTags && tag !== 'all' && (
-                        <span
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteTag(tag);
-                          }}
-                          className="text-xs text-white/80 transition group-hover:text-white"
-                        >
-                          x
-                        </span>
-                      )}
+                      {isAddingTag ? 'Cancel new tag' : 'New tag'}
                     </button>
-                  );
-                })}
-              </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsManagingTags((prev) => !prev)}
+                      className="button-muted px-3 py-1 text-xs font-semibold"
+                    >
+                      {isManagingTags ? 'Hide remove' : 'Manage tags'}
+                    </button>
+                  </div>
 
-              {isManagingTags && sections.length === 0 && (
-                <p className="text-xs text-safespace-foreground/50">
-                  Add a tag to start organising tasks.
-                </p>
+                  {isAddingTag && (
+                    <div className="flex flex-col gap-2 rounded-2xl border border-safespace-muted/45 bg-white/85 p-3 sm:flex-row sm:items-center dark:border-white/10 dark:bg-slate-900/60">
+                      <input
+                        type="text"
+                        value={newTagName}
+                        onChange={(event) => setNewTagName(event.target.value)}
+                        placeholder="e.g. Morning, Deep work"
+                        className="input-surface flex-1 px-3 py-2"
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleAddTag}
+                        disabled={!newTagName.trim()}
+                        size="sm"
+                        className="rounded-full px-4 text-xs font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => {
+                      const isActive = selectedTag === tag;
+                      return (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => setSelectedTag(tag)}
+                          className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition ${
+                            isActive
+                              ? 'bg-safespace-primary text-white shadow-sm'
+                              : 'bg-white/80 text-safespace-foreground/70 ring-1 ring-safespace-muted/50 hover:text-safespace-foreground dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/15 dark:hover:text-slate-100'
+                          }`}
+                        >
+                          {tag === 'all' ? 'All focus areas' : tag}
+                          {isManagingTags && tag !== 'all' && (
+                            <span
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleDeleteTag(tag);
+                              }}
+                              className="text-xs text-white/80 transition hover:text-white"
+                            >
+                              x
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {isManagingTags && sections.length === 0 && (
+                    <p className="text-xs text-safespace-foreground/50 dark:text-slate-400">
+                      Add a tag to start organising tasks.
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 
-              <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-safespace-primary/10 text-safespace-primary dark:bg-safespace-primary/15">
-                      <ListTodo className="h-5 w-5" />
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">Task list</span>
-                      <div className="flex flex-wrap items-center gap-2 text-xs">
-                        <span className="pill-tag bg-safespace-muted/60 px-3 py-1 text-safespace-foreground/70 dark:bg-white/10 dark:text-slate-200">
-                          {selectedTag === 'all' ? 'All tags' : selectedTag}
-                        </span>
-                        <span className="pill-tag bg-safespace-muted/40 px-3 py-1 text-safespace-foreground/60 dark:bg-white/10 dark:text-slate-300">
-                          {filteredTodos.length === 0
-                            ? '0 tasks'
-                            : `${visibleCompletedCount}/${filteredTodos.length} complete`}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleDeleteCompletedTodos}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-safespace-muted/50 text-safespace-foreground/65 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200" 
-                      aria-label="Clear completed tasks"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (!isAddingTask) {
-                          setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
-                        }
-                        setIsAddingTask((prev) => !prev);
-                        setNewTaskText('');
-                      }}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-safespace-muted/50 text-safespace-foreground/65 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
-                      aria-label={isAddingTask ? 'Cancel new task' : 'Add new task'}
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
+            <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <span className="text-sm font-semibold text-safespace-foreground dark:text-slate-100">
+                    Task list
+                  </span>
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-safespace-foreground/60 dark:text-slate-300">
+                    <span>{selectedTag === 'all' ? 'All focus areas' : selectedTag}</span>
+                    {filteredTodos.length > 0 && (
+                      <span>{visibleCompletedCount}/{filteredTodos.length} complete</span>
+                    )}
                   </div>
                 </div>
+                <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={handleDeleteCompletedTodos}
+                    className="whitespace-nowrap px-3 py-1 text-xs font-semibold text-safespace-foreground/70 hover:text-safespace-primary dark:text-slate-300"
+                  >
+                    Clear done
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      if (!isAddingTask) {
+                        setNewTaskTag(selectedTag !== 'all' ? selectedTag : sections[0] ?? '');
+                      }
+                      setIsAddingTask((prev) => !prev);
+                      setNewTaskText('');
+                    }}
+                    className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold"
+                  >
+                    {isAddingTask ? 'Close form' : 'Add task'}
+                  </Button>
+                </div>
+              </div>
 
               {isAddingTask && (
-                <div className="card-section card-section-hover flex flex-col gap-4 p-4 sm:p-5">
+                <div className="flex flex-col gap-3 rounded-2xl border border-safespace-muted/40 bg-white/85 p-4 dark:border-white/10 dark:bg-slate-950/70">
                   <textarea
                     value={newTaskText}
-                    onChange={(e) => setNewTaskText(e.target.value)}
-                    placeholder="Describe a compassionate next step"
-                    className="min-h-[100px] w-full resize-none rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100 dark:placeholder:text-slate-400"
+                    onChange={(event) => setNewTaskText(event.target.value)}
+                    placeholder="Describe a gentle next step"
+                    className="min-h-[90px] w-full resize-none rounded-xl border border-safespace-muted px-3 py-2 text-sm text-safespace-foreground placeholder:text-safespace-foreground/40 focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-transparent dark:text-slate-100 dark:placeholder:text-slate-400"
                   />
 
-                  <div className="flex flex-col gap-4 sm:flex-row">
-                    <label className="flex flex-1 flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      Importance
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-safespace-foreground/45 dark:text-slate-400">
+                        Importance
+                      </span>
                       <select
                         value={newTaskImportance}
-                        onChange={(e) => setNewTaskImportance(e.target.value as 'low' | 'medium' | 'high')}
-                        className="rounded-xl border border-safespace-muted px-3 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100"
+                        onChange={(event) => setNewTaskImportance(event.target.value as 'low' | 'medium' | 'high')}
+                        className="input-surface w-full px-3 py-2 text-sm"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
                         <option value="high">High</option>
                       </select>
-                    </label>
+                    </div>
 
-                    <label className="flex flex-1 flex-col gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      Tag
+                    <div className="flex flex-1 flex-col gap-1">
+                      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-safespace-foreground/45 dark:text-slate-400">
+                        Tag
+                      </span>
                       <select
                         value={newTaskTag}
-                        onChange={(e) => setNewTaskTag(e.target.value)}
-                        className="rounded-xl border border-safespace-muted px-3 py-2 text-sm focus:border-safespace-primary/40 focus:outline-none dark:border-white/15 dark:bg-slate-950/70 dark:text-slate-100"
+                        onChange={(event) => setNewTaskTag(event.target.value)}
+                        className="input-surface w-full px-3 py-2 text-sm"
                       >
                         {sections.map((section) => (
                           <option key={section} value={section}>
@@ -355,30 +409,31 @@ const Todo = () => {
                           </option>
                         ))}
                       </select>
-                    </label>
+                    </div>
                   </div>
 
                   <div className="flex justify-end gap-2">
-                    <button
+                    <Button
+                      type="button"
+                      variant="ghost"
                       onClick={() => {
                         setIsAddingTask(false);
                         setNewTaskText('');
                       }}
-                      className="button-muted"
+                      size="sm"
+                      className="rounded-full px-3 text-xs font-semibold text-safespace-foreground/70 hover:text-safespace-primary dark:text-slate-300"
                     >
                       Cancel
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      type="button"
                       onClick={handleAddTask}
                       disabled={!newTaskText.trim()}
-                      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                        !newTaskText.trim()
-                          ? 'bg-safespace-muted text-safespace-foreground/40'
-                          : 'bg-safespace-primary text-safespace-primary-foreground hover:bg-safespace-primary/90'
-                      }`}
+                      size="sm"
+                      className="rounded-full px-4 text-xs font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
                     >
                       Save task
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}

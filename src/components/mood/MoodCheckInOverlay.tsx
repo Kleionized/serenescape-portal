@@ -203,53 +203,49 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                 </div>
 
                 {recentStressors.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-safespace-foreground/45 dark:text-slate-400">
-                      Soft reminders
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {recentStressors.map((stressorName) => {
-                        const isActive = stressors.includes(stressorName);
-                        return (
-                          <button
-                            key={stressorName}
-                            onClick={() => handleAddRecentStressor(stressorName)}
-                            className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm transition ${
-                              isActive
-                                ? 'bg-safespace-primary text-white shadow-sm'
-                                : 'bg-white/80 text-safespace-foreground/70 ring-1 ring-safespace-muted/50 hover:text-safespace-foreground dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/15'
-                            }`}
-                          >
-                            {stressorName}
-                          </button>
-                        );
-                      })}
-                    </div>
+                  <div className="flex flex-wrap gap-2">
+                    {recentStressors.map((stressorName) => {
+                      const isActive = stressors.includes(stressorName);
+                      return (
+                        <button
+                          key={stressorName}
+                          onClick={() => handleAddRecentStressor(stressorName)}
+                          className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm transition ${
+                            isActive
+                              ? 'bg-safespace-primary text-white shadow-sm'
+                              : 'bg-white/70 text-safespace-foreground/70 ring-1 ring-safespace-muted/50 hover:text-safespace-foreground dark:bg-slate-900/70 dark:text-slate-200 dark:ring-white/15'
+                          }`}
+                        >
+                          {stressorName}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
-                <div className="space-y-4">
-                  <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="space-y-3">
+                  <div className="flex flex-col gap-2 sm:flex-row">
                     <input
                       type="text"
                       value={currentStressor}
                       onChange={(event) => setCurrentStressor(event.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="Name what’s gripping your mind"
+                      placeholder="Add a stressor"
                       className="input-surface flex-1 px-4 py-3"
                     />
                     <Button
                       type="button"
                       onClick={handleAddStressor}
                       disabled={!currentStressor.trim()}
-                      className="rounded-full px-5 py-2 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                      size="sm"
+                      className="rounded-full px-5 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
                     >
                       Add
                     </Button>
                   </div>
 
                   {stressors.length > 0 && (
-                    <div className="flex flex-wrap gap-2 rounded-2xl border border-safespace-muted/45 bg-white/80 px-4 py-3 dark:border-white/10 dark:bg-slate-900/70">
+                    <div className="flex flex-wrap gap-2 rounded-2xl border border-safespace-muted/45 bg-white/80 px-3 py-2 dark:border-white/10 dark:bg-slate-900/70">
                       {stressors.map((stressor, index) => (
                         <span
                           key={`${stressor}-${index}`}
@@ -270,26 +266,29 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                   )}
                 </div>
 
-                <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <Button
                     variant="ghost"
                     onClick={handleSkip}
-                    className="justify-start text-safespace-foreground/70 hover:text-safespace-primary dark:text-slate-300"
+                    size="sm"
+                    className="self-start whitespace-nowrap rounded-full px-3 text-safespace-foreground/70 hover:text-safespace-primary dark:text-slate-300"
                   >
                     Skip for now
                   </Button>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2 sm:flex-nowrap">
                     <Button
                       variant="outline"
                       onClick={() => setStep('mood')}
-                      className="rounded-full border-safespace-muted/60 px-5 py-2 text-sm font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
+                      size="sm"
+                      className="rounded-full border-safespace-muted/60 px-4 text-sm font-semibold text-safespace-foreground/70 transition hover:border-safespace-primary/40 hover:text-safespace-primary dark:border-white/15 dark:text-slate-200"
                     >
                       Back
                     </Button>
                     <Button
                       onClick={() => handleSubmit(undefined)}
                       disabled={stressors.length === 0}
-                      className="rounded-full px-6 py-2 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                      size="sm"
+                      className="rounded-full px-5 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
                     >
                       Save check-in
                     </Button>
