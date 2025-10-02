@@ -189,7 +189,7 @@ const SavedEntries = () => {
                 Nothing saved yet. Once you write or reflect, it will appear here.
               </div>
             ) : (
-              <ScrollArea className="max-h-[60vh] pr-2 sm:pr-4">
+              <ScrollArea className="h-[60vh] pr-2 sm:pr-4">
                 <div className="space-y-4 pr-1 sm:pr-2">
                   {entries.map((entry) => {
                     const isReflection = entry.type === 'reflection';
