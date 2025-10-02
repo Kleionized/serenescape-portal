@@ -126,13 +126,12 @@
 
   .page-hero {
     @apply card-surface flex flex-col gap-6;
-    padding: clamp(1rem, 2.6vw, 2.2rem);
-    min-height: clamp(10rem, 16vh, 15rem);
+    padding: clamp(1.35rem, 3.4vw, 2.85rem);
     justify-content: center;
   }
 
   .page-hero--expanded {
-    min-height: clamp(13rem, 22vh, 19rem);
+    padding-bottom: clamp(1.85rem, 4vw, 3.1rem);
   }
 
   .page-hero__header {
@@ -150,13 +149,12 @@
 
   @media (max-width: 640px) {
     .page-hero {
-      padding: 1.1rem;
-      min-height: clamp(11.5rem, 30vh, 16.5rem);
-      gap: 1.25rem;
+      padding: 1.35rem;
+      gap: 1.35rem;
     }
 
     .page-hero--expanded {
-      min-height: clamp(12.5rem, 36vh, 18.5rem);
+      padding-bottom: 1.7rem;
     }
 
     .page-hero__header {

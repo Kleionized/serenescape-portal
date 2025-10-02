@@ -60,12 +60,15 @@ const MoodStressorsTally = () => {
   const filteredStressors = showResolved ? stressors : stressors.filter(stressor => !stressor.resolved);
   const containerMinHeight = filteredStressors.length === 0
     ? '20rem'
-    : filteredStressors.length <= 3
+    : filteredStressors.length <= 2
       ? '26rem'
       : '32rem';
 
   return (
-    <div className="flex h-full flex-col gap-6" style={{ minHeight: containerMinHeight }}>
+    <div
+      className="flex flex-1 flex-col gap-6"
+      style={{ minHeight: containerMinHeight }}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm font-medium text-safespace-foreground/70 dark:text-slate-200">
           <Feather className="h-4 w-4 text-safespace-primary dark:text-safespace-primary/80" />

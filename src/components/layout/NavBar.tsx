@@ -107,10 +107,6 @@ const NavBar = () => {
             })}
           </div>
 
-          <div className="mt-5 flex items-center justify-between rounded-2xl border border-safespace-muted/50 bg-white/85 px-3 py-2 text-sm font-semibold text-safespace-foreground/70 dark:border-white/10 dark:bg-slate-900/70 dark:text-slate-200">
-            <span>Theme</span>
-            <ThemeToggle />
-          </div>
         </div>
       )}
     </nav>
