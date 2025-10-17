@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MoodLevel } from '../../lib/types';
 import { addMoodCheckIn, getStressors } from '../../lib/storage';
 import { X, ArrowLeft } from 'lucide-react';
@@ -47,6 +47,8 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   const [stressors, setStressors] = useState<string[]>([]);
   const [currentStressor, setCurrentStressor] = useState('');
   const [recentStressors, setRecentStressors] = useState<string[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+  const closeTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const allStressors = getStressors();
@@ -58,9 +60,27 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
     setRecentStressors(activeStressorNames);
   }, []);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setIsVisible(true));
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const activeMood = selectedMood
     ? moodOptions.find((option) => option.value === selectedMood)
     : null;
+
+  const closeWithTransition = useCallback(() => {
+    setIsVisible(false);
+    if (closeTimeoutRef.current) {
+      window.clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = window.setTimeout(onClose, 300);
+  }, [onClose]);
 
   const handleMoodSelect = (mood: MoodLevel) => {
     setSelectedMood(mood);
@@ -114,7 +134,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
     });
 
     window.dispatchEvent(new Event('mood-checkin-recorded'));
-    onClose();
+    closeWithTransition();
   };
 
   const handleSkip = () => {
@@ -122,11 +142,19 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-stretch justify-center bg-safespace-background/85 backdrop-blur-xl dark:bg-slate-950/90">
+    <div
+      className={`fixed inset-0 z-50 flex items-stretch justify-center bg-safespace-background/85 backdrop-blur-xl transition-opacity duration-300 ease-out dark:bg-slate-950/90 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
+    >
       <div className="safe-area-block--tight mx-auto flex w-full max-w-3xl flex-col justify-center gap-4 px-4 sm:gap-6 sm:px-6">
-        <div className="card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-5 shadow-2xl sm:p-7 lg:p-8 dark:border-white/10 dark:bg-slate-950/95">
+        <div
+          className={`card-surface relative w-full overflow-hidden rounded-[2rem] border border-safespace-muted/50 bg-white/95 p-5 shadow-2xl transition-all duration-300 ease-out sm:p-7 lg:p-8 dark:border-white/10 dark:bg-slate-950/95 ${
+            isVisible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-3 scale-[0.98] opacity-0'
+          }`}
+        >
           <button
-            onClick={onClose}
+            onClick={closeWithTransition}
             className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-2xl border border-transparent text-safespace-foreground/60 transition hover:border-safespace-muted/60 hover:text-safespace-foreground dark:text-slate-300"
             aria-label="Close mood check-in"
           >
