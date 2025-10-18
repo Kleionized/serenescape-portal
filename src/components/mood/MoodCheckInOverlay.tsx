@@ -266,7 +266,7 @@ const MoodCheckInOverlay: React.FC<MoodCheckInOverlayProps> = ({ onClose }) => {
                       onClick={handleAddStressor}
                       disabled={!currentStressor.trim()}
                       size="sm"
-                      className="rounded-full px-5 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40"
+                      className="rounded-full px-5 text-sm font-semibold disabled:bg-safespace-muted disabled:text-safespace-foreground/40 dark:bg-safespace-primary/70 dark:text-slate-950 dark:hover:bg-safespace-primary/60"
                     >
                       Add
                     </Button>

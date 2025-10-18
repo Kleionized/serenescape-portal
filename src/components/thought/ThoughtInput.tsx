@@ -38,7 +38,7 @@ const ThoughtInput = () => {
         <Button
           type="submit"
           disabled={!thought.trim()}
-          className="rounded-full bg-safespace-primary px-5 py-2 text-safespace-primary-foreground transition hover:bg-safespace-primary/90"
+          className="rounded-full bg-safespace-primary px-5 py-2 text-safespace-primary-foreground transition hover:bg-safespace-primary/90 dark:bg-safespace-primary/70 dark:text-slate-950 dark:hover:bg-safespace-primary/60"
         >
           <Send className="mr-2 h-4 w-4" />
           Save thought
